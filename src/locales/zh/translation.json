@@ -2,5 +2,9 @@
   "welcome": "欢迎",
   "login": "登录",
   "logout": "退出登录",
-  "language_switcher": "English"
+  "language_switcher": "English",
+  "menu_home": "主页",
+  "menu_all_novels": "全部小说",
+  "menu_ori_novels": "原创小说",
+  "menu_tran_novels": "翻译小说"
 }

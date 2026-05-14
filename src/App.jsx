@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import Language from "./locales/Language";
 import "./locales/i18n";
 import { lazy } from "react";
 import { Suspense } from "react";
+import Topbar from "./main/Topbar";
 
 const HomePage = lazy(() => import("./main/HomePage"));
 const UserPage = lazy(() => import("./auth/UserPage"));
@@ -15,12 +15,14 @@ function App() {
 
   return (
     <>
-      <Language />
+      <Topbar />
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/profile" element={<UserPage />} />
-          <Route path="/novel" element={<NovelPage />} />
+          <Route path="/all" element={<NovelPage />} />
+          <Route path="/ori" element={<NovelPage />} />
+          <Route path="/tran" element={<NovelPage />} />
           <Route path="/chapter" element={<ChapterPage />} />
           <Route path="/editor" element={<EditorPage />} />
         </Routes>

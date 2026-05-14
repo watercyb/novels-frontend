@@ -2,5 +2,9 @@
   "welcome": "Welcome",
   "login": "Login",
   "logout": "Logout",
-  "language_switcher": "中文"
+  "language_switcher": "中文",
+  "menu_home": "Home",
+  "menu_all_novels": "All Novels",
+  "menu_ori_novels": "Originals",
+  "menu_tran_novels": "Translations"
 }
