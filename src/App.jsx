@@ -3,6 +3,14 @@ import "./locales/i18n";
 import { lazy } from "react";
 import { Suspense } from "react";
 import Topbar from "./main/Topbar";
+import { Toaster } from "react-hot-toast";
+import LoginPage from "./auth/LoginPage";
+import useUserStore from "./auth/useUserStore";
+import { Navigate } from "react-router-dom";
+import SignUpPage from "./auth/SignUpPage";
+import UpdatePasswordPage from "./auth/UpdatePasswordPage";
+import ForgotPasswordPage from "./auth/ForgotPasswordPage";
+import ResetPasswordPage from "./auth/ResetPasswordPage";
 
 const HomePage = lazy(() => import("./main/HomePage"));
 const UserPage = lazy(() => import("./auth/UserPage"));
@@ -11,7 +19,7 @@ const ChapterPage = lazy(() => import("./chapters/ChapterPage"));
 const EditorPage = lazy(() => import("./editor/EditorPage"));
 
 function App() {
-  console.log("Re-rendered: App");
+  const { user } = useUserStore();
 
   return (
     <>
@@ -25,8 +33,25 @@ function App() {
           <Route path="/tran" element={<NovelPage />} />
           <Route path="/chapter" element={<ChapterPage />} />
           <Route path="/editor" element={<EditorPage />} />
+          <Route
+            path="/login"
+            element={!user ? <LoginPage /> : <Navigate to="/" replace />}
+          />
+          <Route
+            path="/signup"
+            element={!user ? <SignUpPage /> : <Navigate to="/" replace />}
+          />
+          <Route
+            path="/update-password"
+            element={
+              user ? <UpdatePasswordPage /> : <Navigate to="/" replace />
+            }
+          />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
         </Routes>
       </Suspense>
+      <Toaster position="top-center" reverseOrder={false} />
     </>
   );
 }

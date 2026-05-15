@@ -1,5 +1,5 @@
 import axios from "axios";
-//import useUserStore from "../stores/useUserStore";
+import useUserStore from "../auth/useUserStore";
 
 const axiosInstance = axios.create({
   baseURL: "/api",
@@ -16,7 +16,7 @@ axiosInstance.interceptors.response.use(
       error.response?.status === 401 &&
       originalRequest.url.includes("/auth/refresh")
     ) {
-      //await useUserStore.getState().logout();
+      await useUserStore.getState().logout();
       return Promise.reject(error);
     }
 
@@ -24,10 +24,10 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        //await useUserStore.getState().refresh();
+        await useUserStore.getState().refresh();
         return axiosInstance(originalRequest);
       } catch (refreshError) {
-        //await useUserStore.getState().logout();
+        await useUserStore.getState().logout();
         return Promise.reject(refreshError);
       }
     }

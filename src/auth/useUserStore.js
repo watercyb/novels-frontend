@@ -2,30 +2,27 @@ import { create } from "zustand";
 import axiosInstance from "../utils/axios";
 import toast from "react-hot-toast";
 
-const useUserStore = create((set, get) => ({
-  user: null,
+const useUserStore = create((set) => ({
+  user: {},
   error: null,
   favorites: [],
   likes: [],
   isLoading: false,
-  isRateLimited: false,
 
   login: async (email, password) => {
     try {
       set({ isLoading: true, isRateLimited: false });
-      let res = await axiosInstance.post("/auth/login", { email, password });
-      set({ user: res.data.user });
-      res = await axiosInstance.get("/likes");
-      set({ likes: res.data.list });
-      res = await axiosInstance.get("/favorites/ids");
-      set({ favorites: res.data.list });
-      console.log(get().user);
-      console.log(get().likes);
-      console.log(get().favorites);
+      const resUser = await axiosInstance.post("/auth/login", {
+        email,
+        password,
+      });
+      set({ user: resUser.data.user });
+      const resLikes = await axiosInstance.get("/likes");
+      const resFavs = await axiosInstance.get("/favorites/ids");
+      set({ likes: resLikes.data.list, favorites: resFavs.data.list });
     } catch (error) {
       if (error.response.status == 429) {
-        set({ isRateLimited: true });
-        set({ error: "Too many requests, please slow down" });
+        toast.error("Too many requests, please slow down");
       } else {
         set({ error: error.response.data.message || "Error logging in" });
       }
@@ -34,21 +31,19 @@ const useUserStore = create((set, get) => ({
     }
   },
 
-  signup: async (name, email, password) => {
+  signup: async (username, email, password) => {
     try {
       set({ isLoading: true, error: null, isRateLimited: false });
       const res = await axiosInstance.post("/auth/signup", {
-        name,
+        username,
         email,
         password,
       });
-
       set({ user: res.data.user });
       return true;
     } catch (error) {
       if (error.response.status == 429) {
-        set({ isRateLimited: true });
-        set({ error: "Too many requests, please slow down" });
+        toast.error("Too many requests, please slow down");
       } else {
         set({ error: error.response.data.message || "Error signing up" });
       }
@@ -58,37 +53,19 @@ const useUserStore = create((set, get) => ({
     }
   },
 
-  verifyEmail: async (code) => {
-    try {
-      set({ isLoading: true, error: null, isRateLimited: false });
-      const res = await axiosInstance.post("/auth/verify-email", { code });
-
-      set({ user: res.data.user });
-      return true;
-    } catch (error) {
-      if (error.response.status == 429) {
-        set({ isRateLimited: true });
-        set({ error: "Too many requests, please slow down" });
-      } else {
-        set({ error: error.response.data.message || "Error verify email" });
-      }
-      return false;
-    } finally {
-      set({ isLoading: false });
-    }
-  },
-
   checkAuth: async () => {
     try {
-      set({ isCheckingAuth: true, error: null, isRateLimited: false });
-      const res = await axiosInstance.get("/auth/check-auth");
-
-      set({ user: res.data.user });
+      console.log("checkAuth");
+      set({ isCheckingAuth: true, error: null });
+      const resUser = await axiosInstance.get("/auth");
+      set({ user: resUser.data.user });
+      const resLikes = await axiosInstance.get("/likes");
+      const resFavs = await axiosInstance.get("/favorites/ids");
+      set({ likes: resLikes.data.list, favorites: resFavs.data.list });
     } catch (error) {
       set({ user: null });
       if (error.response.status == 429) {
-        set({ isRateLimited: true });
-        set({ error: "Too many requests, please slow down" });
+        toast.error("Too many requests, please slow down");
       } else if (error.response.status != 401) {
         set({ error: error.response.data.message || "Error check auth" });
       }
@@ -99,32 +76,32 @@ const useUserStore = create((set, get) => ({
 
   logout: async () => {
     try {
-      set({ isLoading: true, error: null, isRateLimited: false });
+      set({ isLoading: true, error: null });
       await axiosInstance.post("/auth/logout");
-
-      set({ user: null });
     } catch (error) {
       if (error.response.status == 429) {
-        set({ isRateLimited: true });
-        set({ error: "Too many requests, please slow down" });
+        toast.error("Too many requests, please slow down");
       } else {
         set({ error: error.response.data.message || "Error logout" });
       }
-      set({ user: null });
     } finally {
+      set({
+        user: null,
+        likes: [],
+        favorites: [],
+      });
       set({ isLoading: false });
     }
   },
 
   forgotPassword: async (email) => {
     try {
-      set({ isLoading: true, error: null, isRateLimited: false });
-      await axiosInstance.post("/auth/forgot-password", { email });
+      set({ isLoading: true, error: null });
+      await axiosInstance.post("/auth/forgot_password", { email });
       return true;
     } catch (error) {
       if (error.response.status == 429) {
-        set({ isRateLimited: true });
-        set({ error: "Too many requests, please slow down" });
+        toast.error("Too many requests, please slow down");
       } else {
         set({ error: error.response.data.message || "Error forgot password" });
       }
@@ -134,15 +111,18 @@ const useUserStore = create((set, get) => ({
     }
   },
 
-  resetPassword: async (token, password) => {
+  resetPassword: async (email, code, password) => {
     try {
-      set({ isLoading: true, error: null, isRateLimited: false });
-      await axiosInstance.post(`/auth/reset-password/${token}`, { password });
+      set({ isLoading: true, error: null });
+      await axiosInstance.post(`/auth/reset_password`, {
+        email,
+        code,
+        password,
+      });
       return true;
     } catch (error) {
       if (error.response.status == 429) {
-        set({ isRateLimited: true });
-        set({ error: "Too many requests, please slow down" });
+        toast.error("Too many requests, please slow down");
       } else {
         set({ error: error.response.data.message || "Error reset password" });
       }
@@ -152,36 +132,10 @@ const useUserStore = create((set, get) => ({
     }
   },
 
-  resendEmail: async () => {
+  updatePassword: async (oldPassword, newPassword) => {
     try {
-      set({ isLoading: true, error: null, isRateLimited: false });
-      await axiosInstance.post("/auth/resend-email");
-      return true;
-    } catch (error) {
-      if (error.response.status == 429) {
-        set({ isRateLimited: true });
-        set({ error: "Too many requests, please slow down" });
-      } else {
-        set({ error: error.response.data.message || "Error reset password" });
-      }
-      return false;
-    } finally {
-      set({ isLoading: false });
-    }
-  },
-
-  clearRateLimit: () => {
-    set({ isRateLimited: false });
-  },
-
-  changePassword: async (oldPassword, newPassword, confirmPassword) => {
-    try {
-      set({ isLoading: true, error: null, isRateLimited: false });
-      if (newPassword !== confirmPassword) {
-        set({ error: "Passwords do not match" });
-        return false;
-      }
-      await axiosInstance.post("/auth/password", {
+      set({ isLoading: true, error: null });
+      await axiosInstance.post("/auth/update_password", {
         oldPassword,
         newPassword,
       });
@@ -189,8 +143,7 @@ const useUserStore = create((set, get) => ({
       return true;
     } catch (error) {
       if (error.response.status == 429) {
-        set({ isRateLimited: true });
-        set({ error: "Too many requests, please slow down" });
+        toast.error("Too many requests, please slow down");
       } else {
         set({ error: error.response.data.message || "Error change password" });
       }
@@ -200,13 +153,22 @@ const useUserStore = create((set, get) => ({
     }
   },
 
-  changeUsername: async (name) => {
+  updateProfile: async (avatarImage, username) => {
     try {
       set({ isLoading: true, error: null, isRateLimited: false });
-      await axiosInstance.post("/auth/username", { name });
+      const formData = new FormData();
+      formData.append("username", username);
+      formData.append("avatarImage", avatarImage);
+      const res = await axiosInstance.post("/auth/update", formData);
 
-      set((state) => ({ user: { ...state.user, name } }));
-      toast.success("Username updated successfully");
+      set((state) => ({
+        user: {
+          ...state.user,
+          username: res.data.username,
+          avatarUrl: res.data.avatarUrl,
+        },
+      }));
+      toast.success("User updated successfully");
       return true;
     } catch (error) {
       if (error.response.status == 429) {
@@ -225,10 +187,8 @@ const useUserStore = create((set, get) => ({
     try {
       await axiosInstance.post("/auth/refresh");
     } catch (error) {
-      if (error.response.status == 429) {
-        set({ isRateLimited: true });
-        set({ error: "Too many requests, please slow down" });
-      }
+      if (error.response.status == 429)
+        toast.error("Too many requests, please slow down");
     }
   },
 }));
