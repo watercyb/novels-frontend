@@ -17,7 +17,7 @@ const NovelPage = ({ type }) => {
   const { novels, isLoading, getNovels, page, totalPages } = useNovelStore();
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get("search") || "";
-  const sortBy = searchParams.get("sortBy") || "lastest";
+  const sortBy = searchParams.get("sortBy") || "Latest Updated";
   const sortOrder = searchParams.get("sortOrder") || "desc";
   const currentPage = Number(searchParams.get("page") || "1");
   const [keywords, setKeywords] = useState(search);
@@ -86,7 +86,7 @@ const NovelPage = ({ type }) => {
     }
     updateParams({ page: 1, sortBy: name, sortOrder: newSortOrder });
   };
-
+  
   return (
     <div className="min-h-screen bg-base-200 p-6">
       <div className="max-w-7xl mx-auto">

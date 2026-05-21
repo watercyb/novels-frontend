@@ -56,8 +56,6 @@ const useUserStore = create((set) => ({
 
   checkAuth: async () => {
     try {
-      console.log(getCookie("accessToken"));
-      console.log(getCookie("refreshToken"));
       set({ isCheckingAuth: true, error: null });
       const resUser = await axiosInstance.get("/auth");
       set({ user: resUser.data.user });
@@ -202,16 +200,5 @@ const useUserStore = create((set) => ({
     set({ user });
   },
 }));
-
-const getCookie = (name) => {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-
-  if (parts.length === 2) {
-    return parts.pop().split(";").shift();
-  }
-
-  return null;
-};
 
 export default useUserStore;
