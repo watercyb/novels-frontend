@@ -13,7 +13,7 @@ import ForgotPasswordPage from "./auth/ForgotPasswordPage";
 import ResetPasswordPage from "./auth/ResetPasswordPage";
 
 const HomePage = lazy(() => import("./main/HomePage"));
-const UserPage = lazy(() => import("./auth/UserPage"));
+const ProfilePage = lazy(() => import("./auth/ProfilePage"));
 const NovelPage = lazy(() => import("./novels/NovelPage"));
 const ChapterPage = lazy(() => import("./chapters/ChapterPage"));
 const EditorPage = lazy(() => import("./editor/EditorPage"));
@@ -27,10 +27,9 @@ function App() {
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/profile" element={<UserPage />} />
-          <Route path="/all" element={<NovelPage />} />
-          <Route path="/ori" element={<NovelPage />} />
-          <Route path="/tran" element={<NovelPage />} />
+          <Route path="/all" element={<NovelPage type="all" />} />
+          <Route path="/ori" element={<NovelPage type="original"/>} />
+          <Route path="/tran" element={<NovelPage type="translation"/>} />
           <Route path="/chapter" element={<ChapterPage />} />
           <Route path="/editor" element={<EditorPage />} />
           <Route
@@ -49,6 +48,10 @@ function App() {
           />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route
+            path="/profile"
+            element={user ? <ProfilePage /> : <Navigate to="/" replace />}
+          />
         </Routes>
       </Suspense>
       <Toaster position="top-center" reverseOrder={false} />

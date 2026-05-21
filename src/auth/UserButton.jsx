@@ -17,11 +17,11 @@ const UserButton = () => {
 
   return (
     <div className="dropdown dropdown-hover dropdown-end">
-      <button tabIndex={0} className="btn btn-ghost btn-circle">
+      <button tabIndex={0} className="btn btn-ghost btn-circle ">
         <img
           src={user?.avatarUrl || avatar}
           alt="avatar"
-          className="w-10 h-10 rounded-full"
+          className="w-10 h-10 rounded-full object-cover"
         />
       </button>
 
@@ -39,7 +39,13 @@ const UserButton = () => {
               <Link to="/profile">{t("menu_profile")}</Link>
             </li>
             <li>
-              <div onClick={()=>{logout();}}>{t("logout")}</div>
+              <div
+                onClick={() => {
+                  logout();
+                }}
+              >
+                {t("logout")}
+              </div>
             </li>
           </>
         )}

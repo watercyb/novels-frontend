@@ -38,5 +38,17 @@
   "send": "Send Verification Email",
   "reset_email_sent": "If the email address is valid, a password reset email has been sent.",
   "reset_password": "Reset Password",
-  "reset": "Reset"
+  "reset": "Reset",
+  "user_profile": "User Profile",
+  "username": "Username",
+  "email": "Email",
+  "search_novels": "Search novels...",
+  "search": "Search",
+  "last_update": "Last Update",
+  "sort_chapter": "Chapters",
+  "sort_lastest": "Latest Updated",
+  "sort_like": "Likes",
+  "sort_relevance": "Relevance",
+  "sort_word": "Words",
+  "sort": "Sort"
 }

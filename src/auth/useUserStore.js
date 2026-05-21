@@ -3,11 +3,12 @@ import axiosInstance from "../utils/axios";
 import toast from "react-hot-toast";
 
 const useUserStore = create((set) => ({
-  user: {},
+  user: [],
   error: null,
   favorites: [],
   likes: [],
   isLoading: false,
+  isCheckingAuth: false,
 
   login: async (email, password) => {
     try {
@@ -55,7 +56,8 @@ const useUserStore = create((set) => ({
 
   checkAuth: async () => {
     try {
-      console.log("checkAuth");
+      console.log(getCookie("accessToken"));
+      console.log(getCookie("refreshToken"));
       set({ isCheckingAuth: true, error: null });
       const resUser = await axiosInstance.get("/auth");
       set({ user: resUser.data.user });
@@ -158,14 +160,18 @@ const useUserStore = create((set) => ({
       set({ isLoading: true, error: null, isRateLimited: false });
       const formData = new FormData();
       formData.append("username", username);
-      formData.append("avatarImage", avatarImage);
-      const res = await axiosInstance.post("/auth/update", formData);
+      if (avatarImage) formData.append("avatarImage", avatarImage);
+      const res = await axiosInstance.post("/auth/update", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       set((state) => ({
         user: {
           ...state.user,
-          username: res.data.username,
-          avatarUrl: res.data.avatarUrl,
+          username: res.data.user.username,
+          avatarUrl: res.data.user.avatarUrl,
         },
       }));
       toast.success("User updated successfully");
@@ -191,6 +197,21 @@ const useUserStore = create((set) => ({
         toast.error("Too many requests, please slow down");
     }
   },
+
+  setUser: (user) => {
+    set({ user });
+  },
 }));
+
+const getCookie = (name) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+
+  if (parts.length === 2) {
+    return parts.pop().split(";").shift();
+  }
+
+  return null;
+};
 
 export default useUserStore;
