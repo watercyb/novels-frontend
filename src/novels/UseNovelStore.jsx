@@ -31,7 +31,7 @@ const useNovelStore = create((set) => ({
       }
       if (!type) type = "all";
       params.append("type", type);
-      if (tags) params.append("tagIds", tags.join(" "));
+      if (tags) params.append("tagIds", tags);
       const res = (await axiosInstance.get("/novels?" + params.toString())).data
         ?.page;
 
@@ -58,7 +58,9 @@ const useNovelStore = create((set) => ({
     try {
       set({ isLoadingTags: true });
       const res = await axiosInstance.get("/tags");
-      set({ tags: res.data.tags ?? [] });
+      const tags = res.data?.tags ?? [];
+      tags.sort((a, b) => b.count - a.count);
+      set({ tags });
     } catch (error) {
       if (error.response.status == 429) {
         toast.error("Too many requests, please slow down");

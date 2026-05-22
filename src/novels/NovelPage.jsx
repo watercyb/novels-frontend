@@ -13,18 +13,11 @@ import useNovelStore from "./UseNovelStore";
 import { useTranslation } from "react-i18next";
 import { formatDateString } from "../utils/formatDate";
 import cover from "../assets/cover.png";
+import Tag from "./Tag";
 
 const NovelPage = ({ type }) => {
-  const {
-    novels,
-    tags,
-    isLoading,
-    isloadingTags,
-    page,
-    totalPages,
-    getNovels,
-    getTags,
-  } = useNovelStore();
+  const { novels, tags, isLoading, page, totalPages, getNovels, getTags } =
+    useNovelStore();
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get("search") || "";
   const sortBy = searchParams.get("sortBy") || "Latest Updated";
@@ -32,6 +25,9 @@ const NovelPage = ({ type }) => {
   const currentPage = Number(searchParams.get("page") || "1");
   const [keywords, setKeywords] = useState(search);
   const { t } = useTranslation();
+  const tagListStr = searchParams.get("tags") || "";
+  const tagSet = new Set(tagListStr ? tagListStr.split(" ").map(Number) : []);
+  const [showAllTags, setShowAllTags] = useState(false);
 
   let title = t("menu_all_novels");
   if (type == "original") {
@@ -66,6 +62,7 @@ const NovelPage = ({ type }) => {
       sortBy,
       sortOrder,
       page: currentPage,
+      tags: [...tagSet].join(" "),
       ...newParams,
     });
   };
@@ -73,18 +70,21 @@ const NovelPage = ({ type }) => {
   useEffect(() => {
     getNovels(
       search,
-      null,
+      tagListStr,
       currentPage - 1,
       20,
       sortDetails[sortBy][2],
       sortOrder == "asc",
       type,
     ); //search, tags, page, size, sort, asc, type
-  }, [currentPage, getNovels, search, sortOrder, sortBy, type]);
+  }, [currentPage, getNovels, search, sortOrder, sortBy, type, tagListStr]);
 
   useEffect(() => {
     if (tags == null) getTags();
-  }, [getTags, tags]);
+    document.title = title;
+  }, [getTags, tags, title]);
+
+  const visibleTags = tags ? (showAllTags ? tags : tags.slice(0, 8)) : [];
 
   const sortChangeHandler = (name) => {
     const selection = sortDetails[name]
@@ -101,11 +101,19 @@ const NovelPage = ({ type }) => {
     updateParams({ page: 1, sortBy: name, sortOrder: newSortOrder });
   };
 
+  const selectTag = (tagId, isSelected) => {
+    if (isSelected) {
+      tagSet.add(tagId);
+    } else {
+      tagSet.delete(tagId);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-base-200 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col md:flex-row gap-4 md:items-center md:justify-between mb-8">
+        <div className="flex flex-col md:flex-row gap-4 md:items-center md:justify-between mb-2">
           <h1 className="text-4xl font-bold">{title}</h1>
 
           <div className="flex justify-center items-center gap-2 my-4">
@@ -124,15 +132,13 @@ const NovelPage = ({ type }) => {
 
             <button
               onClick={() => {
-                if (keywords != search) {
-                  if (keywords) {
-                    updateParams({ search: keywords, sortBy: "Relevance" });
-                  } else {
-                    updateParams({
-                      search: keywords,
-                      sortBy: "Latest Updated",
-                    });
-                  }
+                if (keywords) {
+                  updateParams({ search: keywords, sortBy: "Relevance" });
+                } else {
+                  updateParams({
+                    search: keywords,
+                    sortBy: "Latest Updated",
+                  });
                 }
               }}
               className="btn btn-outline"
@@ -155,7 +161,7 @@ const NovelPage = ({ type }) => {
               >
                 {sortOptions.map((name) =>
                   name === "Relevance" && !search ? (
-                    <></>
+                    <div key="-1"></div>
                   ) : (
                     <li key={name}>
                       <button onClick={() => sortChangeHandler(name)}>
@@ -172,6 +178,32 @@ const NovelPage = ({ type }) => {
                 )}
               </ul>
             </div>
+          </div>
+        </div>
+
+        <div className="flex justify-center">
+          <div
+            className={`mb-8 flex justify-center items-center gap-2 flex-wrap overflow-hidden transition-all duration-300 ${
+              showAllTags ? "max-h-96" : "max-h-8"
+            } w-150`}
+          >
+            {visibleTags.map((tag) => (
+              <Tag
+                key={tag.id}
+                tagSet={tagSet}
+                tag={tag}
+                selectTag={selectTag}
+              />
+            ))}
+
+            {tags && tags.length > 8 && (
+              <button
+                className="btn btn-sm btn-ghost"
+                onClick={() => setShowAllTags((v) => !v)}
+              >
+                {showAllTags ? "Hide" : "More"}
+              </button>
+            )}
           </div>
         </div>
 
