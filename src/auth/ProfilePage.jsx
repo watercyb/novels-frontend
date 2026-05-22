@@ -57,7 +57,7 @@ export default function ProfilePage() {
                 <img src={avatarUrl} alt="Avatar" className="object-cover" />
 
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-sm font-semibold">
-                  Change
+                  {t("update")}
                 </div>
               </div>
             </div>

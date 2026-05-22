@@ -12,9 +12,19 @@ import { useSearchParams } from "react-router-dom";
 import useNovelStore from "./UseNovelStore";
 import { useTranslation } from "react-i18next";
 import { formatDateString } from "../utils/formatDate";
+import cover from "../assets/cover.png";
 
 const NovelPage = ({ type }) => {
-  const { novels, isLoading, getNovels, page, totalPages } = useNovelStore();
+  const {
+    novels,
+    tags,
+    isLoading,
+    isloadingTags,
+    page,
+    totalPages,
+    getNovels,
+    getTags,
+  } = useNovelStore();
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get("search") || "";
   const sortBy = searchParams.get("sortBy") || "Latest Updated";
@@ -72,6 +82,10 @@ const NovelPage = ({ type }) => {
     ); //search, tags, page, size, sort, asc, type
   }, [currentPage, getNovels, search, sortOrder, sortBy, type]);
 
+  useEffect(() => {
+    if (tags == null) getTags();
+  }, [getTags, tags]);
+
   const sortChangeHandler = (name) => {
     const selection = sortDetails[name]
       ? sortDetails[name]
@@ -86,7 +100,7 @@ const NovelPage = ({ type }) => {
     }
     updateParams({ page: 1, sortBy: name, sortOrder: newSortOrder });
   };
-  
+
   return (
     <div className="min-h-screen bg-base-200 p-6">
       <div className="max-w-7xl mx-auto">
@@ -111,7 +125,14 @@ const NovelPage = ({ type }) => {
             <button
               onClick={() => {
                 if (keywords != search) {
-                  updateParams({ search: keywords, sortBy: "Relevance" });
+                  if (keywords) {
+                    updateParams({ search: keywords, sortBy: "Relevance" });
+                  } else {
+                    updateParams({
+                      search: keywords,
+                      sortBy: "Latest Updated",
+                    });
+                  }
                 }
               }}
               className="btn btn-outline"
@@ -132,19 +153,23 @@ const NovelPage = ({ type }) => {
                 tabIndex={0}
                 className="dropdown-content menu bg-base-100 rounded-box z-10 w-56 p-2 shadow"
               >
-                {sortOptions.map((name) => (
-                  <li key={name}>
-                    <button onClick={() => sortChangeHandler(name)}>
-                      <span>{sortDetails[name][3]}</span>
+                {sortOptions.map((name) =>
+                  name === "Relevance" && !search ? (
+                    <></>
+                  ) : (
+                    <li key={name}>
+                      <button onClick={() => sortChangeHandler(name)}>
+                        <span>{sortDetails[name][3]}</span>
 
-                      {name === sortBy && name != "Relevance" && (
-                        <span className="text-xs opacity-70">
-                          {sortOrder === "asc" ? "↑" : "↓"}
-                        </span>
-                      )}
-                    </button>
-                  </li>
-                ))}
+                        {name === sortBy && name != "Relevance" && (
+                          <span className="text-xs opacity-70">
+                            {sortOrder === "asc" ? "↑" : "↓"}
+                          </span>
+                        )}
+                      </button>
+                    </li>
+                  ),
+                )}
               </ul>
             </div>
           </div>
@@ -169,9 +194,17 @@ const NovelPage = ({ type }) => {
                   <div className="flex gap-5">
                     {/* Cover */}
                     <img
-                      src={novel.coverUrl}
+                      src={
+                        novel.coverUrl && novel.coverUrl.startsWith("http")
+                          ? novel.coverUrl
+                          : cover
+                      }
                       alt={novel.title}
-                      className="w-28 h-40 rounded-xl object-cover shrink-0"
+                      onError={(e) => {
+                        e.target.onerror = null; // prevent infinite loop
+                        e.target.src = cover;
+                      }}
+                      className="w-28 h-40 rounded-xl object-contain shrink-0 [image-rendering:-webkit-optimize-contrast]"
                     />
 
                     {/* Info */}

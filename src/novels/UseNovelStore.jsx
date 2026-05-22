@@ -4,11 +4,13 @@ import toast from "react-hot-toast";
 
 const useNovelStore = create((set) => ({
   novels: [],
+  tags: null,
   page: 0,
   size: 20,
   totalPages: 0,
   error: null,
   isLoading: false,
+  isLoadingTags: false,
 
   getNovels: async (search, tags, page, size, sort, asc, type) => {
     try {
@@ -49,6 +51,22 @@ const useNovelStore = create((set) => ({
       }
     } finally {
       set({ isLoading: false });
+    }
+  },
+
+  getTags: async () => {
+    try {
+      set({ isLoadingTags: true });
+      const res = await axiosInstance.get("/tags");
+      set({ tags: res.data.tags ?? [] });
+    } catch (error) {
+      if (error.response.status == 429) {
+        toast.error("Too many requests, please slow down");
+      } else {
+        set({ error: error.response.data.message || "Error get novels" });
+      }
+    } finally {
+      set({ isLoadingTags: false });
     }
   },
 }));
