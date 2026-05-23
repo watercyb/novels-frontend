@@ -50,5 +50,9 @@
   "sort_like": "获赞数",
   "sort_relevance": "相关度",
   "sort_word": "总字数",
-  "sort": "排序方式"
+  "sort": "排序方式",
+  "more": "更多",
+  "hide": "隐藏",
+  "page_not_found_a": "喵！您寻找的页面不存在啦～ 喵！",
+  "page_not_found_b": "抱歉，您似乎在猫咪宇宙中迷路了……"
 }

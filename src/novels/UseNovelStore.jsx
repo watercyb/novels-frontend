@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 
 const useNovelStore = create((set) => ({
   novels: [],
+  novel: null,
   tags: null,
   page: 0,
   size: 20,
@@ -18,7 +19,7 @@ const useNovelStore = create((set) => ({
       const params = new URLSearchParams();
       if (search && search.trim()) params.append("title", search);
       if (page === undefined) page = -1;
-      if (!size) size = 20;
+      if (!size) size = 10;
       params.append("page", page);
       params.append("size", size);
       if (sort && sort.length > 0) {
@@ -59,7 +60,7 @@ const useNovelStore = create((set) => ({
       set({ isLoadingTags: true });
       const res = await axiosInstance.get("/tags");
       const tags = res.data?.tags ?? [];
-      tags.sort((a, b) => b.count - a.count);
+      tags.sort((a, b) => b.tagUsage - a.tagUsage);
       set({ tags });
     } catch (error) {
       if (error.response.status == 429) {
@@ -69,6 +70,28 @@ const useNovelStore = create((set) => ({
       }
     } finally {
       set({ isLoadingTags: false });
+    }
+  },
+
+  getNovel: async (novelId) => {
+    try {
+      set({ isLoading: true });
+      const novel = (await axiosInstance.get(`/novels/${novelId}`))?.data
+        ?.novel;
+      if (novel) {
+        novel.tags.sort((a, b) =>
+          b.tagUsage == a.tagUsage ? a.id - b.id : b.tagUsage - a.tagUsage,
+        );
+        set({ novel });
+      }
+    } catch (error) {
+      if (error.response.status == 429) {
+        toast.error("Too many requests, please slow down");
+      } else {
+        set({ error: error.response.data.message || "Error get novel" });
+      }
+    } finally {
+      set({ isLoading: false });
     }
   },
 }));
