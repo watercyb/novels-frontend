@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import axiosInstance from "../utils/axios";
 import toast from "react-hot-toast";
+import { tooManyRequests } from "../utils/Toast";
 
 const useUserStore = create((set) => ({
   user: [],
@@ -23,7 +24,7 @@ const useUserStore = create((set) => ({
       set({ likes: resLikes.data.list, favorites: resFavs.data.list });
     } catch (error) {
       if (error.response.status == 429) {
-        toast.error("Too many requests, please slow down");
+        tooManyRequests();
       } else {
         set({ error: error.response.data.message || "Error logging in" });
       }
@@ -44,7 +45,7 @@ const useUserStore = create((set) => ({
       return true;
     } catch (error) {
       if (error.response.status == 429) {
-        toast.error("Too many requests, please slow down");
+        tooManyRequests();
       } else {
         set({ error: error.response.data.message || "Error signing up" });
       }
@@ -65,7 +66,7 @@ const useUserStore = create((set) => ({
     } catch (error) {
       set({ user: null });
       if (error.response.status == 429) {
-        toast.error("Too many requests, please slow down");
+        tooManyRequests();
       } else if (error.response.status != 401) {
         set({ error: error.response.data.message || "Error check auth" });
       }
@@ -80,7 +81,7 @@ const useUserStore = create((set) => ({
       await axiosInstance.post("/auth/logout");
     } catch (error) {
       if (error.response.status == 429) {
-        toast.error("Too many requests, please slow down");
+        tooManyRequests();
       } else {
         set({ error: error.response.data.message || "Error logout" });
       }
@@ -101,7 +102,7 @@ const useUserStore = create((set) => ({
       return true;
     } catch (error) {
       if (error.response.status == 429) {
-        toast.error("Too many requests, please slow down");
+        tooManyRequests();
       } else {
         set({ error: error.response.data.message || "Error forgot password" });
       }
@@ -122,7 +123,7 @@ const useUserStore = create((set) => ({
       return true;
     } catch (error) {
       if (error.response.status == 429) {
-        toast.error("Too many requests, please slow down");
+        tooManyRequests();
       } else {
         set({ error: error.response.data.message || "Error reset password" });
       }
@@ -143,7 +144,7 @@ const useUserStore = create((set) => ({
       return true;
     } catch (error) {
       if (error.response.status == 429) {
-        toast.error("Too many requests, please slow down");
+        tooManyRequests();
       } else {
         set({ error: error.response.data.message || "Error change password" });
       }
@@ -176,10 +177,9 @@ const useUserStore = create((set) => ({
       return true;
     } catch (error) {
       if (error.response.status == 429) {
-        set({ isRateLimited: true });
-        set({ error: "Too many requests, please slow down" });
+        tooManyRequests();
       } else {
-        set({ error: error.response.data.message || "Error change username" });
+        set({ error: error.response.data.message || "Error change profile" });
       }
       return false;
     } finally {
@@ -191,8 +191,11 @@ const useUserStore = create((set) => ({
     try {
       await axiosInstance.post("/auth/refresh");
     } catch (error) {
-      if (error.response.status == 429)
-        toast.error("Too many requests, please slow down");
+      if (error.response.status == 429) {
+        tooManyRequests();
+      } else {
+        set({ error: error.response.data.message || "Error refresh token" });
+      }
     }
   },
 

@@ -54,5 +54,6 @@
   "more": "More",
   "hide": "Hide",
   "page_not_found_a": "Meow! The page Nya looking for cannot be found.",
-  "page_not_found_b": "Sorry, but it seems you're lost in the cat-iverse..."
+  "page_not_found_b": "Sorry, but it seems you're lost in the cat-iverse...",
+  "too_many_requests": "Too many requests, please slow down"
 }

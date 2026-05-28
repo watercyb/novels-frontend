@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import axiosInstance from "../utils/axios";
 import toast from "react-hot-toast";
+import { tooManyRequests } from "../utils/Toast";
 
 const useChapterStore = create((set, get) => ({
   chapters: [],
@@ -43,7 +44,7 @@ const useChapterStore = create((set, get) => ({
       }
     } catch (error) {
       if (error.response.status == 429) {
-        toast.error("Too many requests, please slow down");
+        tooManyRequests()
       } else {
         set({ error: error.response.data.message || "Error get chapters" });
       }

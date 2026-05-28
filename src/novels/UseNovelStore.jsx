@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import axiosInstance from "../utils/axios";
-import toast from "react-hot-toast";
+import { tooManyRequests } from "../utils/Toast";
 
 const useNovelStore = create((set) => ({
   novels: [],
@@ -46,7 +46,7 @@ const useNovelStore = create((set) => ({
       }
     } catch (error) {
       if (error.response.status == 429) {
-        toast.error("Too many requests, please slow down");
+        tooManyRequests();
       } else {
         set({ error: error.response.data.message || "Error get novels" });
       }
@@ -64,7 +64,7 @@ const useNovelStore = create((set) => ({
       set({ tags });
     } catch (error) {
       if (error.response.status == 429) {
-        toast.error("Too many requests, please slow down");
+        tooManyRequests();
       } else {
         set({ error: error.response.data.message || "Error get novels" });
       }
@@ -86,7 +86,7 @@ const useNovelStore = create((set) => ({
       }
     } catch (error) {
       if (error.response.status == 429) {
-        toast.error("Too many requests, please slow down");
+        tooManyRequests();
       } else {
         set({ error: error.response.data.message || "Error get novel" });
       }
