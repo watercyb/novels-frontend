@@ -23,7 +23,7 @@ const NotFoundPage = () => {
 
         {/* Back Button */}
         <Link to="/" className="btn btn-primary rounded-xl px-8">
-          Back to Home
+          {t("back_to_home")}
         </Link>
       </div>
     </div>

@@ -59,6 +59,7 @@ function App() {
             />
             <Route path="/novel/:novelId" element={<NovelPage />} />
             <Route path="/author/:authorId" element={<AuthorPage />} />
+            <Route path="/chapter/:chapterId" element={<ChapterPage />} />
             <Route path="/*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>

@@ -173,28 +173,32 @@ const NovelPage = () => {
                 </div>
 
                 <div className="grid gap-3">
-                  {chapters.map((chapter, index) => (
-                    <div
-                      key={chapter.id}
-                      className="bg-base-100 rounded-2xl shadow-sm hover:shadow-md transition-all border border-base-300"
-                    >
-                      <Link to={`/chapter/${chapter.id}`}>
-                        <button className="w-full text-left p-5">
-                          <div className="flex items-center justify-between gap-4">
-                            <div className="min-w-0 flex-1">
-                              <div className="font-semibold text-lg truncate">
-                                {chapter.title}
+                  {chapters.map((chapter, index) =>
+                    chapter.orderIndex == 0 ? (
+                      <div key={chapter.id} />
+                    ) : (
+                      <div
+                        key={chapter.id}
+                        className="bg-base-100 rounded-2xl shadow-sm hover:shadow-md transition-all border border-base-300"
+                      >
+                        <Link to={`/chapter/${chapter.id}`}>
+                          <button className="w-full text-left p-5">
+                            <div className="flex items-center justify-between gap-4">
+                              <div className="min-w-0 flex-1">
+                                <div className="font-semibold text-lg truncate">
+                                  {chapter.title}
+                                </div>
+                              </div>
+
+                              <div className="badge badge-outline shrink-0">
+                                #{index + 1}
                               </div>
                             </div>
-
-                            <div className="badge badge-outline shrink-0">
-                              #{index + 1}
-                            </div>
-                          </div>
-                        </button>
-                      </Link>
-                    </div>
-                  ))}
+                          </button>
+                        </Link>
+                      </div>
+                    ),
+                  )}
                 </div>
 
                 {/* Infinite Scroll Trigger */}
