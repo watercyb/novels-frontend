@@ -5,8 +5,8 @@ import { tooManyRequests } from "../utils/Toast";
 const useChapterStore = create((set, get) => ({
   chapters: [],
   chapter: null,
-  prvTitle: null,
-  nextTitle: null,
+  prv: null,
+  next: null,
   size: 5,
   totalItems: -1,
   error: false,
@@ -69,8 +69,16 @@ const useChapterStore = create((set, get) => ({
       if (!res || res.length == 0) {
         set({ error: true });
       } else {
-        if (res[1].orderIndex != 0) set({ prvTitle: res[1].title });
-        if (res[2]) set({ nextTitle: res[2].title });
+        if (res[1].orderIndex != 0) {
+          set({ prv: res[1] });
+        } else {
+          set({ prv: null });
+        }
+        if (res[2]) {
+          set({ next: res[2] });
+        } else {
+          set({ next: null });
+        }
         set({ chapter: res[0] });
       }
     } catch (error) {

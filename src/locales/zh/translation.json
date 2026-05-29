@@ -56,5 +56,10 @@
   "page_not_found_a": "喵！您寻找的页面不存在啦～ 喵！",
   "page_not_found_b": "抱歉，您似乎在猫咪宇宙中迷路了……",
   "too_many_requests": "请求过于频繁，请稍后再试",
-  "back_to_home": "返回主页"
+  "back_to_home": "返回主页",
+  "previous": "上一章",
+  "next": "下一章",
+  "chapter_list": "章节列表",
+  "no_prv_chapter": "没有上一章",
+  "no_next_chapter": "没有下一章"
 }

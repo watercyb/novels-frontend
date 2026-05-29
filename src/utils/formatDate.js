@@ -31,3 +31,23 @@ export const formatDateString = (date) => {
     });
   }
 };
+
+export const formatDateTimeString = (date) => {
+  if (i18n.language == "en") {
+    return new Date(date).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    });
+  } else {
+    return new Date(date).toLocaleDateString("zh-CN", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    });
+  }
+};
