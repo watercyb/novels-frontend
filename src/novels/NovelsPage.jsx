@@ -214,7 +214,7 @@ const NovelsPage = ({ type }) => {
         {/* Loading */}
         {isLoading && (
           <div className="flex justify-center py-20">
-            <span className="loading loading-spinner loading-lg"></span>
+            <span className="loading loading-spinner loading-lg mr-4"></span>{t("loading")}
           </div>
         )}
 

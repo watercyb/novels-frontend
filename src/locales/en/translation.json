@@ -61,5 +61,6 @@
   "next": "Next",
   "chapter_list": "Chapter List",
   "no_prv_chapter": "No Prev",
-  "no_next_chapter": "No Next"
+  "no_next_chapter": "No Next",
+  "loading": "Loading..."
 }

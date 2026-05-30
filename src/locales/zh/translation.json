@@ -61,5 +61,6 @@
   "next": "下一章",
   "chapter_list": "章节列表",
   "no_prv_chapter": "没有上一章",
-  "no_next_chapter": "没有下一章"
+  "no_next_chapter": "没有下一章",
+  "loading": "加载中..."
 }

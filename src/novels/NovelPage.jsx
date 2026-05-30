@@ -5,12 +5,14 @@ import useNovelStore from "./UseNovelStore";
 import cover from "../assets/cover.png";
 import { Link } from "react-router-dom";
 import NotFoundPage from "../main/NotFoundPage";
+import { useTranslation } from "react-i18next";
 
 const NovelPage = () => {
   const { novelId } = useParams();
   const { novel, isLoading, getNovel } = useNovelStore();
   const { chapters, totalItems, error, getChapters } = useChapterStore();
   const loaderRef = useRef(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     getNovel(novelId);
@@ -48,7 +50,7 @@ const NovelPage = () => {
       {/* Loading */}
       {isLoading && !novel && (
         <div className="flex justify-center py-20">
-          <span className="loading loading-spinner loading-lg"></span>
+          <span className="loading loading-spinner loading-lg mr-4"></span>{t("loading")}
         </div>
       )}
       {/* No Novel */}
