@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import axiosInstance from "../utils/axios";
-import toast from "react-hot-toast";
 import { tooManyRequests } from "../utils/Toast";
 
 const useUserStore = create((set) => ({
@@ -18,10 +17,20 @@ const useUserStore = create((set) => ({
         email,
         password,
       });
-      set({ user: resUser.data.user });
-      const resLikes = await axiosInstance.get("/likes");
-      const resFavs = await axiosInstance.get("/favorites/ids");
-      set({ likes: resLikes.data.list, favorites: resFavs.data.list });
+      if (resUser.data && resUser.data.success) {
+        set({ user: resUser.data.user });
+        const resLikes = await axiosInstance.get("/likes");
+        const resFavs = await axiosInstance.get("/favorites/ids");
+        if (
+          resLikes.data &&
+          resLikes.data.success &&
+          resFavs.data &&
+          resFavs.data.success
+        )
+          set({ likes: resLikes.data.list, favorites: resFavs.data.list });
+      } else {
+        set({ error: resUser.data.message || "Error logging in" });
+      }
     } catch (error) {
       if (error.response.status == 429) {
         tooManyRequests();
@@ -41,8 +50,13 @@ const useUserStore = create((set) => ({
         email,
         password,
       });
-      set({ user: res.data.user });
-      return true;
+      if (res.data && res.data.success) {
+        set({ user: res.data.user });
+        return true;
+      } else {
+        set({ error: res.data.message || "Error signing up" });
+        return false;
+      }
     } catch (error) {
       if (error.response.status == 429) {
         tooManyRequests();
@@ -59,10 +73,18 @@ const useUserStore = create((set) => ({
     try {
       set({ isCheckingAuth: true, error: null });
       const resUser = await axiosInstance.get("/auth");
-      set({ user: resUser.data.user });
-      const resLikes = await axiosInstance.get("/likes");
-      const resFavs = await axiosInstance.get("/favorites/ids");
-      set({ likes: resLikes.data.list, favorites: resFavs.data.list });
+      if (resUser.data && resUser.data.success) {
+        set({ user: resUser.data.user });
+        const resLikes = await axiosInstance.get("/likes");
+        const resFavs = await axiosInstance.get("/favorites/ids");
+        if (
+          resLikes.data &&
+          resLikes.data.success &&
+          resFavs.data &&
+          resFavs.data.success
+        )
+          set({ likes: resLikes.data.list, favorites: resFavs.data.list });
+      }
     } catch (error) {
       set({ user: null });
       if (error.response.status == 429) {
@@ -78,7 +100,9 @@ const useUserStore = create((set) => ({
   logout: async () => {
     try {
       set({ isLoading: true, error: null });
-      await axiosInstance.post("/auth/logout");
+      const res = await axiosInstance.post("/auth/logout");
+      if (!res.data || !res.data.success)
+        set({ error: res.data.message || "Error logout" });
     } catch (error) {
       if (error.response.status == 429) {
         tooManyRequests();
@@ -98,8 +122,13 @@ const useUserStore = create((set) => ({
   forgotPassword: async (email) => {
     try {
       set({ isLoading: true, error: null });
-      await axiosInstance.post("/auth/forgot_password", { email });
-      return true;
+      const res = await axiosInstance.post("/auth/forgot_password", { email });
+      if (res.data && res.data.success) {
+        return true;
+      } else {
+        set({ error: res.data.message || "Error forgot password" });
+        return false;
+      }
     } catch (error) {
       if (error.response.status == 429) {
         tooManyRequests();
@@ -115,12 +144,17 @@ const useUserStore = create((set) => ({
   resetPassword: async (email, code, password) => {
     try {
       set({ isLoading: true, error: null });
-      await axiosInstance.post(`/auth/reset_password`, {
+      const res = await axiosInstance.post(`/auth/reset_password`, {
         email,
         code,
         password,
       });
-      return true;
+      if (res.data && res.data.success) {
+        return true;
+      } else {
+        set({ error: res.data.message || "Error reset password" });
+        return false;
+      }
     } catch (error) {
       if (error.response.status == 429) {
         tooManyRequests();
@@ -136,12 +170,16 @@ const useUserStore = create((set) => ({
   updatePassword: async (oldPassword, newPassword) => {
     try {
       set({ isLoading: true, error: null });
-      await axiosInstance.post("/auth/update_password", {
+      const res = await axiosInstance.post("/auth/update_password", {
         oldPassword,
         newPassword,
       });
-      toast.success("Password updated successfully");
-      return true;
+      if (res.data && res.data.success) {
+        return true;
+      } else {
+        set({ error: res.data.message || "Error reset password" });
+        return false;
+      }
     } catch (error) {
       if (error.response.status == 429) {
         tooManyRequests();
@@ -166,15 +204,19 @@ const useUserStore = create((set) => ({
         },
       });
 
-      set((state) => ({
-        user: {
-          ...state.user,
-          username: res.data.user.username,
-          avatarUrl: res.data.user.avatarUrl,
-        },
-      }));
-      toast.success("User updated successfully");
-      return true;
+      if (res.data && res.data.success) {
+        set((state) => ({
+          user: {
+            ...state.user,
+            username: res.data.user.username,
+            avatarUrl: res.data.user.avatarUrl,
+          },
+        }));
+        return true;
+      } else {
+        set({ error: res.data.message || "Error change profile" });
+        return false;
+      }
     } catch (error) {
       if (error.response.status == 429) {
         tooManyRequests();

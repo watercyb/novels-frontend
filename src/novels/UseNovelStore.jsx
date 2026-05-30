@@ -33,16 +33,18 @@ const useNovelStore = create((set) => ({
       if (!type) type = "all";
       params.append("type", type);
       if (tags) params.append("tagIds", tags);
-      const res = (await axiosInstance.get("/novels?" + params.toString())).data
-        ?.page;
+      const res = await axiosInstance.get("/novels?" + params.toString());
 
-      if (res) {
+      if (res.data && res.data.success) {
+        const page = res.data.page;
         set({
-          novels: res.items || [],
-          page: res.page,
-          size: res.size,
-          totalPages: res.totalPages,
+          novels: page.items || [],
+          page: page.page,
+          size: page.size,
+          totalPages: page.totalPages,
         });
+      } else {
+        set({ error: res.data.message || "Error get novels" });
       }
     } catch (error) {
       if (error.response.status == 429) {
@@ -59,14 +61,18 @@ const useNovelStore = create((set) => ({
     try {
       set({ isLoadingTags: true });
       const res = await axiosInstance.get("/tags");
-      const tags = res.data?.tags ?? [];
-      tags.sort((a, b) => b.tagUsage - a.tagUsage);
-      set({ tags });
+      if (res.data && res.data.success) {
+        const tags = res.data?.tags ?? [];
+        tags.sort((a, b) => b.tagUsage - a.tagUsage);
+        set({ tags });
+      } else {
+        set({ error: res.data.message || "Error get tags" });
+      }
     } catch (error) {
       if (error.response.status == 429) {
         tooManyRequests();
       } else {
-        set({ error: error.response.data.message || "Error get novels" });
+        set({ error: error.response.data.message || "Error get tags" });
       }
     } finally {
       set({ isLoadingTags: false });
@@ -76,13 +82,16 @@ const useNovelStore = create((set) => ({
   getNovel: async (novelId) => {
     try {
       set({ isLoading: true });
-      const novel = (await axiosInstance.get(`/novels/${novelId}`))?.data
-        ?.novel;
-      if (novel) {
+      const res = await axiosInstance.get(`/novels/${novelId}`);
+
+      if (res.data && res.data.success) {
+        const novel = res.data.novel;
         novel.tags.sort((a, b) =>
           b.tagUsage == a.tagUsage ? a.id - b.id : b.tagUsage - a.tagUsage,
         );
         set({ novel });
+      } else {
+        set({ error: res.data.message || "Error get novel" });
       }
     } catch (error) {
       if (error.response.status == 429) {

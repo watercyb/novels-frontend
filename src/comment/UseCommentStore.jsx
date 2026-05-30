@@ -19,15 +19,14 @@ const useCommentStore = create((set, get) => ({
       params.append("chapterId", chapterId);
       params.append("page", 0);
       params.append("size", size);
-      const res = (await axiosInstance.get("/comments?" + params.toString()))
-        .data?.page;
-      if (!res || !res.items || !res.totalPages) {
-        set({ error: true });
-      } else {
+      const res = await axiosInstance.get("/comments?" + params.toString());
+      if (res.data && res.data.success) {
         set({
-          Comments: [...get().Comments, ...res.items],
-          totalPages: res.totalPages,
+          Comments: [...get().Comments, ...res.data.page.items],
+          totalPages: res.data.page.totalPages,
         });
+      } else {
+        set({ error: res.data.message || "Error get comments" });
       }
     } catch (error) {
       if (error.response.status == 429) {
@@ -52,15 +51,14 @@ const useCommentStore = create((set, get) => ({
         params.append("chapterId", chapterId);
         params.append("page", loadedPages + 1);
         params.append("size", size);
-        const res = (await axiosInstance.get("/comments?" + params.toString()))
-          .data?.page;
-        if (!res || !res.items || !res.totalPages) {
-          set({ error: true });
-        } else {
+        const res = await axiosInstance.get("/comments?" + params.toString());
+        if (res.data && res.data.success) {
           set({
-            Comments: [...get().Comments, ...res.items],
-            totalPages: res.totalPages,
+            Comments: [...get().Comments, ...res.data.page.items],
+            totalPages: res.data.page.totalPages,
           });
+        } else {
+          set({ error: res.data.message || "Error get comments" });
         }
       }
     } catch (error) {
@@ -79,16 +77,17 @@ const useCommentStore = create((set, get) => ({
       set({ isLoadingReplys: true, error: null });
       const params = new URLSearchParams();
       params.append("commentId", commentId);
-      const res = (await axiosInstance.get("/comments?" + params.toString()))
-        .data?.list;
-      if (!res) {
-        set({ error: true });
-      } else {
+      const res = await axiosInstance.get("/comments?" + params.toString());
+      if (res.data && res.data.success) {
         set({
           Comments: get().Comments.map((comment) =>
-            comment.id == commentId ? { ...comment, replys: res } : comment,
+            comment.id == commentId
+              ? { ...comment, replys: res.data.list }
+              : comment,
           ),
         });
+      } else {
+        set({ error: res.data.message || "Error get replys" });
       }
     } catch (error) {
       if (error.response.status == 429) {

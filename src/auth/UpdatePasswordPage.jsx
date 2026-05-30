@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import PasswordStrengthMeter from "../utils/PasswordStrengthMeter";
 import useUserStore from "./useUserStore";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
 const UpdatePasswordPage = () => {
   const [oldPassword, setOldPassword] = useState("");
@@ -15,7 +16,10 @@ const UpdatePasswordPage = () => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    if (await updatePassword(oldPassword, newPassword)) navigate("/profile");
+    if (await updatePassword(oldPassword, newPassword)) {
+      toast.success(t("password_updated"));
+      navigate("/profile");
+    }
   };
 
   return (

@@ -33,17 +33,16 @@ const useChapterStore = create((set, get) => ({
       params.append("novelId", novelId);
       params.append("page", page);
       params.append("size", size);
-      const res = (await axiosInstance.get("/chapters?" + params.toString()))
-        .data?.page;
-      if (!res || !res.items || !res.totalPages) {
-        set({ error: true });
-      } else {
-        if (res.page * res.size === get().chapters.length) {
+      const res = await axiosInstance.get("/chapters?" + params.toString());
+      if (res.data && res.data.success) {
+        if (res.data.page.page * res.data.page.size === get().chapters.length) {
           set({
-            chapters: [...get().chapters, ...res.items],
-            totalItems: res.totalItems,
+            chapters: [...get().chapters, ...res.data.page.items],
+            totalItems: res.data.page.totalItems,
           });
         }
+      } else {
+        set({ error: res.data.message || "Error get chapters" });
       }
     } catch (error) {
       if (error.response.status == 429) {
@@ -61,25 +60,24 @@ const useChapterStore = create((set, get) => ({
       set({ isLoadingChapter: true, error: false });
       const params = new URLSearchParams();
       params.append("adjacent", true);
-      const res = (
-        await axiosInstance.get(
-          "/chapters/" + chapterId + "?" + params.toString(),
-        )
-      ).data?.chapter;
-      if (!res || res.length == 0) {
-        set({ error: true });
-      } else {
-        if (res[1].orderIndex != 0) {
-          set({ prv: res[1] });
+      const res = await axiosInstance.get(
+        "/chapters/" + chapterId + "?" + params.toString(),
+      );
+      if (res.data && res.data.success) {
+        const chapter = res.data.chapter;
+        if (chapter[1].orderIndex != 0) {
+          set({ prv: chapter[1] });
         } else {
           set({ prv: null });
         }
-        if (res[2]) {
-          set({ next: res[2] });
+        if (chapter[2]) {
+          set({ next: chapter[2] });
         } else {
           set({ next: null });
         }
-        set({ chapter: res[0] });
+        set({ chapter: chapter[0] });
+      } else {
+        set({ error: res.data.message || "Error get chapter" });
       }
     } catch (error) {
       if (error.response.status == 429) {

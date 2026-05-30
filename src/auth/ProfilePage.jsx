@@ -3,6 +3,7 @@ import useUserStore from "./useUserStore";
 import avatar from "../assets/avatar.png";
 import { useTranslation } from "react-i18next";
 import { Loader } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function ProfilePage() {
   const { user } = useUserStore();
@@ -36,8 +37,10 @@ export default function ProfilePage() {
 
   const handleUpdate = async () => {
     if (avatarFile || user.username != username) {
-      await updateProfile(avatarFile, username);
-      setAvatarFile(null);
+      if (await updateProfile(avatarFile, username)) {
+        toast.success(t("profile_updated"));
+        setAvatarFile(null);
+      }
     }
   };
 
@@ -45,7 +48,9 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-base-200 flex items-center justify-center p-6">
       <div className="card w-full max-w-md bg-base-100 shadow-2xl">
         <div className="card-body">
-          <h2 className="text-3xl font-bold text-center mb-6">{t("user_profile")}</h2>
+          <h2 className="text-3xl font-bold text-center mb-6">
+            {t("user_profile")}
+          </h2>
 
           {/* Avatar */}
           <div className="flex justify-center mb-6">

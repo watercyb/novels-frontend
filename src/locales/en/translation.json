@@ -62,5 +62,7 @@
   "chapter_list": "Chapter List",
   "no_prv_chapter": "No Prev",
   "no_next_chapter": "No Next",
-  "loading": "Loading..."
+  "loading": "Loading...",
+  "password_updated": "Password updated successfully",
+  "profile_updated": "User profile updated successfully"
 }
