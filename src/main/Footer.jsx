@@ -1,4 +1,8 @@
+import { useTranslation } from "react-i18next";
+
 const Footer = () => {
+  const { t } = useTranslation();
+
   return (
     <footer className="border-t border-base-300 ">
       <div className="max-w-7xl mx-auto px-6 py-8">
@@ -18,7 +22,7 @@ const Footer = () => {
               href="mailto:blueberryjoy24@gmail.com"
               className="hover:underline"
             >
-              Contact
+              {t("contact")}
             </a>
 
             <button
@@ -30,7 +34,7 @@ const Footer = () => {
               }
               className="hover:underline"
             >
-              Back to top
+              {t("back_to_top")}
             </button>
           </div>
         </div>

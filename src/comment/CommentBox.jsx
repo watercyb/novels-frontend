@@ -63,7 +63,7 @@ export default function CommentBox({ chapterId }) {
           <div className="py-12 text-center">
             <div className="text-5xl mb-2">💬</div>
 
-            <h3 className="text-lg font-semibold">No comments yet</h3>
+            <h3 className="text-lg font-semibold">{t("no_comments")}</h3>
 
             <p className="text-sm opacity-70">{t("first_comment")}</p>
           </div>
@@ -124,11 +124,14 @@ export default function CommentBox({ chapterId }) {
                 disabled={currentPage === 0}
                 onClick={handlePrv}
               >
-                Previous
+                {t("previous_page")}
               </button>
 
               <span className="flex items-center px-2">
-                Page {Math.min(currentPage + 1, totalPages)} / {totalPages}
+                {t("page", {
+                  currentPage: Math.min(currentPage + 1, totalPages),
+                  totalPages,
+                })}
               </span>
 
               <button
@@ -136,7 +139,7 @@ export default function CommentBox({ chapterId }) {
                 disabled={currentPage + 1 >= totalPages}
                 onClick={handleNext}
               >
-                Next
+                {t("next_page")}
               </button>
             </div>
           </div>

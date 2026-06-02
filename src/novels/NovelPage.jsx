@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import NotFoundPage from "../main/NotFoundPage";
 import { useTranslation } from "react-i18next";
 import CommentBox from "../comment/CommentBox";
+import i18n from "../locales/i18n";
 
 const NovelPage = () => {
   const { novelId } = useParams();
@@ -99,7 +100,7 @@ const NovelPage = () => {
                         key={tag.id}
                         className="badge badge-outline badge-secondary"
                       >
-                        {tag.name}
+                        {i18n.language == "en" ? tag.name : tag.nameCN}
                       </div>
                     ))}
                   </div>
@@ -108,14 +109,18 @@ const NovelPage = () => {
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-5">
                     <div className="stats shadow bg-base-200">
                       <div className="stat px-4 py-3">
-                        <div className="stat-title">Type</div>
-                        <div className="stat-value text-lg">{novel.type}</div>
+                        <div className="stat-title">{t("type")}</div>
+                        <div className="stat-value text-lg">
+                          {novel.type === "ORIGINAL"
+                            ? t("original")
+                            : t("translate")}
+                        </div>
                       </div>
                     </div>
 
                     <div className="stats shadow bg-base-200">
                       <div className="stat px-4 py-3">
-                        <div className="stat-title">Chapters</div>
+                        <div className="stat-title">{t("chapters")}</div>
                         <div className="stat-value text-lg">
                           {novel.chapterCount}
                         </div>
@@ -124,7 +129,7 @@ const NovelPage = () => {
 
                     <div className="stats shadow bg-base-200">
                       <div className="stat px-4 py-3">
-                        <div className="stat-title">Words</div>
+                        <div className="stat-title">{t("words")}</div>
                         <div className="stat-value text-lg">
                           {novel.wordCount}
                         </div>
@@ -133,7 +138,7 @@ const NovelPage = () => {
 
                     <div className="stats shadow bg-base-200">
                       <div className="stat px-4 py-3">
-                        <div className="stat-title">Likes</div>
+                        <div className="stat-title">{t("likes")}</div>
                         <div className="stat-value text-lg">
                           {novel.likeCount}
                         </div>
@@ -146,7 +151,9 @@ const NovelPage = () => {
               {/* Latest Update */}
               {novel.lastChapterTitle && (
                 <div className="mt-6">
-                  <div className="text-sm opacity-60 mb-1">Latest Update</div>
+                  <div className="text-sm opacity-60 mb-1">
+                    {t("latest_update")}
+                  </div>
 
                   <div className="bg-base-200 rounded-2xl px-5 py-4">
                     <div className="font-medium wrap-break-word">
@@ -158,7 +165,7 @@ const NovelPage = () => {
 
               {/* Description */}
               <div className="mt-6">
-                <h2 className="text-xl font-bold mb-2">Description</h2>
+                <h2 className="text-xl font-bold mb-2">{t("description")}</h2>
                 <div className="bg-base-200 rounded-2xl p-5 leading-7 whitespace-pre-wrap wrap-break-word">
                   {novel.description}
                 </div>
@@ -169,10 +176,10 @@ const NovelPage = () => {
             <div className="max-w-7xl mx-auto p-6">
               <div className="pt-6 px-6 pb-4 bg-base-200">
                 <div className="flex items-center justify-between mb-5">
-                  <h2 className="text-3xl font-bold">Chapters</h2>
+                  <h2 className="text-3xl font-bold">{t("chapters")}</h2>
 
                   <div className="text-sm opacity-70">
-                    Loaded {chapters.length} / {totalItems}
+                    {t("loaded")} {chapters.length - 1} / {totalItems - 1}
                   </div>
                 </div>
 

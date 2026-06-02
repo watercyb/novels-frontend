@@ -2,12 +2,13 @@ import { useEffect } from "react";
 import useUserStore from "./useUserStore";
 import avatar from "../assets/avatar.png";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { checkUserCookie } from "../utils/cookie";
 
 const UserButton = () => {
   const { user, checkAuth, logout } = useUserStore();
   const { t } = useTranslation();
+  const location = useLocation();
 
   useEffect(() => {
     const runAuthCheck = async () => {
@@ -36,7 +37,9 @@ const UserButton = () => {
       >
         {!user ? (
           <li>
-            <Link to="/login">{t("menu_login_signup")}</Link>
+            <Link to="/login" state={{ from: location }} replace>
+              {t("menu_login_signup")}
+            </Link>
           </li>
         ) : (
           <>

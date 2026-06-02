@@ -11,7 +11,7 @@ import {
 import { useSearchParams } from "react-router-dom";
 import useNovelStore from "./UseNovelStore";
 import { useTranslation } from "react-i18next";
-import { formatDateString } from "../utils/formatDate";
+import { formatDateString, formatDateTimeString } from "../utils/formatDate";
 import cover from "../assets/cover.png";
 import Tag from "./Tag";
 import { Link } from "react-router-dom";
@@ -206,7 +206,7 @@ const NovelsPage = ({ type }) => {
               className="btn btn-sm btn-ghost"
               onClick={() => setShowAllTags((v) => !v)}
             >
-              {showAllTags ? t('hide') :t('more')}
+              {showAllTags ? t("hide") : t("more")}
             </button>
           )}
         </div>
@@ -214,7 +214,8 @@ const NovelsPage = ({ type }) => {
         {/* Loading */}
         {isLoading && (
           <div className="flex justify-center py-20">
-            <span className="loading loading-spinner loading-lg mr-4"></span>{t("loading")}
+            <span className="loading loading-spinner loading-lg mr-4"></span>
+            {t("loading")}
           </div>
         )}
 
@@ -277,7 +278,9 @@ const NovelsPage = ({ type }) => {
                         <div className="flex items-center gap-2 text-sm opacity-70 mt-1">
                           <Clock3 size={14} />
 
-                          <span>{formatDateString(novel.lastUpdatedAt)}</span>
+                          <span>
+                            {formatDateTimeString(novel.lastUpdatedAt)}
+                          </span>
                         </div>
                       </div>
 

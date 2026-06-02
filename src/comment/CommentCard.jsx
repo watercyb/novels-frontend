@@ -71,9 +71,9 @@ const CommentCard = ({
                 }}
               >
                 {isLoading ? (
-                  <span className="loading loading-spinner loading-sm ml-2" />
+                  <span className="loading loading-spinner loading-sm ml-4" />
                 ) : isShowReply ? (
-                  "Hide Replies"
+                  t("hide_replies")
                 ) : (
                   `${t("show_replies")} (${comment.commentCount})`
                 )}

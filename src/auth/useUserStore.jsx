@@ -28,8 +28,10 @@ const useUserStore = create((set) => ({
           resFavs.data.success
         )
           set({ likes: resLikes.data.list, favorites: resFavs.data.list });
+        return true;
       } else {
         set({ error: resUser.data.message || "Error logging in" });
+        return false;
       }
     } catch (error) {
       if (error.response.status == 429) {
@@ -37,6 +39,7 @@ const useUserStore = create((set) => ({
       } else {
         set({ error: error.response.data.message || "Error logging in" });
       }
+      return false;
     } finally {
       set({ isLoading: false });
     }

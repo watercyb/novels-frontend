@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useUserStore from "./useUserStore";
 import { useTranslation } from "react-i18next";
 
@@ -8,10 +8,16 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const { login, isLoading, error } = useUserStore();
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  let from = location.state?.from?.pathname || "/";
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    await login(email, password);
+    if (await login(email, password)) {
+      navigate(from, { replace: true });
+    }
   };
 
   return (
