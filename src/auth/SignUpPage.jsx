@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Loader } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import PasswordStrengthMeter from "../utils/PasswordStrengthMeter";
 import useUserStore from "./useUserStore";
 import { useTranslation } from "react-i18next";
@@ -11,12 +11,15 @@ const SignUpPage = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/";
 
   const { isLoading, error, signup } = useUserStore();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    if (await signup(name, email, password)) navigate("/");
+    if (await signup(name, email, password)) navigate(from, { replace: true });
   };
 
   return (

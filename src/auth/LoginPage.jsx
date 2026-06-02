@@ -11,7 +11,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  let from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/";
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -75,7 +75,11 @@ const LoginPage = () => {
         <div className="px-8 py-4 bg-base-200 flex justify-center">
           <p className="text-sm text-base-content/70">
             {t("do_not_have_account")}{" "}
-            <Link to="/signup" className="text-primary hover:underline">
+            <Link
+              to="/signup"
+              state={{ from: location.state?.from }}
+              className="text-primary hover:underline"
+            >
               {t("sign_up")}
             </Link>
           </p>

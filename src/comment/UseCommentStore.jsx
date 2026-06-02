@@ -5,7 +5,7 @@ import { tooManyRequests, unauthorized } from "../utils/Toast";
 const useCommentStore = create((set, get) => ({
   comments: [],
   page: 0,
-  size: 5,
+  size: 10,
   totalPages: 0,
   isLoadingComments: false,
   isLoadingReplies: false,
