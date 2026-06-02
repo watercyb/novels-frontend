@@ -64,5 +64,17 @@
   "no_next_chapter": "没有下一章",
   "loading": "加载中...",
   "password_updated": "修改密码成功",
-  "profile_updated": "用户信息已更新"
+  "profile_updated": "用户信息已更新",
+  "need_login": "请先登入",
+  "reply": "回复",
+  "show_replies": "查看回复",
+  "post_comment": "发表评论",
+  "comments": "评论",
+  "leave_comment": "发表评论",
+  "write_comment": "写下你的评论...",
+  "cancel": "取消",
+  "post_reply": "发表回复",
+  "posting": "发布中...",
+  "first_comment": "快来发表第一条评论吧！",
+  "reply_to": "回复 {{username}}..."
 }

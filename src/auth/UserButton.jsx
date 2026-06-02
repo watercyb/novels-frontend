@@ -3,6 +3,7 @@ import useUserStore from "./useUserStore";
 import avatar from "../assets/avatar.png";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { checkUserCookie } from "../utils/cookie";
 
 const UserButton = () => {
   const { user, checkAuth, logout } = useUserStore();
@@ -10,7 +11,11 @@ const UserButton = () => {
 
   useEffect(() => {
     const runAuthCheck = async () => {
-      await checkAuth();
+      if (checkUserCookie()) {
+        await checkAuth();
+      } else {
+        await logout();
+      }
     };
     runAuthCheck();
   }, []);

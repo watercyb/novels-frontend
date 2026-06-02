@@ -1,5 +1,6 @@
 import axios from "axios";
 import useUserStore from "../auth/useUserStore";
+import { checkUserCookie } from "./cookie";
 
 const axiosInstance = axios.create({
   baseURL: "/api",
@@ -22,6 +23,7 @@ axiosInstance.interceptors.response.use(
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
+      if (!checkUserCookie()) return Promise.reject(error);
 
       try {
         await useUserStore.getState().refresh();

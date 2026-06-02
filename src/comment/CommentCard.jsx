@@ -1,0 +1,152 @@
+import { useState } from "react";
+import avatar from "../assets/avatar.png";
+import useCommentStore from "./UseCommentStore";
+import { useTranslation } from "react-i18next";
+
+const CommentCard = ({
+  comment,
+  replyingTo,
+  setReplyingTo,
+  replyContent,
+  setReplyContent,
+}) => {
+  const { isPosting, getReplies, postReply } = useCommentStore();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isShowReply, setIsShowReply] = useState(false);
+  const { t } = useTranslation();
+
+  return (
+    <div className="card bg-base-200 shadow-sm">
+      <div className="card-body">
+        {/* User */}
+        <div className="flex justify-between">
+          <div className="flex items-center gap-3">
+            <div className="avatar">
+              <div className="w-10 rounded-full">
+                <img
+                  src={comment.userAvatarUrl ?? avatar}
+                  alt={comment.username}
+                />
+              </div>
+            </div>
+
+            <span className="font-semibold">{comment.username}</span>
+          </div>
+
+          <button
+            className="btn btn-ghost btn-xs"
+            onClick={() => {
+              if (replyingTo === comment.id) {
+                setReplyingTo(null);
+                setReplyContent("");
+              } else {
+                setReplyingTo(comment.id);
+                setReplyContent("");
+              }
+            }}
+          >
+            {t("reply")}
+          </button>
+        </div>
+
+        {/* Content */}
+
+        <p className="whitespace-pre-wrap">{comment.content}</p>
+
+        {/* Reply button */}
+        <div className="flex gap-2">
+          {comment.commentCount > 0 && (
+            <div>
+              <button
+                className="btn btn-link btn-sm px-0"
+                onClick={async () => {
+                  if (!comment.replies) {
+                    setIsLoading(true);
+                    await getReplies(comment.id);
+                    setIsLoading(false);
+                    setIsShowReply(true);
+                  } else {
+                    setIsShowReply(!isShowReply);
+                  }
+                }}
+              >
+                {isLoading ? (
+                  <span className="loading loading-spinner loading-sm ml-2" />
+                ) : isShowReply ? (
+                  "Hide Replies"
+                ) : (
+                  `${t("show_replies")} (${comment.commentCount})`
+                )}
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Replies */}
+
+        {isShowReply && (
+          <div className="ml-8 mt-3 space-y-3 border-l-2 border-base-300 pl-4">
+            {comment.replies.map((reply) => (
+              <div key={reply.id} className="flex gap-3">
+                <div className="avatar">
+                  <div className="w-8 rounded-full">
+                    <img
+                      src={reply.userAvatarUrl ?? avatar}
+                      alt={reply.username}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="font-medium">{reply.username}</div>
+
+                  <div>{reply.content}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {replyingTo === comment.id && (
+          <div className="mt-3 rounded-box bg-base-100 p-3">
+            <textarea
+              className="textarea textarea-bordered w-full"
+              rows={3}
+              placeholder={t("reply_to", { username: comment.username })}
+              value={replyContent}
+              onChange={(e) => setReplyContent(e.target.value)}
+            />
+
+            <div className="mt-2 flex justify-end gap-2">
+              <button
+                className="btn btn-sm"
+                onClick={() => {
+                  setReplyingTo(null);
+                  setReplyContent("");
+                }}
+              >
+                {t("cancel")}
+              </button>
+
+              <button
+                className="btn btn-primary btn-sm"
+                disabled={isPosting || !replyContent.trim()}
+                onClick={async () => {
+                  if (await postReply(comment.id, replyContent.trim())) {
+                    setReplyingTo(null);
+                    setReplyContent("");
+                  }
+                }}
+              >
+                {isPosting ? t("posting") : t("post_reply")}
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default CommentCard;

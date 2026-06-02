@@ -64,5 +64,16 @@
   "no_next_chapter": "No Next",
   "loading": "Loading...",
   "password_updated": "Password updated successfully",
-  "profile_updated": "User profile updated successfully"
+  "profile_updated": "User profile updated successfully",
+  "reply": "Reply",
+  "show_replies": "Show Replies",
+  "post_comment": "Post Comment",
+  "comments": "Comments",
+  "leave_comment": "Leave a Comment",
+  "write_comment": "Write your comment...",
+  "cancel": "Cancel",
+  "post_reply": "Post Reply",
+  "posting": "Posting",
+  "first_comment": "Be the first person to leave a comment.",
+  "reply_to": "Reply to {{username}}..."
 }

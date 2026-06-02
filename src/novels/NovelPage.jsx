@@ -6,6 +6,7 @@ import cover from "../assets/cover.png";
 import { Link } from "react-router-dom";
 import NotFoundPage from "../main/NotFoundPage";
 import { useTranslation } from "react-i18next";
+import CommentBox from "../comment/CommentBox";
 
 const NovelPage = () => {
   const { novelId } = useParams();
@@ -50,7 +51,8 @@ const NovelPage = () => {
       {/* Loading */}
       {isLoading && !novel && (
         <div className="flex justify-center py-20">
-          <span className="loading loading-spinner loading-lg mr-4"></span>{t("loading")}
+          <span className="loading loading-spinner loading-lg mr-4"></span>
+          {t("loading")}
         </div>
       )}
       {/* No Novel */}
@@ -224,6 +226,10 @@ const NovelPage = () => {
                   )}
                 </div>
               </div>
+            </div>
+
+            <div className="max-w-7xl mx-auto p-6">
+              <CommentBox chapterId={chapters[0].id} />
             </div>
           </div>
         </div>

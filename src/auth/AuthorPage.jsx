@@ -1,9 +1,7 @@
-import { useParams } from "react-router-dom";
+import React from "react";
 
 const AuthorPage = () => {
-  const { authorId } = useParams();
-
-  return <div>{authorId}</div>;
+  return <div>AuthorPage</div>;
 };
 
 export default AuthorPage;
