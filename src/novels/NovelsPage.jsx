@@ -11,7 +11,7 @@ import {
 import { useSearchParams } from "react-router-dom";
 import useNovelStore from "./UseNovelStore";
 import { useTranslation } from "react-i18next";
-import { formatDateString, formatDateTimeString } from "../utils/formatDate";
+import { formatDateTimeString } from "../utils/formatDate";
 import cover from "../assets/cover.png";
 import Tag from "./Tag";
 import { Link } from "react-router-dom";
@@ -78,6 +78,7 @@ const NovelsPage = ({ type }) => {
       sortOrder == "asc",
       type,
     ); //search, tags, page, size, sort, asc, type
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, getNovels, search, sortOrder, sortBy, type, tagListStr]);
 
   useEffect(() => {

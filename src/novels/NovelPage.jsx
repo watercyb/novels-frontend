@@ -45,6 +45,7 @@ const NovelPage = () => {
     }
 
     return () => observer.disconnect();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, getChapters, chapters.length, totalItems, novelId]);
 
   return (
