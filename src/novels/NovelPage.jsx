@@ -193,7 +193,7 @@ const NovelPage = () => {
                               </div>
 
                               <div className="badge badge-outline shrink-0">
-                                #{index + 1}
+                                #{index}
                               </div>
                             </div>
                           </button>

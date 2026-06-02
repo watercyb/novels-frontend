@@ -8,6 +8,7 @@ import ChapterNavigation from "./ChapterNavigation";
 import { formatDateTimeString } from "../utils/formatDate";
 import { useTranslation } from "react-i18next";
 import { Clock3, User } from "lucide-react";
+import CommentBox from "../comment/CommentBox";
 
 const ChapterPage = () => {
   const { chapterId } = useParams();
@@ -26,10 +27,11 @@ const ChapterPage = () => {
       {/* Loading */}
       {isLoadingChapter && !chapter && (
         <div className="flex justify-center py-20">
-          <span className="loading loading-spinner loading-lg mr-4"></span>{t("loading")}
+          <span className="loading loading-spinner loading-lg mr-4"></span>
+          {t("loading")}
         </div>
       )}
-      {/* No Novel */}
+      {/* No Chapter */}
       {!isLoadingChapter && !chapter && <NotFoundPage />}
       {!isLoadingChapter && chapter && (
         <div className="min-h-screen bg-base-200 py-8">
@@ -52,7 +54,11 @@ const ChapterPage = () => {
             </div>
 
             {/* Top Navigation */}
-            <ChapterNavigation prv={prv} next={next} novelId={chapter.novelId}/>
+            <ChapterNavigation
+              prv={prv}
+              next={next}
+              novelId={chapter.novelId}
+            />
 
             {/* Content */}
             <div className="card bg-base-100 shadow-lg my-6">
@@ -63,6 +69,11 @@ const ChapterPage = () => {
 
             {/* Bottom Navigation */}
             <ChapterNavigation prv={prv} next={next} />
+
+            {/* Comments */}
+            <div className="card bg-base-100 shadow-lg my-6">
+              <CommentBox chapterId={chapter.id} />
+            </div>
           </div>
         </div>
       )}

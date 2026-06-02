@@ -3,7 +3,7 @@ import axiosInstance from "../utils/axios";
 import { tooManyRequests } from "../utils/Toast";
 
 const useCommentStore = create((set, get) => ({
-  Comments: [],
+  comments: [],
   page: 0,
   size: 20,
   totalPages: 0,
@@ -13,7 +13,7 @@ const useCommentStore = create((set, get) => ({
 
   getComments: async (chapterId) => {
     try {
-      set({ isLoadingComments: true, error: null });
+      set({ comment: [], isLoadingComments: true, error: null });
       const size = get().size;
       const params = new URLSearchParams();
       params.append("chapterId", chapterId);
@@ -22,7 +22,7 @@ const useCommentStore = create((set, get) => ({
       const res = await axiosInstance.get("/comments?" + params.toString());
       if (res.data && res.data.success) {
         set({
-          Comments: [...get().Comments, ...res.data.page.items],
+          comments: [...get().comments, ...res.data.page.items],
           totalPages: res.data.page.totalPages,
         });
       } else {
@@ -45,11 +45,11 @@ const useCommentStore = create((set, get) => ({
       const len = get().Comments.length;
       const size = get().size;
       const totalPages = get().totalPages;
-      const loadedPages = Math.trunc(len / size);
-      if (loadedPages + 1 < totalPages) {
+      const loadedPages = Math.trunc((len + size - 1) / size);
+      if (loadedPages < totalPages) {
         const params = new URLSearchParams();
         params.append("chapterId", chapterId);
-        params.append("page", loadedPages + 1);
+        params.append("page", loadedPages);
         params.append("size", size);
         const res = await axiosInstance.get("/comments?" + params.toString());
         if (res.data && res.data.success) {
