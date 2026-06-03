@@ -162,6 +162,35 @@ const useCommentStore = create((set, get) => ({
       set({ isDeleting: false });
     }
   },
+
+  deleteReply: async (parentId, commentId) => {
+    try {
+      set({ isDeleting: true, error: null });
+      const res = await axiosInstance.delete(`/comments/${commentId}`);
+      if (res.data && res.data.success) {
+        set({
+          comments: get().comments.map((comment) =>
+            comment.id != parentId
+              ? comment
+              : {
+                  ...comment,
+                  replies: comment.replies.filter(
+                    (reply) => reply.id != commentId,
+                  ),
+                },
+          ),
+        });
+        return true;
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error delete reply", true);
+      return false;
+    } finally {
+      set({ isDeleting: false });
+    }
+  },
 }));
 
 export default useCommentStore;

@@ -3,6 +3,7 @@ import avatar from "../assets/avatar.png";
 import useCommentStore from "./UseCommentStore";
 import { useTranslation } from "react-i18next";
 import useUserStore from "../auth/useUserStore";
+import DeleteConfirmModel from "./DeleteConfirmModel";
 
 const CommentCard = ({
   comment,
@@ -11,12 +12,20 @@ const CommentCard = ({
   replyContent,
   setReplyContent,
 }) => {
-  const { isPosting, isDeleting, getReplies, postReply, deleteComment } =
-    useCommentStore();
+  const {
+    isPosting,
+    isDeleting,
+    getReplies,
+    postReply,
+    deleteComment,
+    deleteReply,
+  } = useCommentStore();
   const [isLoading, setIsLoading] = useState(false);
   const [isShowReply, setIsShowReply] = useState(false);
   const { t } = useTranslation();
   const { user } = useUserStore();
+  const [open, setOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState(false);
 
   return (
     <div className="card bg-base-200 shadow-sm">
@@ -43,7 +52,10 @@ const CommentCard = ({
               ) : (
                 <button
                   className="btn btn-ghost btn-error btn-xs"
-                  onClick={() => deleteComment(comment.id)}
+                  onClick={() => {
+                    setDeleteId(comment.id);
+                    setOpen(true);
+                  }}
                 >
                   {t("delete")}
                 </button>
@@ -103,21 +115,40 @@ const CommentCard = ({
         {isShowReply && (
           <div className="ml-8 mt-3 space-y-3 border-l-2 border-base-300 pl-4">
             {comment.replies.map((reply) => (
-              <div key={reply.id} className="flex gap-3">
-                <div className="avatar">
-                  <div className="w-8 rounded-full">
-                    <img
-                      src={reply.userAvatarUrl ?? avatar}
-                      alt={reply.username}
-                      className="w-full h-full object-contain"
-                    />
+              <div key={reply.id} className="flex justify-between">
+                <div className="flex gap-3">
+                  <div className="avatar">
+                    <div className="w-8 rounded-full">
+                      <img
+                        src={reply.userAvatarUrl ?? avatar}
+                        alt={reply.username}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="font-medium">{reply.username}</div>
+
+                    <div>{reply.content}</div>
                   </div>
                 </div>
 
                 <div>
-                  <div className="font-medium">{reply.username}</div>
-
-                  <div>{reply.content}</div>
+                  {user?.id === reply.userId &&
+                    (isDeleting ? (
+                      <span className="loading loading-spinner loading-sm mr-4" />
+                    ) : (
+                      <button
+                        className="btn btn-ghost btn-error btn-xs"
+                        onClick={() => {
+                          setDeleteId(reply.id);
+                          setOpen(true);
+                        }}
+                      >
+                        {t("delete")}
+                      </button>
+                    ))}
                 </div>
               </div>
             ))}
@@ -161,6 +192,19 @@ const CommentCard = ({
           </div>
         )}
       </div>
+      <DeleteConfirmModel
+        open={open}
+        setOpen={setOpen}
+        onConfirm={() => {
+          if (deleteId === comment.id) {
+            deleteComment(deleteId);
+          } else {
+            deleteReply(comment.id, deleteId);
+          }
+          setDeleteId(null);
+          setOpen(false);
+        }}
+      />
     </div>
   );
 };
