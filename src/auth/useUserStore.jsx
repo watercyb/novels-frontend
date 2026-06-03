@@ -3,7 +3,7 @@ import axiosInstance from "../utils/axios";
 import { tooManyRequests } from "../utils/Toast";
 
 const useUserStore = create((set) => ({
-  user: [],
+  user: {},
   error: null,
   favorites: [],
   likes: [],
@@ -28,18 +28,18 @@ const useUserStore = create((set) => ({
           resFavs.data.success
         )
           set({ likes: resLikes.data.list, favorites: resFavs.data.list });
-        return true;
+        return resUser.data.user.username;
       } else {
         set({ error: resUser.data.message || "Error logging in" });
-        return false;
       }
+      return null;
     } catch (error) {
       if (error.response.status == 429) {
         tooManyRequests();
       } else {
         set({ error: error.response.data.message || "Error logging in" });
       }
-      return false;
+      return null;
     } finally {
       set({ isLoading: false });
     }
@@ -113,6 +113,7 @@ const useUserStore = create((set) => ({
         set({ error: error.response.data.message || "Error logout" });
       }
     } finally {
+      document.cookie = "user=; Max-Age=0; path=/";
       set({
         user: null,
         likes: [],

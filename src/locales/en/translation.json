@@ -93,5 +93,8 @@
   "previous_page": "Previous",
   "next_page": "Next",
   "page": "Page {{currentPage}}/{{totalPages}}",
-  "delete": "Delete"
+  "delete": "Delete",
+  "login_successful": "Welcome back, {{username}}!",
+  "account_ready": "Welcome! Your account is ready.",
+  "logout_successful": "You have been signed out."
 }

@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import PasswordStrengthMeter from "../utils/PasswordStrengthMeter";
 import useUserStore from "./useUserStore";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
 const SignUpPage = () => {
   const [name, setName] = useState("");
@@ -19,7 +20,10 @@ const SignUpPage = () => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    if (await signup(name, email, password)) navigate(from, { replace: true });
+    if (await signup(name, email, password)) {
+      toast.success(t("account_ready"));
+      navigate(from, { replace: true });
+    }
   };
 
   return (

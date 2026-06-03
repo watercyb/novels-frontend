@@ -4,6 +4,7 @@ import avatar from "../assets/avatar.png";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
 import { checkUserCookie } from "../utils/cookie";
+import toast from "react-hot-toast";
 
 const UserButton = () => {
   const { user, checkAuth, logout } = useUserStore();
@@ -19,7 +20,7 @@ const UserButton = () => {
       }
     };
     runAuthCheck();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -49,8 +50,9 @@ const UserButton = () => {
             </li>
             <li>
               <div
-                onClick={() => {
-                  logout();
+                onClick={async () => {
+                  await logout();
+                  toast.success(t("logout_successful"));
                 }}
               >
                 {t("logout")}

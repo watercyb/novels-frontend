@@ -93,5 +93,8 @@
   "previous_page": "上一页",
   "next_page": "下一页",
   "page": "第 {{currentPage}}/{{totalPages}} 页",
-  "delete": "删除"
+  "delete": "删除",
+  "login_successful": "欢迎回来，{{username}}！",
+  "account_ready": "欢迎！您的账号已创建完成。",
+  "logout_successful": "您已成功退出登录。"
 }
