@@ -237,7 +237,7 @@ const NovelPage = () => {
             </div>
 
             <div className="max-w-7xl mx-auto px-1 py-6 md:p-6">
-              <CommentBox chapterId={chapters[0].id} />
+              <CommentBox chapterId={chapters[0]?.id} />
             </div>
           </div>
         </div>

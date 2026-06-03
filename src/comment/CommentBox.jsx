@@ -23,7 +23,7 @@ export default function CommentBox({ chapterId }) {
   const [replyContent, setReplyContent] = useState("");
 
   useEffect(() => {
-    getComments(chapterId);
+    if (chapterId) getComments(chapterId);
   }, [chapterId, getComments]);
 
   const handleNext = async () => {
