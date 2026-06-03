@@ -2,6 +2,7 @@ import { useState } from "react";
 import avatar from "../assets/avatar.png";
 import useCommentStore from "./UseCommentStore";
 import { useTranslation } from "react-i18next";
+import useUserStore from "../auth/useUserStore";
 
 const CommentCard = ({
   comment,
@@ -10,10 +11,12 @@ const CommentCard = ({
   replyContent,
   setReplyContent,
 }) => {
-  const { isPosting, getReplies, postReply } = useCommentStore();
+  const { isPosting, isDeleting, getReplies, postReply, deleteComment } =
+    useCommentStore();
   const [isLoading, setIsLoading] = useState(false);
   const [isShowReply, setIsShowReply] = useState(false);
   const { t } = useTranslation();
+  const { user } = useUserStore();
 
   return (
     <div className="card bg-base-200 shadow-sm">
@@ -33,20 +36,33 @@ const CommentCard = ({
             <span className="font-semibold">{comment.username}</span>
           </div>
 
-          <button
-            className="btn btn-ghost btn-xs"
-            onClick={() => {
-              if (replyingTo === comment.id) {
-                setReplyingTo(null);
-                setReplyContent("");
-              } else {
-                setReplyingTo(comment.id);
-                setReplyContent("");
-              }
-            }}
-          >
-            {t("reply")}
-          </button>
+          <div className="flex items-center gap-3">
+            {user?.id === comment.userId &&
+              (isDeleting ? (
+                <span className="loading loading-spinner loading-sm mr-4" />
+              ) : (
+                <button
+                  className="btn btn-ghost btn-error btn-xs"
+                  onClick={() => deleteComment(comment.id)}
+                >
+                  {t("delete")}
+                </button>
+              ))}
+            <button
+              className="btn btn-ghost btn-xs"
+              onClick={() => {
+                if (replyingTo === comment.id) {
+                  setReplyingTo(null);
+                  setReplyContent("");
+                } else {
+                  setReplyingTo(comment.id);
+                  setReplyContent("");
+                }
+              }}
+            >
+              {t("reply")}
+            </button>
+          </div>
         </div>
 
         {/* Content */}

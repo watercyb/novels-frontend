@@ -5,8 +5,6 @@ const Content = ({ content }) => {
         className="
             prose prose-md max-w-none
 
-            p-4
-
             prose-headings:text-base-content
             prose-p:text-base-content
             prose-a:text-primary

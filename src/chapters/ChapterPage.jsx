@@ -35,7 +35,7 @@ const ChapterPage = () => {
       {!isLoadingChapter && !chapter && <NotFoundPage />}
       {!isLoadingChapter && chapter && (
         <div className="min-h-screen bg-base-200 py-8">
-          <div className="mx-auto max-w-4xl px-4">
+          <div className="mx-auto max-w-4xl px-1 md:px-4">
             {/* Header */}
             <div className="mb-8 text-center">
               <h1 className="text-3xl font-bold">{chapter.title}</h1>
@@ -61,8 +61,8 @@ const ChapterPage = () => {
             />
 
             {/* Content */}
-            <div className="card bg-base-100 shadow-lg my-6">
-              <div className="card-body lg:px-12 lg:py-10">
+            <div className="card bg-base-100 shadow-none md:shadow-lg my-6">
+              <div className="card-body md:px-12 md:py-10">
                 <Content content={cleanHTML} />
               </div>
             </div>
@@ -71,7 +71,7 @@ const ChapterPage = () => {
             <ChapterNavigation prv={prv} next={next} />
 
             {/* Comments */}
-            <div className="card bg-base-100 shadow-lg my-6">
+            <div className="card bg-base-100 shadow-none md:shadow-lg my-6">
               <CommentBox chapterId={chapter.id} />
             </div>
           </div>

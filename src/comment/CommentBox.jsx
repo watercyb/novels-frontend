@@ -42,10 +42,10 @@ export default function CommentBox({ chapterId }) {
 
   return (
     <>
-      <div className="border border-base-300 rounded-box bg-base-100 p-4">
+      <div className="border border-base-300 rounded-box bg-base-100 px-1 py-4 md:px-4">
         {/* Header */}
 
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mb-4 flex items-center justify-between px-2 md:px-0">
           <h2 className="text-xl font-bold">{t("comments")}</h2>
         </div>
 

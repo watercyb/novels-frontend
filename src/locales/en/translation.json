@@ -92,5 +92,6 @@
   "back_to_top": "Back to top",
   "previous_page": "Previous",
   "next_page": "Next",
-  "page": "Page {{currentPage}}/{{totalPages}}"
+  "page": "Page {{currentPage}}/{{totalPages}}",
+  "delete": "Delete"
 }

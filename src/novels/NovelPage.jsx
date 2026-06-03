@@ -61,9 +61,9 @@ const NovelPage = () => {
       {!isLoading && !novel && <NotFoundPage />}
       {!isLoading && novel && (
         <div className="min-h-screen bg-base-200">
-          <div className="bg-base-100 shadow-lg border-b border-base-300">
+          <div className="bg-base-100 md:shadow-lg md:border-b md:border-base-300">
             {/* Novel Info */}
-            <div className="max-w-7xl mx-auto p-6">
+            <div className="max-w-7xl mx-auto p-2 md:p-6">
               <div className="flex flex-col md:flex-row gap-6">
                 {/* Cover */}
                 <img
@@ -77,7 +77,7 @@ const NovelPage = () => {
                     e.target.onerror = null; // prevent infinite loop
                     e.target.src = cover;
                   }}
-                  className="w-36 h-51 md:w-36 md:h-51 rounded-2xl object-cover shrink-0 shadow-md"
+                  className="p-6 md:p-0 md:w-36 md:h-51 rounded-2xl object-cover shrink-0 shadow-md"
                 />
 
                 {/* Info */}
@@ -152,7 +152,7 @@ const NovelPage = () => {
               {/* Latest Update */}
               {novel.lastChapterTitle && (
                 <div className="mt-6">
-                  <div className="text-sm opacity-60 mb-1">
+                  <div className="text-sm opacity-60 md-1">
                     {t("latest_update")}
                   </div>
 
@@ -166,7 +166,7 @@ const NovelPage = () => {
 
               {/* Description */}
               <div className="mt-6">
-                <h2 className="text-xl font-bold mb-2">{t("description")}</h2>
+                <h2 className="text-xl font-bold md-2">{t("description")}</h2>
                 <div className="bg-base-200 rounded-2xl p-5 leading-7 whitespace-pre-wrap wrap-break-word">
                   {novel.description}
                 </div>
@@ -174,9 +174,9 @@ const NovelPage = () => {
             </div>
 
             {/* Chapter List */}
-            <div className="max-w-7xl mx-auto p-6">
-              <div className="pt-6 px-6 pb-4 bg-base-200">
-                <div className="flex items-center justify-between mb-5">
+            <div className="max-w-7xl mx-auto py-6 md:p-6">
+              <div className="pt-6 px-2 md:px-6 pb-4 bg-base-200">
+                <div className="flex items-center justify-between md-5 mx-2 md:mx-0">
                   <h2 className="text-3xl font-bold">{t("chapters")}</h2>
 
                   <div className="text-sm opacity-70">
@@ -236,7 +236,7 @@ const NovelPage = () => {
               </div>
             </div>
 
-            <div className="max-w-7xl mx-auto p-6">
+            <div className="max-w-7xl mx-auto px-1 py-6 md:p-6">
               <CommentBox chapterId={chapters[0].id} />
             </div>
           </div>

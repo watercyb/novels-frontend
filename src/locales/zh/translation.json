@@ -92,5 +92,6 @@
   "back_to_top": "返回顶部",
   "previous_page": "上一页",
   "next_page": "下一页",
-  "page": "第 {{currentPage}}/{{totalPages}} 页"
+  "page": "第 {{currentPage}}/{{totalPages}} 页",
+  "delete": "删除"
 }

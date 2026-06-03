@@ -10,6 +10,7 @@ const useCommentStore = create((set, get) => ({
   isLoadingComments: false,
   isLoadingReplies: false,
   isPosting: false,
+  isDeleting: false,
   error: null,
 
   getComments: async (chapterId) => {
@@ -69,7 +70,6 @@ const useCommentStore = create((set, get) => ({
         }
       }
     } catch (error) {
-      console.log(error);
       if (error.response.status == 429) {
         tooManyRequests();
       } else {
@@ -140,7 +140,6 @@ const useCommentStore = create((set, get) => ({
       set({ isPosting: true, error: null });
       const res = await axiosInstance.post("/comments", { parentId, content });
       if (res.data && res.data.success) {
-        console.log(get().comments);
         set({
           comments: get().comments.map((comment) =>
             comment.id == parentId
@@ -152,14 +151,12 @@ const useCommentStore = create((set, get) => ({
               : comment,
           ),
         });
-        console.log(get().comments);
         return true;
       } else {
         set({ error: res.data.message || "Error post reply" });
         return false;
       }
     } catch (error) {
-      console.log(error);
       if (error.response.status == 429) {
         tooManyRequests();
       } else if (error.response.status == 401) {
@@ -170,6 +167,33 @@ const useCommentStore = create((set, get) => ({
       return false;
     } finally {
       set({ isPosting: false });
+    }
+  },
+
+  deleteComment: async (commentId) => {
+    try {
+      set({ isDeleting: true, error: null });
+      const res = await axiosInstance.delete(`/comments/${commentId}`);
+      if (res.data && res.data.success) {
+        set({
+          comments: get().comments.filter((comment) => comment.id != commentId),
+        });
+        return true;
+      } else {
+        set({ error: res.data.message || "Error delete comment" });
+        return false;
+      }
+    } catch (error) {
+      if (error.response.status == 429) {
+        tooManyRequests();
+      } else if (error.response.status == 401) {
+        unauthorized();
+      } else {
+        set({ error: error.response.data.message || "Error delete comment" });
+      }
+      return false;
+    } finally {
+      set({ isDeleting: false });
     }
   },
 }));

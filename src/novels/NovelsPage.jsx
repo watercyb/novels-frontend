@@ -78,7 +78,7 @@ const NovelsPage = ({ type }) => {
       sortOrder == "asc",
       type,
     ); //search, tags, page, size, sort, asc, type
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, getNovels, search, sortOrder, sortBy, type, tagListStr]);
 
   useEffect(() => {
@@ -112,14 +112,14 @@ const NovelsPage = ({ type }) => {
   };
 
   return (
-    <div className="h-full bg-base-200 p-6">
+    <div className="h-full bg-base-200 px-2 py-6 md:px-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row gap-4 md:items-center md:justify-between mb-2">
           <h1 className="text-4xl font-bold">{title}</h1>
 
-          <div className="flex justify-center items-center gap-2 my-4">
-            {/* Search */}
+          {/* Search */}
+          <div className="flex justify-center items-center gap-2 mt-4 mb-0 md:mb-4">
             <label className="input input-bordered flex justify-center items-center gap-2 w-full sm:w-80">
               <Search size={18} />
 
@@ -153,8 +153,8 @@ const NovelsPage = ({ type }) => {
             </button>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3">
-            {/* Sort */}
+          {/* Sort */}
+          <div className="flex gap-3 justify-end mb-2 md:mb-0">
             <div className="dropdown dropdown-end">
               <div tabIndex={0} role="button" className="btn">
                 {t("sort")}: {sortDetails[sortBy][3]}{" "}
@@ -222,15 +222,15 @@ const NovelsPage = ({ type }) => {
 
         {/* Novel List */}
         {!isLoading && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-2 gap-2 md:gap-6">
             {novels.map((novel) => (
               <div
                 key={novel.id}
                 className="card bg-base-100 shadow-xl hover:shadow-2xl transition"
                 title={novel.title}
               >
-                <div className="card-body">
-                  <div className="flex gap-5">
+                <div className="card-body p-2 md:p-6">
+                  <div className="flex flex-col md:flex-row gap-5">
                     {/* Cover */}
                     <Link to={`/novel/${novel.id}`}>
                       <img
@@ -244,7 +244,7 @@ const NovelsPage = ({ type }) => {
                           e.target.onerror = null; // prevent infinite loop
                           e.target.src = cover;
                         }}
-                        className="w-28 h-40 rounded-xl object-contain shrink-0 [image-rendering:-webkit-optimize-contrast]"
+                        className="md:w-28 md:h-40 rounded-xl object-contain shrink-0 [image-rendering:-webkit-optimize-contrast]"
                       />
                     </Link>
 
@@ -252,13 +252,13 @@ const NovelsPage = ({ type }) => {
                     <div className="flex flex-col flex-1 min-w-0">
                       {/* Title */}
                       <Link to={`/novel/${novel.id}`}>
-                        <h2 className="text-2xl font-bold line-clamp-2">
+                        <h2 className="text-xl md:text-2xl font-bold line-clamp-2">
                           {novel.title}
                         </h2>
                       </Link>
 
                       {/* Author */}
-                      <div className="mt-2">
+                      <div className="mt-2 hidden md:flex">
                         <Link to={`/author/${novel.userId}`}>
                           <div className="badge badge-primary badge-outline">
                             {novel.author}
@@ -267,8 +267,8 @@ const NovelsPage = ({ type }) => {
                       </div>
 
                       {/* Last Update */}
-                      <div className="mt-3">
-                        <p className="text-sm opacity-70 mb-1">
+                      <div className="mt-1 md:mt-3">
+                        <p className="text-sm opacity-70 mb-1 hidden md:flex">
                           {t("last_update")}
                         </p>
 
@@ -276,7 +276,7 @@ const NovelsPage = ({ type }) => {
                           {novel.lastChapterTitle}
                         </p>
 
-                        <div className="flex items-center gap-2 text-sm opacity-70 mt-1">
+                        <div className="items-center gap-2 text-sm opacity-70 mt-1 hidden md:flex">
                           <Clock3 size={14} />
 
                           <span>
@@ -286,7 +286,7 @@ const NovelsPage = ({ type }) => {
                       </div>
 
                       {/* Stats */}
-                      <div className="flex flex-wrap gap-4 mt-auto pt-5 text-sm">
+                      <div className="flex flex-wrap gap-4 mt-auto mb-1 pt-2 md:pt-5 text-sm">
                         <div className="flex items-center gap-1">
                           <Heart size={16} className="text-error" />
 
