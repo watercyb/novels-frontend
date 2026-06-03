@@ -9,6 +9,7 @@ import useUserStore from "./auth/useUserStore";
 import { Navigate } from "react-router-dom";
 import Footer from "./main/Footer";
 import NotFoundPage from "./main/NotFoundPage";
+import { useTranslation } from "react-i18next";
 
 const HomePage = lazy(() => import("./main/HomePage"));
 const ProfilePage = lazy(() => import("./auth/ProfilePage"));
@@ -24,12 +25,20 @@ const AuthorPage = lazy(() => import("./auth/AuthorPage"));
 
 function App() {
   const { user } = useUserStore();
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen flex flex-col">
       <Topbar />
       <main className="flex-1">
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense
+          fallback={
+            <div className="flex justify-center py-20">
+              <span className="loading loading-spinner loading-lg mr-4"></span>
+              {t("loading")}
+            </div>
+          }
+        >
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/all" element={<NovelsPage type="all" />} />

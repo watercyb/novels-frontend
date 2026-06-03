@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import useChapterStore from "../chapters/UseChapterStore";
 import useNovelStore from "./UseNovelStore";
 import cover from "../assets/cover.png";
@@ -15,6 +15,7 @@ const NovelPage = () => {
   const { chapters, totalItems, error, getChapters } = useChapterStore();
   const loaderRef = useRef(null);
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getNovel(novelId);
@@ -45,7 +46,7 @@ const NovelPage = () => {
     }
 
     return () => observer.disconnect();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, getChapters, chapters.length, totalItems, novelId]);
 
   return (
@@ -99,7 +100,12 @@ const NovelPage = () => {
                     {novel.tags?.map((tag) => (
                       <div
                         key={tag.id}
-                        className="badge badge-outline badge-secondary"
+                        className="badge badge-outline badge-secondary cursor-pointer"
+                        onClick={() =>
+                          navigate(
+                            `/all?search=&sortBy=Latest+Updated&sortOrder=desc&page=1&tags=${tag.id}`,
+                          )
+                        }
                       >
                         {i18n.language == "en" ? tag.name : tag.nameCN}
                       </div>
