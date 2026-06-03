@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useUserStore from "./useUserStore";
 import { useTranslation } from "react-i18next";
@@ -7,12 +7,15 @@ import toast from "react-hot-toast";
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, isLoading, error } = useUserStore();
+  const { login, isLoading, error, clearError } = useUserStore();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-
   const from = location.state?.from?.pathname || "/";
+
+  useEffect(() => {
+    clearError();
+  }, [clearError]);
 
   const handleLogin = async (e) => {
     e.preventDefault();

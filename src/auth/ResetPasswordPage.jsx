@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import PasswordStrengthMeter from "../utils/PasswordStrengthMeter";
@@ -13,8 +13,11 @@ const ResetPasswordPage = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { isLoading, error, resetPassword, clearError } = useUserStore();
 
-  const { isLoading, error, resetPassword } = useUserStore();
+  useEffect(() => {
+    clearError();
+  }, [clearError]);
 
   const handleSignUp = async (e) => {
     e.preventDefault();

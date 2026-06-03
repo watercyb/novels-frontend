@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "./useUserStore";
@@ -9,8 +9,11 @@ const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { isLoading, error, forgotPassword, clearError } = useUserStore();
 
-  const { isLoading, error, forgotPassword } = useUserStore();
+  useEffect(() => {
+    clearError();
+  }, [clearError]);
 
   const handleSignUp = async (e) => {
     e.preventDefault();

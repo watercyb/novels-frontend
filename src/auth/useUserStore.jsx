@@ -248,6 +248,10 @@ const useUserStore = create((set) => ({
   setUser: (user) => {
     set({ user });
   },
+
+  clearError: () => {
+    set({ error: null });
+  },
 }));
 
 export default useUserStore;

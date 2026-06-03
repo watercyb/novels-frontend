@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import PasswordStrengthMeter from "../utils/PasswordStrengthMeter";
@@ -13,10 +13,12 @@ const SignUpPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const location = useLocation();
-
   const from = location.state?.from?.pathname || "/";
+  const { isLoading, error, signup, clearError } = useUserStore();
 
-  const { isLoading, error, signup } = useUserStore();
+  useEffect(() => {
+    clearError();
+  }, [clearError]);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
