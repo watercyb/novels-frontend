@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import axiosInstance from "../utils/axios";
-import { tooManyRequests } from "../utils/Toast";
+import errorHandler from "../utils/ErrorHandler";
 
 const useUserStore = create((set) => ({
   user: {},
@@ -12,7 +12,7 @@ const useUserStore = create((set) => ({
 
   login: async (email, password) => {
     try {
-      set({ isLoading: true, isRateLimited: false });
+      set({ isLoading: true });
       const resUser = await axiosInstance.post("/auth/login", {
         email,
         password,
@@ -26,19 +26,17 @@ const useUserStore = create((set) => ({
           resLikes.data.success &&
           resFavs.data &&
           resFavs.data.success
-        )
+        ) {
           set({ likes: resLikes.data.list, favorites: resFavs.data.list });
+        } else {
+          throw new Error(resUser.data);
+        }
         return resUser.data.user.username;
       } else {
-        set({ error: resUser.data.message || "Error logging in" });
+        throw new Error(resUser.data);
       }
-      return null;
     } catch (error) {
-      if (error.response.status == 429) {
-        tooManyRequests();
-      } else {
-        set({ error: error.response.data.message || "Error logging in" });
-      }
+      errorHandler(set, error, "Error logging in", false);
       return null;
     } finally {
       set({ isLoading: false });
@@ -47,7 +45,7 @@ const useUserStore = create((set) => ({
 
   signup: async (username, email, password) => {
     try {
-      set({ isLoading: true, error: null, isRateLimited: false });
+      set({ isLoading: true, error: null });
       const res = await axiosInstance.post("/auth/signup", {
         username,
         email,
@@ -57,15 +55,10 @@ const useUserStore = create((set) => ({
         set({ user: res.data.user });
         return true;
       } else {
-        set({ error: res.data.message || "Error signing up" });
-        return false;
+        throw new Error(res.data);
       }
     } catch (error) {
-      if (error.response.status == 429) {
-        tooManyRequests();
-      } else {
-        set({ error: error.response.data.message || "Error signing up" });
-      }
+      errorHandler(set, error, "Error signing up", false);
       return false;
     } finally {
       set({ isLoading: false });
@@ -85,16 +78,17 @@ const useUserStore = create((set) => ({
           resLikes.data.success &&
           resFavs.data &&
           resFavs.data.success
-        )
+        ) {
           set({ likes: resLikes.data.list, favorites: resFavs.data.list });
+        } else {
+          throw new Error(resUser.data);
+        }
+      } else {
+        throw new Error(resUser.data);
       }
     } catch (error) {
       set({ user: null });
-      if (error.response.status == 429) {
-        tooManyRequests();
-      } else if (error.response.status != 401) {
-        set({ error: error.response.data.message || "Error check auth" });
-      }
+      errorHandler(set, error, "Error check auth", false);
     } finally {
       set({ isCheckingAuth: false });
     }
@@ -104,14 +98,9 @@ const useUserStore = create((set) => ({
     try {
       set({ isLoading: true, error: null });
       const res = await axiosInstance.post("/auth/logout");
-      if (!res.data || !res.data.success)
-        set({ error: res.data.message || "Error logout" });
+      if (!res.data || !res.data.success) throw new Error(res.data);
     } catch (error) {
-      if (error.response.status == 429) {
-        tooManyRequests();
-      } else {
-        set({ error: error.response.data.message || "Error logout" });
-      }
+      errorHandler(set, error, "Error logout", false);
     } finally {
       document.cookie = "user=; Max-Age=0; path=/";
       set({
@@ -130,15 +119,10 @@ const useUserStore = create((set) => ({
       if (res.data && res.data.success) {
         return true;
       } else {
-        set({ error: res.data.message || "Error forgot password" });
-        return false;
+        throw new Error(res.data);
       }
     } catch (error) {
-      if (error.response.status == 429) {
-        tooManyRequests();
-      } else {
-        set({ error: error.response.data.message || "Error forgot password" });
-      }
+      errorHandler(set, error, "Error forgot password", false);
       return false;
     } finally {
       set({ isLoading: false });
@@ -156,15 +140,10 @@ const useUserStore = create((set) => ({
       if (res.data && res.data.success) {
         return true;
       } else {
-        set({ error: res.data.message || "Error reset password" });
-        return false;
+        throw new Error(res.data);
       }
     } catch (error) {
-      if (error.response.status == 429) {
-        tooManyRequests();
-      } else {
-        set({ error: error.response.data.message || "Error reset password" });
-      }
+      errorHandler(set, error, "Error reset password", false);
       return false;
     } finally {
       set({ isLoading: false });
@@ -181,15 +160,10 @@ const useUserStore = create((set) => ({
       if (res.data && res.data.success) {
         return true;
       } else {
-        set({ error: res.data.message || "Error reset password" });
-        return false;
+        throw new Error(res.data);
       }
     } catch (error) {
-      if (error.response.status == 429) {
-        tooManyRequests();
-      } else {
-        set({ error: error.response.data.message || "Error change password" });
-      }
+      errorHandler(set, error, "Error reset password", false);
       return false;
     } finally {
       set({ isLoading: false });
@@ -198,7 +172,7 @@ const useUserStore = create((set) => ({
 
   updateProfile: async (avatarImage, username) => {
     try {
-      set({ isLoading: true, error: null, isRateLimited: false });
+      set({ isLoading: true, error: null });
       const formData = new FormData();
       formData.append("username", username);
       if (avatarImage) formData.append("avatarImage", avatarImage);
@@ -218,15 +192,10 @@ const useUserStore = create((set) => ({
         }));
         return true;
       } else {
-        set({ error: res.data.message || "Error change profile" });
-        return false;
+        throw new Error(res.data);
       }
     } catch (error) {
-      if (error.response.status == 429) {
-        tooManyRequests();
-      } else {
-        set({ error: error.response.data.message || "Error change profile" });
-      }
+      errorHandler(set, error, "Error change profile", true);
       return false;
     } finally {
       set({ isLoading: false });
@@ -237,11 +206,7 @@ const useUserStore = create((set) => ({
     try {
       await axiosInstance.post("/auth/refresh");
     } catch (error) {
-      if (error.response.status == 429) {
-        tooManyRequests();
-      } else {
-        set({ error: error.response.data.message || "Error refresh token" });
-      }
+      errorHandler(set, error, "Error get novel", false);
     }
   },
 

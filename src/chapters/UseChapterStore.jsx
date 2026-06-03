@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import axiosInstance from "../utils/axios";
-import { tooManyRequests } from "../utils/Toast";
+import errorHandler from "../utils/ErrorHandler";
 
 const useChapterStore = create((set, get) => ({
   chapters: [],
@@ -42,14 +42,10 @@ const useChapterStore = create((set, get) => ({
           });
         }
       } else {
-        set({ error: res.data.message || "Error get chapters" });
+        throw new Error(res.data);
       }
     } catch (error) {
-      if (error.response.status == 429) {
-        tooManyRequests();
-      } else {
-        set({ error: error.response.data.message || "Error get chapters" });
-      }
+      errorHandler(set, error, "Error get novchaptersel", true);
     } finally {
       set({ isLoadingChpaters: false });
     }
@@ -77,14 +73,10 @@ const useChapterStore = create((set, get) => ({
         }
         set({ chapter: chapter[0] });
       } else {
-        set({ error: res.data.message || "Error get chapter" });
+        throw new Error(res.data);
       }
     } catch (error) {
-      if (error.response.status == 429) {
-        tooManyRequests();
-      } else {
-        set({ error: error.response.data.message || "Error get chapter" });
-      }
+      errorHandler(set, error, "Error get chapter", true);
     } finally {
       set({ isLoadingChapter: false });
     }

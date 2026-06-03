@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import axiosInstance from "../utils/axios";
-import { tooManyRequests, unauthorized } from "../utils/Toast";
+import errorHandler from "../utils/ErrorHandler";
 
 const useCommentStore = create((set, get) => ({
   comments: [],
@@ -34,14 +34,10 @@ const useCommentStore = create((set, get) => ({
           totalPages: res.data.page.totalPages,
         });
       } else {
-        set({ error: res.data.message || "Error get comments" });
+        throw new Error(res.data);
       }
     } catch (error) {
-      if (error.response.status == 429) {
-        tooManyRequests();
-      } else {
-        set({ error: error.response.data.message || "Error get comments" });
-      }
+      errorHandler(set, error, "Error get comments", true);
     } finally {
       set({ isLoadingComments: false });
     }
@@ -66,15 +62,11 @@ const useCommentStore = create((set, get) => ({
             totalPages: res.data.page.totalPages,
           });
         } else {
-          set({ error: res.data.message || "Error get comments" });
+          throw new Error(res.data);
         }
       }
     } catch (error) {
-      if (error.response.status == 429) {
-        tooManyRequests();
-      } else {
-        set({ error: error.response.data.message || "Error get comments" });
-      }
+      errorHandler(set, error, "Error get comments", true);
     } finally {
       set({ isLoadingComments: false });
     }
@@ -96,15 +88,10 @@ const useCommentStore = create((set, get) => ({
         });
         return true;
       } else {
-        set({ error: res.data.message || "Error get replies" });
-        return false;
+        throw new Error(res.data);
       }
     } catch (error) {
-      if (error.response.status == 429) {
-        tooManyRequests();
-      } else {
-        set({ error: error.response.data.message || "Error get replies" });
-      }
+      errorHandler(set, error, "Error get replies", true);
       return false;
     } finally {
       set({ isLoadingReplies: false });
@@ -118,17 +105,10 @@ const useCommentStore = create((set, get) => ({
       if (res.data && res.data.success) {
         return true;
       } else {
-        set({ error: res.data.message || "Error post comment" });
-        return false;
+        throw new Error(res.data);
       }
     } catch (error) {
-      if (error.response.status == 429) {
-        tooManyRequests();
-      } else if (error.response.status == 401) {
-        unauthorized();
-      } else {
-        set({ error: error.response.data.message || "Error post comment" });
-      }
+      errorHandler(set, error, "Error post comment", true);
       return false;
     } finally {
       set({ isPosting: false });
@@ -153,17 +133,10 @@ const useCommentStore = create((set, get) => ({
         });
         return true;
       } else {
-        set({ error: res.data.message || "Error post reply" });
-        return false;
+        throw new Error(res.data);
       }
     } catch (error) {
-      if (error.response.status == 429) {
-        tooManyRequests();
-      } else if (error.response.status == 401) {
-        unauthorized();
-      } else {
-        set({ error: error.response.data.message || "Error post reply" });
-      }
+      errorHandler(set, error, "Error post reply", true);
       return false;
     } finally {
       set({ isPosting: false });
@@ -180,17 +153,10 @@ const useCommentStore = create((set, get) => ({
         });
         return true;
       } else {
-        set({ error: res.data.message || "Error delete comment" });
-        return false;
+        throw new Error(res.data);
       }
     } catch (error) {
-      if (error.response.status == 429) {
-        tooManyRequests();
-      } else if (error.response.status == 401) {
-        unauthorized();
-      } else {
-        set({ error: error.response.data.message || "Error delete comment" });
-      }
+      errorHandler(set, error, "Error delete comment", true);
       return false;
     } finally {
       set({ isDeleting: false });

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import axiosInstance from "../utils/axios";
-import { tooManyRequests } from "../utils/Toast";
+import errorHandler from "../utils/ErrorHandler";
 
 const useNovelStore = create((set) => ({
   novels: [],
@@ -44,14 +44,10 @@ const useNovelStore = create((set) => ({
           totalPages: page.totalPages,
         });
       } else {
-        set({ error: res.data.message || "Error get novels" });
+        throw new Error(res.data);
       }
     } catch (error) {
-      if (error.response.status == 429) {
-        tooManyRequests();
-      } else {
-        set({ error: error.response.data.message || "Error get novels" });
-      }
+      errorHandler(set, error, "Error get novels", true);
     } finally {
       set({ isLoading: false });
     }
@@ -66,14 +62,10 @@ const useNovelStore = create((set) => ({
         tags.sort((a, b) => b.tagUsage - a.tagUsage);
         set({ tags });
       } else {
-        set({ error: res.data.message || "Error get tags" });
+        throw new Error(res.data);
       }
     } catch (error) {
-      if (error.response.status == 429) {
-        tooManyRequests();
-      } else {
-        set({ error: error.response.data.message || "Error get tags" });
-      }
+      errorHandler(set, error, "Error get tags", true);
     } finally {
       set({ isLoadingTags: false });
     }
@@ -91,14 +83,10 @@ const useNovelStore = create((set) => ({
         );
         set({ novel });
       } else {
-        set({ error: res.data.message || "Error get novel" });
+        throw new Error(res.data);
       }
     } catch (error) {
-      if (error.response.status == 429) {
-        tooManyRequests();
-      } else {
-        set({ error: error.response.data.message || "Error get novel" });
-      }
+      errorHandler(set, error, "Error get novel", true);
     } finally {
       set({ isLoading: false });
     }
