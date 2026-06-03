@@ -46,20 +46,18 @@ const CommentCard = ({
           </div>
 
           <div className="flex items-center gap-3">
-            {user?.id === comment.userId &&
-              (isDeleting ? (
-                <span className="loading loading-spinner loading-sm mr-4" />
-              ) : (
-                <button
-                  className="btn btn-ghost btn-error btn-xs"
-                  onClick={() => {
-                    setDeleteId(comment.id);
-                    setOpen(true);
-                  }}
-                >
-                  {t("delete")}
-                </button>
-              ))}
+            {user?.id === comment.userId && (
+              <button
+                className="btn btn-ghost btn-error btn-xs"
+                onClick={() => {
+                  setDeleteId(comment.id);
+                  setOpen(true);
+                }}
+                disabled={isDeleting}
+              >
+                {t("delete")}
+              </button>
+            )}
             <button
               className="btn btn-ghost btn-xs"
               onClick={() => {
@@ -135,20 +133,18 @@ const CommentCard = ({
                 </div>
 
                 <div>
-                  {user?.id === reply.userId &&
-                    (isDeleting ? (
-                      <span className="loading loading-spinner loading-sm mr-4" />
-                    ) : (
-                      <button
-                        className="btn btn-ghost btn-error btn-xs"
-                        onClick={() => {
-                          setDeleteId(reply.id);
-                          setOpen(true);
-                        }}
-                      >
-                        {t("delete")}
-                      </button>
-                    ))}
+                  {user?.id === reply.userId && (
+                    <button
+                      className="btn btn-ghost btn-error btn-xs"
+                      onClick={() => {
+                        setDeleteId(reply.id);
+                        setOpen(true);
+                      }}
+                      disabled={isDeleting}
+                    >
+                      {t("delete")}
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
