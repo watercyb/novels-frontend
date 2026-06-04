@@ -137,5 +137,7 @@
   "UNABLE_FOUND_AUTHOR": "Author not found",
   "joined_on": "Joined on",
   "novels": "Novels",
-  "no_novel_published": "This author has not published any novels yet."
+  "no_novel_published": "This author has not published any novels yet.",
+  "error_load_chapters":"Error loading more chapters, click to retry",
+  "scroll_to_load":"Scroll to load more"
 }

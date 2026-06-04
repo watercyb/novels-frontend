@@ -137,5 +137,7 @@
   "UNABLE_FOUND_AUTHOR": "未找到作者",
   "joined_on": "加入于",
   "novels": "小说",
-  "no_novel_published": "该作者暂未发布任何小说。"
+  "no_novel_published": "该作者暂未发布任何小说。",
+  "error_load_chapters": "加载更多章节失败，点击重试",
+  "scroll_to_load": "滚动加载更多"
 }

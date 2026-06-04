@@ -184,7 +184,7 @@ const NovelPage = () => {
             {/* Chapter List */}
             <div className="max-w-7xl mx-auto py-6 md:p-6">
               <div className="pt-6 px-2 md:px-6 pb-4 bg-base-200">
-                <div className="flex items-center justify-between md-5 mx-2 md:mx-0">
+                <div className="flex items-center justify-between md-5 mx-2 mb-4 md:mx-0">
                   <h2 className="text-3xl font-bold">{t("chapters")}</h2>
 
                   <div className="text-sm opacity-70">
@@ -202,7 +202,7 @@ const NovelPage = () => {
                         className="bg-base-100 rounded-2xl shadow-sm hover:shadow-md transition-all border border-base-300"
                       >
                         <Link to={`/chapter/${chapter.id}`}>
-                          <button className="w-full text-left px-5 py-2">
+                          <button className="w-full text-left px-5 py-2 cursor-pointer">
                             <div className="flex items-center justify-between gap-4">
                               <div className="min-w-0 flex-1">
                                 <div className="font-semibold text-lg truncate">
@@ -232,11 +232,11 @@ const NovelPage = () => {
                         onClick={() => getChapters(novelId, false)}
                         className="text-sm opacity-60 cursor-pointer hover:opacity-100 hover:underline"
                       >
-                        Error loading more chapters, click to retry
+                        {t("error_load_chapters")}
                       </div>
                     ) : (
                       <div className="text-sm opacity-60">
-                        Scroll to load more
+                        {t("scroll_to_load")}
                       </div>
                     ))
                   )}
