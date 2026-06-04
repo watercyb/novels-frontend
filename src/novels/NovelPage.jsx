@@ -90,9 +90,11 @@ const NovelPage = () => {
 
                   {/* Author */}
                   <div className="mt-3">
-                    <div className="badge badge-primary badge-lg">
-                      {novel.author}
-                    </div>
+                    <Link to={`/author/${novel.userId}`}>
+                      <div className="badge badge-primary badge-outline">
+                        {novel.author}
+                      </div>
+                    </Link>
                   </div>
 
                   {/* Tags */}
@@ -190,7 +192,7 @@ const NovelPage = () => {
                   </div>
                 </div>
 
-                <div className="grid gap-3">
+                <div className="grid gap-1">
                   {chapters.map((chapter, index) =>
                     chapter.orderIndex == 0 ? (
                       <div key={chapter.id} />
@@ -200,7 +202,7 @@ const NovelPage = () => {
                         className="bg-base-100 rounded-2xl shadow-sm hover:shadow-md transition-all border border-base-300"
                       >
                         <Link to={`/chapter/${chapter.id}`}>
-                          <button className="w-full text-left p-5">
+                          <button className="w-full text-left px-5 py-2">
                             <div className="flex items-center justify-between gap-4">
                               <div className="min-w-0 flex-1">
                                 <div className="font-semibold text-lg truncate">

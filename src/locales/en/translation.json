@@ -131,5 +131,11 @@
   "UNABLE_DELETE_COMMENT": "Unable to delete comment right now.",
   "UNABLE_LOAD_LIKES": "Unable to load likes right now.",
   "NEED_ADMIN": "Admin Access Required",
-  "TOO_MANY_REQUESTES": "Too many requests. Please try again later."
+  "TOO_MANY_REQUESTES": "Too many requests. Please try again later.",
+  "UNABLE_UPDATE_PASSWORD": "Unable to update password right now.",
+  "SAME_PASSWORD": "New password must be different from your current password.",
+  "UNABLE_FOUND_AUTHOR": "Author not found",
+  "joined_on": "Joined on",
+  "novels": "Novels",
+  "no_novel_published": "This author has not published any novels yet."
 }

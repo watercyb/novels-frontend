@@ -1,0 +1,96 @@
+import { Link } from "react-router-dom";
+import cover from "../assets/cover.png";
+import { useTranslation } from "react-i18next";
+import { formatDateTimeString } from "../utils/formatDate";
+import { Heart, BookOpen, FileText, Clock3 } from "lucide-react";
+
+const NovelCard = ({ novel }) => {
+  const { t } = useTranslation();
+
+  return (
+    <div
+      className="card bg-base-100 shadow-xl hover:shadow-2xl transition"
+      title={novel.title}
+    >
+      <div className="card-body p-2 md:p-6">
+        <div className="flex flex-col md:flex-row gap-5">
+          {/* Cover */}
+          <Link to={`/novel/${novel.id}`}>
+            <img
+              src={
+                novel.coverUrl && novel.coverUrl.startsWith("http")
+                  ? novel.coverUrl
+                  : cover
+              }
+              alt={novel.title}
+              onError={(e) => {
+                e.target.onerror = null; // prevent infinite loop
+                e.target.src = cover;
+              }}
+              className="md:w-28 md:h-40 rounded-xl object-contain shrink-0 [image-rendering:-webkit-optimize-contrast]"
+            />
+          </Link>
+
+          {/* Info */}
+          <div className="flex flex-col flex-1 min-w-0">
+            {/* Title */}
+            <Link to={`/novel/${novel.id}`}>
+              <h2 className="text-xl md:text-2xl font-bold line-clamp-2">
+                {novel.title}
+              </h2>
+            </Link>
+
+            {/* Author */}
+            <div className="mt-2 hidden md:flex">
+              <Link to={`/author/${novel.userId}`}>
+                <div className="badge badge-primary badge-outline">
+                  {novel.author}
+                </div>
+              </Link>
+            </div>
+
+            {/* Last Update */}
+            <div className="mt-1 md:mt-3">
+              <p className="text-sm opacity-70 mb-1 hidden md:flex">
+                {t("last_update")}
+              </p>
+
+              <p className="font-medium line-clamp-1">
+                {novel.lastChapterTitle}
+              </p>
+
+              <div className="items-center gap-2 text-sm opacity-70 mt-1 hidden md:flex">
+                <Clock3 size={14} />
+
+                <span>{formatDateTimeString(novel.lastUpdatedAt)}</span>
+              </div>
+            </div>
+
+            {/* Stats */}
+            <div className="flex flex-wrap gap-4 mt-auto mb-1 pt-2 md:pt-5 text-sm">
+              <div className="flex items-center gap-1">
+                <Heart size={16} className="text-error" />
+
+                <span>{novel.likeCount.toLocaleString()}</span>
+              </div>
+
+              <div className="flex items-center gap-1">
+                <BookOpen size={16} />
+
+                <span>{novel.chapterCount.toLocaleString()}</span>
+              </div>
+
+              <div className="flex items-center gap-1">
+                <FileText size={16} />
+
+                <span>{novel.wordCount.toLocaleString()}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default NovelCard;

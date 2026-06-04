@@ -131,5 +131,11 @@
   "UNABLE_DELETE_COMMENT": "暂时无法删除评论。",
   "UNABLE_LOAD_LIKES": "暂时无法加载点赞数据。",
   "NEED_ADMIN": "需要管理员权限",
-  "TOO_MANY_REQUESTS": "请求过于频繁，请稍后再试"
+  "TOO_MANY_REQUESTS": "请求过于频繁，请稍后再试",
+  "SAME_PASSWORD":"新密码不能与当前密码相同。",
+  "UNABLE_UPDATE_PASSWORD":"暂时修改密码。",
+  "UNABLE_FOUND_AUTHOR": "未找到作者",
+  "joined_on": "加入于",
+  "novels": "小说",
+  "no_novel_published": "该作者暂未发布任何小说。"
 }

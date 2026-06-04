@@ -4,11 +4,13 @@ import errorHandler from "../utils/ErrorHandler";
 
 const useUserStore = create((set) => ({
   user: {},
+  author: null,
   error: null,
   favorites: [],
   likes: [],
   isLoading: false,
   isCheckingAuth: false,
+  isLoadingAuthor: false,
 
   login: async (email, password) => {
     try {
@@ -207,6 +209,23 @@ const useUserStore = create((set) => ({
       await axiosInstance.post("/auth/refresh");
     } catch (error) {
       errorHandler(set, error, "Error get novel", false);
+    }
+  },
+
+  getAuthor: async (authorId) => {
+    try {
+      set({ isLoadingAuthor: true, error: null });
+      const res = await axiosInstance.get(`/auth/${authorId}`);
+      if (res.data && res.data.success) {
+        set({ author: res.data.user });
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      set({ user: null });
+      errorHandler(set, error, "Error get author", false);
+    } finally {
+      set({ isLoadingAuthor: false });
     }
   },
 
