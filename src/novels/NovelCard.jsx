@@ -2,10 +2,13 @@ import { Link } from "react-router-dom";
 import cover from "../assets/cover.png";
 import { useTranslation } from "react-i18next";
 import { formatDateTimeString } from "../utils/formatDate";
-import { Heart, BookOpen, FileText, Clock3 } from "lucide-react";
+import { Heart, BookOpen, FileText, Clock3, Star } from "lucide-react";
+import useUserStore from "../auth/useUserStore";
 
 const NovelCard = ({ novel }) => {
   const { t } = useTranslation();
+  const { favorites } = useUserStore();
+  const isFavorite = favorites.has(Number(novel.id));
 
   return (
     <div
@@ -16,19 +19,23 @@ const NovelCard = ({ novel }) => {
         <div className="flex flex-col md:flex-row gap-5">
           {/* Cover */}
           <Link to={`/novel/${novel.id}`}>
-            <img
-              src={
-                novel.coverUrl && novel.coverUrl.startsWith("http")
-                  ? novel.coverUrl
-                  : cover
-              }
-              alt={novel.title}
-              onError={(e) => {
-                e.target.onerror = null; // prevent infinite loop
-                e.target.src = cover;
-              }}
-              className="md:w-28 md:h-40 rounded-xl object-contain shrink-0 [image-rendering:-webkit-optimize-contrast]"
-            />
+            <div className="relative">
+              <img
+                src={
+                  novel.coverUrl && novel.coverUrl.startsWith("http")
+                    ? novel.coverUrl
+                    : cover
+                }
+                alt={novel.title}
+                onError={(e) => {
+                  e.target.onerror = null; // prevent infinite loop
+                  e.target.src = cover;
+                }}
+                className="md:w-28 md:h-40 rounded-xl object-contain shrink-0 [image-rendering:-webkit-optimize-contrast]"
+              />
+
+              {isFavorite && <Star className="absolute top-1 right-1 fill-red-500 text-red-500 size-5 sm:size-5 md:size-4" />}
+            </div>
           </Link>
 
           {/* Info */}

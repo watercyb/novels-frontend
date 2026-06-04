@@ -80,19 +80,65 @@ const NovelPage = () => {
             <div className="max-w-7xl mx-auto p-2 md:p-6">
               <div className="flex flex-col md:flex-row gap-6">
                 {/* Cover */}
-                <img
-                  src={
-                    novel.coverUrl && novel.coverUrl.startsWith("http")
-                      ? novel.coverUrl
-                      : cover
-                  }
-                  alt={novel.title}
-                  onError={(e) => {
-                    e.target.onerror = null; // prevent infinite loop
-                    e.target.src = cover;
-                  }}
-                  className="p-6 md:p-0 md:w-36 md:h-51 rounded-2xl object-cover shrink-0 shadow-md"
-                />
+
+                <div className="relative">
+                  <img
+                    src={
+                      novel.coverUrl && novel.coverUrl.startsWith("http")
+                        ? novel.coverUrl
+                        : cover
+                    }
+                    alt={novel.title}
+                    onError={(e) => {
+                      e.target.onerror = null; // prevent infinite loop
+                      e.target.src = cover;
+                    }}
+                    className="p-6 md:p-0 md:w-36 md:h-51 rounded-2xl object-cover shrink-0 shadow-md"
+                  />
+
+                  <div className="absolute top-9 right-9 gap-4 flex md:hidden">
+                    {isFavoriting && (
+                      <span className="loading loading-spinner loading-lg size-6 mb-0.5"></span>
+                    )}
+                    {!isFavoriting && (
+                      <Star
+                        className={
+                          favorites.has(Number(novelId))
+                            ? "fill-red-500 text-red-500 cursor-pointer"
+                            : "text-red-500 cursor-pointer"
+                        }
+                        onClick={() => {
+                          if (!favorites.has(Number(novelId))) {
+                            addFavorite(novelId);
+                          } else {
+                            removeFavorite(novelId);
+                          }
+                        }}
+                      />
+                    )}
+                    <div>
+                      {isLiking && (
+                        <span className="loading loading-spinner loading-lg size-6 mb-0.5"></span>
+                      )}
+                      {!isLiking && (
+                        <Heart
+                          className={
+                            likes.has(Number(novelId))
+                              ? "fill-red-500 text-red-500 cursor-pointer"
+                              : "text-red-500 cursor-pointer"
+                          }
+                          onClick={() => {
+                            if (!likes.has(Number(novelId))) {
+                              like(novelId);
+                            } else {
+                              unlike(novelId);
+                            }
+                          }}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
@@ -102,17 +148,17 @@ const NovelPage = () => {
                       {novel.title}
                     </h1>
 
-                    <div className="flex gap-4">
+                    <div className="gap-4 hidden md:flex">
                       <div>
                         {isFavoriting && (
-                          <span className="loading loading-spinner loading-lg mr-4"></span>
+                          <span className="loading loading-spinner loading-lg size-6 mb-0.5"></span>
                         )}
                         {!isFavoriting && (
                           <Star
                             className={
                               favorites.has(Number(novelId))
                                 ? "fill-red-500 text-red-500 cursor-pointer"
-                                : "cursor-pointer"
+                                : "text-red-500 cursor-pointer"
                             }
                             onClick={() => {
                               if (!favorites.has(Number(novelId))) {
@@ -126,14 +172,14 @@ const NovelPage = () => {
                       </div>
                       <div>
                         {isLiking && (
-                          <span className="loading loading-spinner loading-lg mr-4"></span>
+                          <span className="loading loading-spinner loading-lg size-6 mb-0.5"></span>
                         )}
                         {!isLiking && (
                           <Heart
                             className={
                               likes.has(Number(novelId))
                                 ? "fill-red-500 text-red-500 cursor-pointer"
-                                : "cursor-pointer"
+                                : "text-red-500 cursor-pointer"
                             }
                             onClick={() => {
                               if (!likes.has(Number(novelId))) {
