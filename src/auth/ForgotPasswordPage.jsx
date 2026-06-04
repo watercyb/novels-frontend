@@ -3,7 +3,7 @@ import { Loader } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "./useUserStore";
 import { useTranslation } from "react-i18next";
-import toast from "react-hot-toast";
+import showToast from "../utils/Toast";
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
@@ -18,7 +18,7 @@ const ForgotPasswordPage = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     if (await forgotPassword(email)) {
-      toast.success(t("reset_email_sent"));
+      showToast(t("reset_email_sent"), { id: "success" });
       navigate("/");
     }
   };

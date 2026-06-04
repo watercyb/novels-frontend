@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useUserStore from "./useUserStore";
 import { useTranslation } from "react-i18next";
-import toast from "react-hot-toast";
+import showToast from "../utils/Toast";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -21,7 +21,7 @@ const LoginPage = () => {
     e.preventDefault();
     const username = await login(email, password);
     if (username) {
-      toast.success(t("login_successful", { username }));
+      showToast(t("login_successful", { username }), { id: "success" });
       navigate(from, { replace: true });
     }
   };

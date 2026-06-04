@@ -3,7 +3,7 @@ import useUserStore from "./useUserStore";
 import avatar from "../assets/avatar.png";
 import { useTranslation } from "react-i18next";
 import { Loader } from "lucide-react";
-import toast from "react-hot-toast";
+import showToast from "../utils/Toast";
 
 export default function ProfilePage() {
   const { user } = useUserStore();
@@ -38,7 +38,7 @@ export default function ProfilePage() {
   const handleUpdate = async () => {
     if (avatarFile || user.username != username) {
       if (await updateProfile(avatarFile, username)) {
-        toast.success(t("profile_updated"));
+        showToast(t("profile_updated"), { id: "success" });
         setAvatarFile(null);
       }
     }

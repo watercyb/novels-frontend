@@ -4,7 +4,7 @@ import avatar from "../assets/avatar.png";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
 import { checkUserCookie } from "../utils/cookie";
-import toast from "react-hot-toast";
+import showToast from "../utils/Toast";
 
 const UserButton = () => {
   const { user, checkAuth, logout } = useUserStore();
@@ -52,7 +52,7 @@ const UserButton = () => {
               <div
                 onClick={async () => {
                   await logout();
-                  toast.success(t("logout_successful"));
+                  showToast(t("logout_successful"), { id: "success" });
                 }}
               >
                 {t("logout")}

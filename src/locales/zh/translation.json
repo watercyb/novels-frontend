@@ -139,5 +139,7 @@
   "novels": "小说",
   "no_novel_published": "该作者暂未发布任何小说。",
   "error_load_chapters": "加载更多章节失败，点击重试",
-  "scroll_to_load": "滚动加载更多"
+  "scroll_to_load": "滚动加载更多",
+  "ENDPOINT_NOT_FOUND": "此操作不被允许。",
+  "bad_gateway": "服务器暂时出现问题，请稍后重试。"
 }
