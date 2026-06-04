@@ -4,6 +4,7 @@ import useUserStore from "./useUserStore";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { formatDateString } from "../utils/formatDate";
+import NotFoundPage from "../main/NotFoundPage";
 
 const AuthorPage = () => {
   const { authorId } = useParams();
@@ -15,14 +16,17 @@ const AuthorPage = () => {
   }, [authorId, getAuthor]);
 
   return (
-    <div>
-      {(isLoadingAuthor || !author) && (
+    <>
+        {/* Loading */}
+      {isLoadingAuthor && !author?.username && (
         <div className="flex justify-center py-20">
           <span className="loading loading-spinner loading-lg mr-4"></span>
           {t("loading")}
         </div>
       )}
-      {!isLoadingAuthor && author && (
+      {/* No Author */}
+      {!isLoadingAuthor && !author && <NotFoundPage />}
+      {!isLoadingAuthor && author?.username && (
         <div className="container mx-auto max-w-6xl px-4 py-6">
           {/* Author Info */}
           <div className="card bg-base-100 shadow-lg">
@@ -99,7 +103,7 @@ const AuthorPage = () => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

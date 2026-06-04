@@ -4,7 +4,7 @@ import errorHandler from "../utils/ErrorHandler";
 
 const useUserStore = create((set) => ({
   user: {},
-  author: null,
+  author: {},
   error: null,
   favorites: [],
   likes: [],
@@ -222,7 +222,7 @@ const useUserStore = create((set) => ({
         throw new Error(res.data);
       }
     } catch (error) {
-      set({ user: null });
+      set({ author: null });
       errorHandler(set, error, "Error get author", false);
     } finally {
       set({ isLoadingAuthor: false });
