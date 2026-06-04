@@ -2,12 +2,12 @@ import { create } from "zustand";
 import axiosInstance from "../utils/axios";
 import errorHandler from "../utils/ErrorHandler";
 
-const useUserStore = create((set) => ({
+const useUserStore = create((set, get) => ({
   user: {},
   author: {},
   error: null,
-  favorites: [],
-  likes: [],
+  favorites: new Set(),
+  likes: new Set(),
   isLoading: false,
   isCheckingAuth: false,
   isLoadingAuthor: false,
@@ -29,7 +29,10 @@ const useUserStore = create((set) => ({
           resFavs.data &&
           resFavs.data.success
         ) {
-          set({ likes: resLikes.data.list, favorites: resFavs.data.list });
+          set({
+            likes: new Set(resLikes.data.list),
+            favorites: new Set(resFavs.data.list),
+          });
         } else {
           throw new Error(resUser.data);
         }
@@ -81,7 +84,10 @@ const useUserStore = create((set) => ({
           resFavs.data &&
           resFavs.data.success
         ) {
-          set({ likes: resLikes.data.list, favorites: resFavs.data.list });
+          set({
+            likes: new Set(resLikes.data.list),
+            favorites: new Set(resFavs.data.list),
+          });
         } else {
           throw new Error(resUser.data);
         }
@@ -107,8 +113,8 @@ const useUserStore = create((set) => ({
       document.cookie = "user=; Max-Age=0; path=/";
       set({
         user: null,
-        likes: [],
-        favorites: [],
+        likes: new Set(),
+        favorites: new Set(),
       });
       set({ isLoading: false });
     }
@@ -235,6 +241,30 @@ const useUserStore = create((set) => ({
 
   clearError: () => {
     set({ error: null });
+  },
+
+  addLike: (novelId) => {
+    set((state) => ({
+      likes: new Set(state.likes).add(Number(novelId)),
+    }));
+  },
+
+  removeLike: (novelId) => {
+    const likes = new Set(get().likes);
+    likes.delete(Number(novelId));
+    set({ likes });
+  },
+
+  addFavorite: (novelId) => {
+    set((state) => ({
+      favorites: new Set(state.favorites).add(Number(novelId)),
+    }));
+  },
+
+  removeFavorite: (novelId) => {
+    const favorites = new Set(get().favorites);
+    favorites.delete(Number(novelId));
+    set({ favorites });
   },
 }));
 

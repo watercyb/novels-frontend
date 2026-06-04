@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import axiosInstance from "../utils/axios";
 import errorHandler from "../utils/ErrorHandler";
+import useUserStore from "../auth/useUserStore";
 
 const useNovelStore = create((set) => ({
   novels: [],
@@ -12,6 +13,8 @@ const useNovelStore = create((set) => ({
   error: null,
   isLoading: false,
   isLoadingTags: false,
+  isLiking: false,
+  isFavoriting: false,
 
   getNovels: async (search, tags, page, size, sort, asc, type) => {
     try {
@@ -89,6 +92,80 @@ const useNovelStore = create((set) => ({
       errorHandler(set, error, "Error get novel", true);
     } finally {
       set({ isLoading: false });
+    }
+  },
+
+  like: async (novelId) => {
+    try {
+      set({ isLiking: true });
+      const res = await axiosInstance.put(`/likes/${novelId}`);
+
+      if (res.data && res.data.success) {
+        useUserStore.getState().addLike(novelId);
+        set((state) => ({
+          novel: { ...state.novel, likeCount: state.novel.likeCount + 1 },
+        }));
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error like novel", true);
+    } finally {
+      set({ isLiking: false });
+    }
+  },
+
+  unlike: async (novelId) => {
+    try {
+      set({ isLiking: true });
+      const res = await axiosInstance.delete(`/likes/${novelId}`);
+
+      if (res.data && res.data.success) {
+        useUserStore.getState().removeLike(novelId);
+        set((state) => ({
+          novel: { ...state.novel, likeCount: state.novel.likeCount - 1 },
+        }));
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error unlike novel", true);
+    } finally {
+      set({ isLiking: false });
+    }
+  },
+
+  addFavorite: async (novelId) => {
+    try {
+      set({ isFavoriting: true });
+      const res = await axiosInstance.put(`/favorites/${novelId}`);
+
+      if (res.data && res.data.success) {
+        useUserStore.getState().addFavorite(novelId);
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error add favorite", true);
+    } finally {
+      set({ isFavoriting: false });
+    }
+  },
+
+  removeFavorite: async (novelId) => {
+    try {
+      set({ isFavoriting: true });
+      const res = await axiosInstance.delete(`/favorites/${novelId}`);
+
+      if (res.data && res.data.success) {
+        useUserStore.getState().removeFavorite(novelId);
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error remove favorite", true);
+    } finally {
+      set({ isFavoriting: false });
     }
   },
 }));

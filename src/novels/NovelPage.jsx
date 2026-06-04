@@ -8,14 +8,27 @@ import NotFoundPage from "../main/NotFoundPage";
 import { useTranslation } from "react-i18next";
 import CommentBox from "../comment/CommentBox";
 import i18n from "../locales/i18n";
+import { Heart, Star } from "lucide-react";
+import useUserStore from "../auth/useUserStore";
 
 const NovelPage = () => {
   const { novelId } = useParams();
-  const { novel, isLoading, getNovel } = useNovelStore();
+  const {
+    novel,
+    isLoading,
+    isLiking,
+    isFavoriting,
+    getNovel,
+    like,
+    unlike,
+    addFavorite,
+    removeFavorite,
+  } = useNovelStore();
   const { chapters, totalItems, error, getChapters } = useChapterStore();
   const loaderRef = useRef(null);
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { likes, favorites } = useUserStore();
 
   useEffect(() => {
     getNovel(novelId);
@@ -84,9 +97,56 @@ const NovelPage = () => {
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   {/* Title */}
-                  <h1 className="text-4xl font-bold wrap-break-word">
-                    {novel.title}
-                  </h1>
+                  <div className="flex justify-between">
+                    <h1 className="text-4xl font-bold wrap-break-word">
+                      {novel.title}
+                    </h1>
+
+                    <div className="flex gap-4">
+                      <div>
+                        {isFavoriting && (
+                          <span className="loading loading-spinner loading-lg mr-4"></span>
+                        )}
+                        {!isFavoriting && (
+                          <Star
+                            className={
+                              favorites.has(Number(novelId))
+                                ? "fill-red-500 text-red-500 cursor-pointer"
+                                : "cursor-pointer"
+                            }
+                            onClick={() => {
+                              if (!favorites.has(Number(novelId))) {
+                                addFavorite(novelId);
+                              } else {
+                                removeFavorite(novelId);
+                              }
+                            }}
+                          />
+                        )}
+                      </div>
+                      <div>
+                        {isLiking && (
+                          <span className="loading loading-spinner loading-lg mr-4"></span>
+                        )}
+                        {!isLiking && (
+                          <Heart
+                            className={
+                              likes.has(Number(novelId))
+                                ? "fill-red-500 text-red-500 cursor-pointer"
+                                : "cursor-pointer"
+                            }
+                            onClick={() => {
+                              if (!likes.has(Number(novelId))) {
+                                like(novelId);
+                              } else {
+                                unlike(novelId);
+                              }
+                            }}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </div>
 
                   {/* Author */}
                   <div className="mt-3">
