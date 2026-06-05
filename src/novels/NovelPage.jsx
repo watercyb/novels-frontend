@@ -63,7 +63,7 @@ const NovelPage = () => {
   }, [isLoading, getChapters, chapters.length, totalItems, novelId]);
 
   useEffect(() => {
-    document.title = novel?.title??"" + " - Cat Novels";
+    document.title = (novel?.title ?? "") + " - Cat Novels";
   }, [novel]);
 
   return (
