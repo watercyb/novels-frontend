@@ -226,9 +226,7 @@ const NovelPage = () => {
                       <div className="stat px-4 py-3">
                         <div className="stat-title">{t("type")}</div>
                         <div className="stat-value text-lg">
-                          {novel.type === "ORIGINAL"
-                            ? t("original")
-                            : t("translate")}
+                          {t(novel.type)}
                         </div>
                       </div>
                     </div>
