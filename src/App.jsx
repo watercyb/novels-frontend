@@ -10,6 +10,7 @@ import { Navigate } from "react-router-dom";
 import Footer from "./main/Footer";
 import NotFoundPage from "./main/NotFoundPage";
 import { useTranslation } from "react-i18next";
+import MyNovels from "./MyNovels/MyNovels";
 
 const HomePage = lazy(() => import("./main/HomePage"));
 const ProfilePage = lazy(() => import("./auth/ProfilePage"));
@@ -69,6 +70,10 @@ function App() {
             <Route path="/novel/:novelId" element={<NovelPage />} />
             <Route path="/author/:authorId" element={<AuthorPage />} />
             <Route path="/chapter/:chapterId" element={<ChapterPage />} />
+            <Route
+              path="/my-novels"
+              element={user ? <MyNovels /> : <Navigate to="/" replace />}
+            />
             <Route path="/*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>

@@ -49,6 +49,12 @@ const UserButton = () => {
               <Link to="/profile">{t("menu_profile")}</Link>
             </li>
             <li>
+              <Link to="/my-novels">{t("my_novels")}</Link>
+            </li>
+            <li>
+              <Link to="/update-password">{t("update_password")}</Link>
+            </li>
+            <li>
               <div
                 onClick={async () => {
                   await logout();

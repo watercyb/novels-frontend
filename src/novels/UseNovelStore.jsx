@@ -5,7 +5,7 @@ import useUserStore from "../auth/useUserStore";
 
 const useNovelStore = create((set) => ({
   novels: [],
-  novel: null,
+  novel: {},
   tags: null,
   page: 0,
   size: 20,
@@ -89,6 +89,7 @@ const useNovelStore = create((set) => ({
         throw new Error(res.data);
       }
     } catch (error) {
+      set({ novel: null });
       errorHandler(set, error, "Error get novel", true);
     } finally {
       set({ isLoading: false });

@@ -8,7 +8,7 @@ import ChapterNavigation from "./ChapterNavigation";
 import { formatDateTimeString } from "../utils/formatDate";
 import { useTranslation } from "react-i18next";
 import { Clock3, User } from "lucide-react";
-import CommentBox from "../comment/CommentBox";
+import CommentBox from "../comments/CommentBox";
 
 const ChapterPage = () => {
   const { chapterId } = useParams();

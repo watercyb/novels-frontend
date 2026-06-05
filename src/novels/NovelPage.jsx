@@ -6,7 +6,7 @@ import cover from "../assets/cover.png";
 import { Link } from "react-router-dom";
 import NotFoundPage from "../main/NotFoundPage";
 import { useTranslation } from "react-i18next";
-import CommentBox from "../comment/CommentBox";
+import CommentBox from "../comments/CommentBox";
 import i18n from "../locales/i18n";
 import { Heart, Star } from "lucide-react";
 import useUserStore from "../auth/useUserStore";
@@ -69,7 +69,7 @@ const NovelPage = () => {
   return (
     <div>
       {/* Loading */}
-      {isLoading && !novel && (
+      {isLoading && !novel?.author && (
         <div className="flex justify-center py-20">
           <span className="loading loading-spinner loading-lg mr-4"></span>
           {t("loading")}
@@ -77,7 +77,7 @@ const NovelPage = () => {
       )}
       {/* No Novel */}
       {!isLoading && !novel && <NotFoundPage />}
-      {!isLoading && novel && (
+      {!isLoading && novel?.author && (
         <div className="min-h-screen bg-base-200">
           <div className="bg-base-100 md:shadow-lg md:border-b md:border-base-300">
             {/* Novel Info */}

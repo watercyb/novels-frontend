@@ -135,6 +135,7 @@
   "UNABLE_UPDATE_PASSWORD": "Unable to update password right now.",
   "SAME_PASSWORD": "New password must be different from your current password.",
   "UNABLE_FOUND_AUTHOR": "Author not found",
+  "UNABLE_REMOVE_TAG": "Unable to remove tag right now.",
   "joined_on": "Joined on",
   "novels": "Novels",
   "no_novel_published": "This author has not published any novels yet.",
@@ -142,5 +143,11 @@
   "scroll_to_load": "Scroll to load more",
   "ENDPOINT_NOT_FOUND": "This action isn’t allowed.",
   "bad_gateway": "A temporary server error occurred. Please try again later.",
-  "sign_up_title": "Sign Up"
+  "sign_up_title": "Sign Up",
+  "no_published_novel":"You haven't published any novels yet.",
+  "my_novels":"My Novels",
+  "create":"CREATE",
+  "confirm_delete":"Confirm Delete",
+  "to_delete_comment":"Are you sure you want to delete?",
+  "to_delete_novel":"Are you sure you want to delete {{title}}?"
 }

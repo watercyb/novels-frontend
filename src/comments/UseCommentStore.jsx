@@ -91,6 +91,13 @@ const useCommentStore = create((set, get) => ({
         throw new Error(res.data);
       }
     } catch (error) {
+      set({
+        comments: get().comments.map((comment) =>
+          comment.id == commentId
+            ? { ...comment, replies: [] }
+            : comment,
+        ),
+      });
       errorHandler(set, error, "Error get replies", true);
       return false;
     } finally {

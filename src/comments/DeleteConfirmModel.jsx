@@ -1,16 +1,18 @@
+import { t } from "i18next";
+
 const DeleteConfirmModel = ({ open, setOpen, onConfirm }) => {
   return (
     <dialog open={open} className="modal">
       <div className="modal-box">
-        <h3 className="font-bold text-lg">Confirm Delete</h3>
-        <p className="py-4">Are you sure you want to delete?</p>
+        <h3 className="font-bold text-lg">{t("confirm_delete")}</h3>
+        <p className="py-4">{t("to_delete_comment")}</p>
 
         <div className="modal-action">
           <button className="btn" onClick={() => setOpen(false)}>
-            Cancel
+            {t("cancel")}
           </button>
           <button className="btn btn-error" onClick={onConfirm}>
-            Delete
+            {t("delete")}
           </button>
         </div>
       </div>
