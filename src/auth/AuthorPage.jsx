@@ -15,9 +15,13 @@ const AuthorPage = () => {
     getAuthor(authorId);
   }, [authorId, getAuthor]);
 
+  useEffect(() => {
+    document.title = (author?.username ?? "") + " - Cat Novels";
+  }, [author]);
+
   return (
     <>
-        {/* Loading */}
+      {/* Loading */}
       {isLoadingAuthor && !author?.username && (
         <div className="flex justify-center py-20">
           <span className="loading loading-spinner loading-lg mr-4"></span>

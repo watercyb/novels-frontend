@@ -19,6 +19,10 @@ const SignUpPage = () => {
   useEffect(() => {
     clearError();
   }, [clearError]);
+  
+  useEffect(() => {
+    document.title = t("update_password") + " - Cat Novels";
+  }, [t]);
 
   const handleSignUp = async (e) => {
     e.preventDefault();

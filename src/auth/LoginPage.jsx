@@ -17,6 +17,10 @@ const LoginPage = () => {
     clearError();
   }, [clearError]);
 
+  useEffect(() => {
+    document.title = t("login") + " - Cat Novels";
+  }, [t]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     const username = await login(email, password);

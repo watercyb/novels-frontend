@@ -26,6 +26,7 @@ const NovelsPage = ({ type }) => {
   } else if (type == "translation") {
     title = t("menu_tran_novels");
   }
+
   const sortOptions = [
     "Chapters",
     "Latest Updated",
@@ -73,7 +74,7 @@ const NovelsPage = ({ type }) => {
 
   useEffect(() => {
     if (tags == null) getTags();
-    document.title = title;
+    document.title = title + " - Cat Novels";
   }, [getTags, tags, title]);
 
   const visibleTags = tags ? (showAllTags ? tags : tags.slice(0, 8)) : [];

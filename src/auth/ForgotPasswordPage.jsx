@@ -15,6 +15,10 @@ const ForgotPasswordPage = () => {
     clearError();
   }, [clearError]);
 
+  useEffect(() => {
+    document.title = t("reset_password") + " - Cat Novels";
+  }, [t]);
+
   const handleSignUp = async (e) => {
     e.preventDefault();
     if (await forgotPassword(email)) {

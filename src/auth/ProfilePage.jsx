@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useUserStore from "./useUserStore";
 import avatar from "../assets/avatar.png";
 import { useTranslation } from "react-i18next";
@@ -14,6 +14,10 @@ export default function ProfilePage() {
   const [avatarFile, setAvatarFile] = useState(null);
   const { isLoading, updateProfile } = useUserStore();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    document.title = t("menu_profile") + " - Cat Novels";
+  }, [t]);
 
   if (user.username && isLoadingUser) {
     setIsLoadingUser(false);
@@ -100,7 +104,7 @@ export default function ProfilePage() {
             <input
               type="email"
               className="input input-bordered w-full"
-              value={user?.email}
+              value={user?.email ?? ""}
               disabled
             />
           </div>

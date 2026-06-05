@@ -141,5 +141,6 @@
   "error_load_chapters": "加载更多章节失败，点击重试",
   "scroll_to_load": "滚动加载更多",
   "ENDPOINT_NOT_FOUND": "此操作不被允许。",
-  "bad_gateway": "服务器暂时出现问题，请稍后重试。"
+  "bad_gateway": "服务器暂时出现问题，请稍后重试。",
+  "sign_up_title": "注册"
 }

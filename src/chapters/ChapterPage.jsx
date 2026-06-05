@@ -20,6 +20,11 @@ const ChapterPage = () => {
     getChapter(chapterId);
   }, [chapterId, getChapter]);
 
+  useEffect(() => {
+    document.title =
+      (chapter?.title ?? "") + " - " + (chapter?.novelTitle ?? "") + " - Cat Novels";
+  }, [chapter]);
+
   const cleanHTML = DOMPurify.sanitize(chapter?.content ?? "");
 
   return (

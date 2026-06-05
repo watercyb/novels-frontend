@@ -62,6 +62,10 @@ const NovelPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, getChapters, chapters.length, totalItems, novelId]);
 
+  useEffect(() => {
+    document.title = novel?.title??"" + " - Cat Novels";
+  }, [novel]);
+
   return (
     <div>
       {/* Loading */}

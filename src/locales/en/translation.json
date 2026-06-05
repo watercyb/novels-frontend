@@ -141,5 +141,6 @@
   "error_load_chapters": "Error loading more chapters, click to retry",
   "scroll_to_load": "Scroll to load more",
   "ENDPOINT_NOT_FOUND": "This action isn’t allowed.",
-  "bad_gateway": "A temporary server error occurred. Please try again later."
+  "bad_gateway": "A temporary server error occurred. Please try again later.",
+  "sign_up_title": "Sign Up"
 }

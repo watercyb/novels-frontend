@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import PasswordStrengthMeter from "../utils/PasswordStrengthMeter";
@@ -14,10 +14,14 @@ const UpdatePasswordPage = () => {
 
   const { isLoading, error, updatePassword } = useUserStore();
 
+  useEffect(() => {
+    document.title = t("update_password") + " - Cat Novels";
+  }, [t]);
+
   const handleSignUp = async (e) => {
     e.preventDefault();
     if (await updatePassword(oldPassword, newPassword)) {
-     showToast(t("password_updated"), { id: "success" });
+      showToast(t("password_updated"), { id: "success" });
       navigate("/profile");
     }
   };
