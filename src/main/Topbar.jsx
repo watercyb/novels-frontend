@@ -19,7 +19,7 @@ export default function Topbar() {
           }}
         >
           <img src="/favicon.png" alt="Cat Novels" className="size-10" />
-          <a className="text-[26px] oswald font-bold text-[#673ab7]">Cat Novels</a>
+          <a className="text-[26px] oswald font-bold text-[#673ab7] hidden md:flex">Cat Novels</a>
         </div>
 
         <div className="dropdown md:hidden">

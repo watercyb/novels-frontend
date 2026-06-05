@@ -43,9 +43,13 @@ const CommentCard = ({
               </div>
             </div>
 
-            <span className="font-semibold">{comment.username}</span>
+            <div className="flex items-center flex-wrap">
+              <span className="font-semibold pr-3">{comment.username}</span>
 
-            <div className="text-[12px] mt-0.5 text-base-content/70">{formatDateTimeString(comment.createdAt)}</div>
+              <div className="text-[12px] mt-0.5 text-base-content/70">
+                {formatDateTimeString(comment.createdAt)}
+              </div>
+            </div>
           </div>
 
           <div className="flex items-center gap-3">
@@ -129,9 +133,11 @@ const CommentCard = ({
                   </div>
 
                   <div>
-                    <div className="flex gap-3">
-                      <div className="font-medium">{reply.username}</div>
-                      <div className="text-[12px] mt-0.5 text-base-content/70">{formatDateTimeString(comment.createdAt)}</div>
+                    <div className="flex items-center flex-wrap">
+                      <div className="font-medium pr-3">{reply.username}</div>
+                      <div className="text-[12px] mt-0.5 text-base-content/70">
+                        {formatDateTimeString(comment.createdAt)}
+                      </div>
                     </div>
 
                     <div>{reply.content}</div>
