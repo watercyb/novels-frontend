@@ -42,7 +42,7 @@ export default function ProfilePage() {
   const handleUpdate = async () => {
     if (avatarFile || user.username != username) {
       if (await updateProfile(avatarFile, username)) {
-        showToast(t("profile_updated"), { id: "success" });
+        showToast(t("profile_updated"), "success");
         setAvatarFile(null);
       }
     }

@@ -21,7 +21,7 @@ const UpdatePasswordPage = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     if (await updatePassword(oldPassword, newPassword)) {
-      showToast(t("password_updated"), { id: "success" });
+      showToast(t("password_updated"), "success");
       navigate("/profile");
     }
   };

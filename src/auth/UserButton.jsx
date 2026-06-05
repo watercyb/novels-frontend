@@ -52,7 +52,7 @@ const UserButton = () => {
               <div
                 onClick={async () => {
                   await logout();
-                  showToast(t("logout_successful"), { id: "success" });
+                  showToast(t("logout_successful"), "success");
                 }}
               >
                 {t("logout")}

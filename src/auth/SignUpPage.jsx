@@ -27,7 +27,7 @@ const SignUpPage = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     if (await signup(name, email, password)) {
-      showToast(t("account_ready"), { id: "success" });
+      showToast(t("account_ready"), "success");
       navigate(from, { replace: true });
     }
   };

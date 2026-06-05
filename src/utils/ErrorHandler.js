@@ -4,12 +4,12 @@ import showToast from "./Toast";
 const errorHandler = (set, error, defaultMessage, isToast) => {
   if (error?.response?.status) {
     if (error.response.status == 429) {
-      showToast(i18n.t("too_many_requests", { id: "error" }));
+      showToast(i18n.t("too_many_requests", "error"));
     } else if (error.response.status == 502) {
-      showToast(i18n.t("bad_gateway", { id: "error" }));
+      showToast(i18n.t("bad_gateway", "error"));
     } else {
       if (isToast)
-        showToast(i18n.t(error.response.data.message), { id: "error" });
+        showToast(i18n.t(error.response.data.message), "error");
       set({ error: i18n.t(error.response.data.message) || defaultMessage });
     }
   } else {

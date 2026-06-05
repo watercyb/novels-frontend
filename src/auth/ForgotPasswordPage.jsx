@@ -22,7 +22,7 @@ const ForgotPasswordPage = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     if (await forgotPassword(email)) {
-      showToast(t("reset_email_sent"), { id: "success" });
+      showToast(t("reset_email_sent"), "success");
       navigate("/");
     }
   };

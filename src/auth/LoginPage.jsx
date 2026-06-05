@@ -25,7 +25,7 @@ const LoginPage = () => {
     e.preventDefault();
     const username = await login(email, password);
     if (username) {
-      showToast(t("login_successful", { username }), { id: "success" });
+      showToast(t("login_successful", { username }), "success");
       navigate(from, { replace: true });
     }
   };

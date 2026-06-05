@@ -4,6 +4,7 @@ import useCommentStore from "./UseCommentStore";
 import { useTranslation } from "react-i18next";
 import useUserStore from "../auth/useUserStore";
 import DeleteConfirmModel from "./DeleteConfirmModel";
+import { formatDateTimeString } from "../utils/formatDate";
 
 const CommentCard = ({
   comment,
@@ -43,6 +44,8 @@ const CommentCard = ({
             </div>
 
             <span className="font-semibold">{comment.username}</span>
+
+            <div className="text-[12px] mt-0.5 text-base-content/70">{formatDateTimeString(comment.createdAt)}</div>
           </div>
 
           <div className="flex items-center gap-3">
@@ -116,7 +119,7 @@ const CommentCard = ({
               <div key={reply.id} className="flex justify-between">
                 <div className="flex gap-3">
                   <div className="avatar">
-                    <div className="w-8 rounded-full">
+                    <div className="size-8 rounded-full">
                       <img
                         src={reply.userAvatarUrl ?? avatar}
                         alt={reply.username}
@@ -126,7 +129,10 @@ const CommentCard = ({
                   </div>
 
                   <div>
-                    <div className="font-medium">{reply.username}</div>
+                    <div className="flex gap-3">
+                      <div className="font-medium">{reply.username}</div>
+                      <div className="text-[12px] mt-0.5 text-base-content/70">{formatDateTimeString(comment.createdAt)}</div>
+                    </div>
 
                     <div>{reply.content}</div>
                   </div>
