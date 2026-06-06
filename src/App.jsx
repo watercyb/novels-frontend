@@ -11,6 +11,7 @@ import Footer from "./main/Footer";
 import NotFoundPage from "./main/NotFoundPage";
 import { useTranslation } from "react-i18next";
 import MyNovels from "./MyNovels/MyNovels";
+import MyNovel from "./MyNovels/MyNovel";
 
 const HomePage = lazy(() => import("./main/HomePage"));
 const ProfilePage = lazy(() => import("./auth/ProfilePage"));
@@ -73,6 +74,10 @@ function App() {
             <Route
               path="/my-novels"
               element={user ? <MyNovels /> : <Navigate to="/" replace />}
+            />
+            <Route
+              path="/my-novels/:novelId"
+              element={user ? <MyNovel /> : <Navigate to="/" replace />}
             />
             <Route path="/*" element={<NotFoundPage />} />
           </Routes>

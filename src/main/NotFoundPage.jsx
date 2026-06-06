@@ -1,8 +1,27 @@
 import { Link } from "react-router-dom";
 import PageNotFound from "../assets/PageNotFound.png";
 import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
 const NotFoundPage = () => {
   const { t } = useTranslation();
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShow(true);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!show) {
+    return (
+      <div className="flex justify-center py-20">
+        <span className="loading loading-spinner loading-lg mr-4"></span>
+        {t("loading")}
+      </div>
+    );
+  }
 
   return (
     <div className="flex items-center justify-center min-h-175 px-6">

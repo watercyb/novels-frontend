@@ -4,12 +4,13 @@ import useMyNovelStore from "./useMyNovelStore";
 import { t } from "i18next";
 import avatar from "../assets/avatar.png";
 import { Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const MyNovels = () => {
   const { user, isLoading } = useUserStore();
   const { novels, isLoadingMyNovels, getNovels } = useMyNovelStore();
-  const [open, setOpen] = useState(false);
   const [deleteNovel, setDeleteNovel] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getNovels();
@@ -50,7 +51,7 @@ const MyNovels = () => {
               <div className="flex justify-between">
                 <h2 className="card-title mb-2">{t("my_novels")}</h2>
                 <button className="btn btn-primary btn-md">
-                  {t("create")}
+                  {t("new_novel")}
                 </button>
               </div>
 
@@ -60,7 +61,12 @@ const MyNovels = () => {
                     key={novel.id}
                     className="flex items-center justify-between py-4"
                   >
-                    <div className="font-medium text-lg">{novel.title}</div>
+                    <div
+                      className="font-medium text-lg cursor-pointer"
+                      onClick={() => navigate(`/my-novels/${novel.id}`)}
+                    >
+                      {novel.title}
+                    </div>
 
                     <button
                       className="btn btn-circle btn-ghost btn-sm text-error mr-4"

@@ -4,6 +4,7 @@ import avatar from "../assets/avatar.png";
 import { useTranslation } from "react-i18next";
 import { Loader } from "lucide-react";
 import showToast from "../utils/Toast";
+import { SquarePen } from "lucide-react";
 
 export default function ProfilePage() {
   const { user } = useUserStore();
@@ -59,16 +60,13 @@ export default function ProfilePage() {
           {/* Avatar */}
           <div className="flex justify-center mb-6">
             <div
-              className="avatar cursor-pointer group"
+              className="avatar cursor-pointer group relative"
               onClick={handleAvatarClick}
             >
-              <div className="w-32 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden relative">
+              <div className="w-32 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden">
                 <img src={avatarUrl} alt="Avatar" className="object-cover" />
-
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-sm font-semibold">
-                  {t("update")}
-                </div>
               </div>
+              <SquarePen className="absolute opacity-0 group-hover:opacity-100 top-1 right-1 bg-base-100 text-base-content" />
             </div>
 
             <input

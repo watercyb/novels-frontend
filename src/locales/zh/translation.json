@@ -136,6 +136,8 @@
   "UNABLE_UPDATE_PASSWORD":"暂时修改密码。",
   "UNABLE_FOUND_AUTHOR": "未找到作者",
   "UNABLE_REMOVE_TAG": "暂时无法移除标签。",
+  "UNABLE_ADD_TAG":"暂时无法添加标签。",
+  "EMPTY_TITLE":"标题不能为空",
   "joined_on": "加入于",
   "novels": "小说",
   "no_novel_published": "该作者暂未发布任何小说。",
@@ -146,8 +148,11 @@
   "sign_up_title": "注册",
   "no_published_novel":"你还没有发布任何小说。",
   "my_novels":"我的小说",
-  "create":"新小说",
+  "new_novel":"新小说",
   "confirm_delete":"确认删除",
   "to_delete_comment":"你确认要删除这条评论么?",
-  "to_delete_novel":"确定要删除《{{title}}》吗？此操作无法撤销。"
+  "to_delete_novel":"确定要删除《{{title}}》吗？此操作无法撤销。",
+  "no_chapter":"你还没有发布任何章节。",
+  "new_chapter":"新章节",
+  "edit_title":"修改标题"
 }
