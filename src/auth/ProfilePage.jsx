@@ -26,10 +26,6 @@ export default function ProfilePage() {
     setAvatarUrl(user.avatarUrl);
   }
 
-  const handleAvatarClick = () => {
-    fileInputRef.current.click();
-  };
-
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
 
@@ -61,12 +57,12 @@ export default function ProfilePage() {
           <div className="flex justify-center mb-6">
             <div
               className="avatar cursor-pointer group relative"
-              onClick={handleAvatarClick}
+              onClick={() => fileInputRef.current.click()}
             >
               <div className="w-32 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden">
                 <img src={avatarUrl} alt="Avatar" className="object-cover" />
               </div>
-              <SquarePen className="absolute opacity-0 group-hover:opacity-100 top-1 right-1 bg-base-100 text-base-content" />
+              <SquarePen className="absolute opacity-0 group-hover:opacity-60 top-1 right-1 bg-base-100 text-base-content" />
             </div>
 
             <input

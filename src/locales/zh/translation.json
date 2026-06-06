@@ -154,5 +154,7 @@
   "to_delete_novel":"确定要删除《{{title}}》吗？此操作无法撤销。",
   "no_chapter":"你还没有发布任何章节。",
   "new_chapter":"新章节",
-  "edit_title":"修改标题"
+  "edit_title":"修改标题",
+  "cover_updated":"小说封面更新成功。",
+  "title_updated": "小说标题更新成功。"
 }

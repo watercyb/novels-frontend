@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useUserStore from "../auth/useUserStore";
 import useMyNovelStore from "./useMyNovelStore";
 import { t } from "i18next";
@@ -8,6 +8,7 @@ import NotFoundPage from "../main/NotFoundPage";
 import cover from "../assets/cover.png";
 import i18n from "../locales/i18n";
 import useNovelStore from "../novels/UseNovelStore";
+import showToast from "../utils/Toast";
 
 const MyNovel = () => {
   const { novelId } = useParams();
@@ -18,16 +19,25 @@ const MyNovel = () => {
     isLoadingMyNovel,
     isUpdatingTitle,
     isUpdateingTags,
+    isUpdatingCover,
     getNovel,
     updateTitle,
+    updateCoverImage,
   } = useMyNovelStore();
   const [deleteChapter, setDeleteChapter] = useState(null);
   const [newTitle, setNewTitle] = useState(null);
   const { tags, isLoadingTags, getTags } = useNovelStore();
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     getNovel(novelId);
   }, [novelId, getNovel]);
+
+  const handleCoverChange = async (e) => {
+    const file = e.target.files[0];
+    if (file && (await updateCoverImage(novelId, file)))
+      showToast(t("cover_updated"), "success");
+  };
 
   return (
     <div>
@@ -46,7 +56,10 @@ const MyNovel = () => {
           <div className="card bg-base-100 shadow-md mb-6">
             <div className="card-body">
               <div className="flex flex-col md:flex-row gap-6">
-                <div className="cursor-pointer group relative">
+                <div
+                  className="cursor-pointer group relative"
+                  onClick={() => fileInputRef.current.click()}
+                >
                   <img
                     src={
                       novel.coverUrl && novel.coverUrl.startsWith("http")
@@ -60,7 +73,18 @@ const MyNovel = () => {
                     }}
                     className="p-6 md:p-0 md:w-36 md:h-51 rounded-2xl object-cover shrink-0 shadow-md"
                   />
-                  <SquarePen className="absolute opacity-0 group-hover:opacity-100 top-1 right-1 bg-base-100 text-base-content" />
+                  <SquarePen className="absolute opacity-0 group-hover:opacity-60 top-1 right-1 bg-base-100 text-base-content" />
+                  {isUpdatingCover && (
+                    <span className="loading loading-spinner loading-lg size-8 opacity-70 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></span>
+                  )}
+
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    ref={fileInputRef}
+                    onChange={handleCoverChange}
+                  />
                 </div>
 
                 <div className="flex-1 min-w-0">
@@ -71,10 +95,10 @@ const MyNovel = () => {
                     </h1>
 
                     {isUpdatingTitle ? (
-                      <span className="loading loading-spinner loading-lg size-5"></span>
+                      <span className="loading loading-spinner loading-lg size-5 opacity-60"></span>
                     ) : (
                       <SquarePen
-                        className="size-5 cursor-pointer"
+                        className="size-5 cursor-pointer opacity-60"
                         onClick={() => {
                           setNewTitle(novel.title);
                         }}
@@ -110,10 +134,10 @@ const MyNovel = () => {
                     </div>
 
                     {isUpdateingTags ? (
-                      <span className="loading loading-spinner loading-lg size-5"></span>
+                      <span className="loading loading-spinner loading-lg size-5 opacity-60"></span>
                     ) : (
                       <SquarePen
-                        className="size-5 cursor-pointer"
+                        className="size-5 cursor-pointer opacity-60"
                         onClick={() => {
                           if (tags === null) getTags();
                         }}
@@ -258,9 +282,11 @@ const MyNovel = () => {
 
             <button
               className="btn btn-primary"
-              onClick={() => {
-                updateTitle(novel.id, newTitle);
+              onClick={async () => {
+                const title = newTitle;
                 setNewTitle(null);
+                if (await updateTitle(novel.id, title))
+                  showToast(t("cover_updated"), "success");
               }}
             >
               {t("update")}

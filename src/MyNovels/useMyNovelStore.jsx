@@ -9,6 +9,7 @@ const useMyNovelStore = create((set, get) => ({
   isLoadingMyNovel: false,
   isUpdatingTitle: false,
   isUpdateingTags: false,
+  isUpdatingCover: false,
 
   getNovels: async () => {
     try {
@@ -57,13 +58,40 @@ const useMyNovelStore = create((set, get) => ({
       });
       if (res.data && res.data.success) {
         set({ novel: { ...get().novel, title: res.data.novel.title } });
+        return true;
       } else {
         throw new Error(res.data);
       }
     } catch (error) {
       errorHandler(set, error, "Error update title", true);
+      return false;
     } finally {
       set({ isUpdatingTitle: false });
+    }
+  },
+
+  updateCoverImage: async (novelId, coverImage) => {
+    try {
+      set({ isUpdatingCover: true });
+      const formData = new FormData();
+      formData.append("id", novelId);
+      formData.append("coverImage", coverImage);
+      const res = await axiosInstance.post("/novels", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (res.data && res.data.success) {
+        set({ novel: { ...get().novel, coverUrl: res.data.novel.coverUrl } });
+        return true;
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error update cover", true);
+      return false;
+    } finally {
+      set({ isUpdatingCover: false });
     }
   },
 
