@@ -8,8 +8,7 @@ const ChapterNavigation = ({ prv, next, novelId }) => {
     <div className="navbar bg-base-100 rounded-box shadow-sm px-4">
       <div className="navbar-start">
         {prv ? (
-          <Link
-            to={`/chapter/${prv.id}`}
+          <Link to={`/chapter/${prv.id}`}
             className="btn btn-outline border-base-300"
             title={prv.title}
           >
@@ -30,8 +29,7 @@ const ChapterNavigation = ({ prv, next, novelId }) => {
 
       <div className="navbar-end">
         {next ? (
-          <Link
-            to={`/chapter/${next.id}`}
+          <Link to={`/chapter/${next.id}`}
             className="btn btn-outline border-base-300"
             title={next.title}
           >

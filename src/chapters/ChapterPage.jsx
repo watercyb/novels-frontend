@@ -1,6 +1,6 @@
 import DOMPurify from "dompurify";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useChapterStore from "./UseChapterStore";
 import NotFoundPage from "../main/NotFoundPage";
 import Content from "./Content";
@@ -15,15 +15,25 @@ const ChapterPage = () => {
   const { chapter, prv, next, isLoadingChapter, getChapter } =
     useChapterStore();
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    getChapter(chapterId);
+    if (!isLoadingChapter) {
+      getChapter(chapterId);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chapterId, getChapter]);
 
   useEffect(() => {
-    document.title =
-      (chapter?.title ?? "") + " - " + (chapter?.novelTitle ?? "") + " - Cat Novels";
-  }, [chapter]);
+    if (!isLoadingChapter && chapter?.id == chapterId) {
+      document.title =
+        (chapter?.title ?? "") +
+        " - " +
+        (chapter?.novelTitle ?? "") +
+        " - Cat Novels";
+      navigate(`/chapter/${chapterId}`, { replace: true });
+    }
+  }, [chapter, chapterId, isLoadingChapter, navigate]);
 
   const cleanHTML = DOMPurify.sanitize(chapter?.content ?? "");
 

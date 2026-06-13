@@ -10,8 +10,8 @@ import { Navigate } from "react-router-dom";
 import Footer from "./main/Footer";
 import NotFoundPage from "./main/NotFoundPage";
 import { useTranslation } from "react-i18next";
-import MyNovels from "./MyNovels/MyNovels";
-import MyNovel from "./MyNovels/MyNovel";
+import MyNovels from "./my_novels/MyNovels";
+import MyNovel from "./my_novels/MyNovel";
 
 const HomePage = lazy(() => import("./main/HomePage"));
 const ProfilePage = lazy(() => import("./auth/ProfilePage"));

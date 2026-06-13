@@ -53,7 +53,7 @@ const useChapterStore = create((set, get) => ({
 
   getChapter: async (chapterId) => {
     try {
-      set({ isLoadingChapter: true, error: false });
+      set({ isLoadingChapter: true, error: false, chapter: null });
       const params = new URLSearchParams();
       params.append("adjacent", true);
       const res = await axiosInstance.get(
@@ -72,11 +72,13 @@ const useChapterStore = create((set, get) => ({
           set({ next: null });
         }
         set({ chapter: chapter[0] });
+        return chapter[0];
       } else {
         throw new Error(res.data);
       }
     } catch (error) {
       errorHandler(set, error, "Error get chapter", true);
+      return null;
     } finally {
       set({ isLoadingChapter: false });
     }

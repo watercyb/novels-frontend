@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Search, ChevronLeft, ChevronRight } from "lucide-react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import useNovelStore from "./UseNovelStore";
 import { useTranslation } from "react-i18next";
 import Tag from "./Tag";
@@ -19,6 +19,7 @@ const NovelsPage = ({ type }) => {
   const tagListStr = searchParams.get("tags") || "";
   const tagSet = new Set(tagListStr ? tagListStr.split(" ").map(Number) : []);
   const [showAllTags, setShowAllTags] = useState(false);
+  const navigate = useNavigate();
 
   let title = t("menu_all_novels");
   if (type == "original") {
@@ -75,7 +76,7 @@ const NovelsPage = ({ type }) => {
   useEffect(() => {
     if (tags == null) getTags();
     document.title = title + " - Cat Novels";
-  }, [getTags, tags, title]);
+  }, [getTags, isLoading, navigate, tags, title]);
 
   const visibleTags = tags ? (showAllTags ? tags : tags.slice(0, 8)) : [];
 
