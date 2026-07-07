@@ -138,6 +138,7 @@
   "UNABLE_REMOVE_TAG": "Unable to remove tag right now.",
   "UNABLE_ADD_TAG": "Unable to add tag right now.",
   "EMPTY_TITLE": "Title is empty",
+  "INVALID_INPUT": "Invalid input. Please check your entries and try again.",
   "joined_on": "Joined on",
   "novels": "Novels",
   "no_novel_published": "This author has not published any novels yet.",
@@ -155,6 +156,17 @@
   "no_chapter": "You haven't updated any chapters yet.",
   "new_chapter": "NEW CHAPTER",
   "edit_title": "Edit Title",
-  "cover_updated": "Novel cover updated successfully",
-  "title_updated": "Novel title updated successfully"
+  "cover_updated": "Novel cover updated successfully.",
+  "title_updated": "Novel title updated successfully.",
+  "novel_created": "Novel created successfully.",
+  "novel_deleted": "Novel deleted successfully.",
+  "create": "Create",
+  "create_novel": "Create New Novel",
+  "cover_image": "Cover Image",
+  "enter_title": "Enter novel title",
+  "enter_description": "Enter novel description",
+  "tags": "Tags",
+  "title": "Title",
+  "original": "Original",
+  "translation": "Translation"
 }

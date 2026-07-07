@@ -5,16 +5,35 @@ import { t } from "i18next";
 import avatar from "../assets/avatar.png";
 import { Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import showToast from "../utils/Toast";
+import CreateNovelDialog from "./CreateNovelDialog";
 
 const MyNovels = () => {
   const { user, isLoading } = useUserStore();
-  const { novels, isLoadingMyNovels, getNovels } = useMyNovelStore();
-  const [deleteNovel, setDeleteNovel] = useState(null);
+  const {
+    novels,
+    isLoadingMyNovels,
+    isCreatingNovel,
+    isDeletingNovel,
+    getNovels,
+    createNovel,
+    deleteNovel,
+  } = useMyNovelStore();
+  const [novelToDelete, setNovelToDelete] = useState(null);
   const navigate = useNavigate();
+  const [createNovelDialogOpen, setCreateNovelDialogOpen] = useState(null);
 
   useEffect(() => {
     getNovels();
   }, [getNovels, user]);
+
+  const handleDeleteNovel = async () => {
+    if (!novelToDelete?.id) return;
+    if (await deleteNovel(novelToDelete.id)) {
+      setNovelToDelete(null);
+      showToast(t("novel_deleted"), "success");
+    }
+  };
 
   return (
     <div>
@@ -50,7 +69,11 @@ const MyNovels = () => {
             <div className="card-body">
               <div className="flex justify-between">
                 <h2 className="card-title mb-2">{t("my_novels")}</h2>
-                <button className="btn btn-primary btn-md">
+                <button
+                  className="btn btn-primary btn-md w-30"
+                  onClick={() => setCreateNovelDialogOpen(true)}
+                  disabled={isCreatingNovel}
+                >
                   {t("new_novel")}
                 </button>
               </div>
@@ -71,9 +94,14 @@ const MyNovels = () => {
                     <button
                       className="btn btn-circle btn-ghost btn-sm text-error mr-4"
                       aria-label="Delete novel"
-                      onClick={() => setDeleteNovel(novel)}
+                      onClick={() => setNovelToDelete(novel)}
+                      disabled={isDeletingNovel}
                     >
-                      <Trash2 size={18} />
+                      {isDeletingNovel ? (
+                        <span className="loading loading-spinner"></span>
+                      ) : (
+                        <Trash2 size={18} />
+                      )}
                     </button>
                   </div>
                 ))}
@@ -89,28 +117,47 @@ const MyNovels = () => {
         </div>
       )}
 
-      <dialog open={deleteNovel} className="modal">
+      {/* Delete Novel dialog*/}
+      <dialog open={novelToDelete} className="modal">
         <div className="modal-box">
           <h3 className="font-bold text-lg">{t("confirm_delete")}</h3>
           <p className="py-4">
-            {t("to_delete_novel", { title: deleteNovel?.title })}
+            {t("to_delete_novel", { title: novelToDelete?.title })}
           </p>
 
           <div className="modal-action">
-            <button className="btn" onClick={() => setDeleteNovel(null)}>
+            <button
+              className="btn"
+              onClick={() => setNovelToDelete(null)}
+              disabled={isDeletingNovel}
+            >
               {t("cancel")}
             </button>
-            <button
-              className="btn btn-error"
-              onClick={() => {
-                setDeleteNovel(null);
-              }}
-            >
-              {t("delete")}
-            </button>
+            <div className="min-w-20">
+              <button
+                className="btn btn-error w-full"
+                onClick={() => {
+                  handleDeleteNovel();
+                }}
+                disabled={isDeletingNovel}
+              >
+                {isDeletingNovel ? (
+                  <span className="loading loading-spinner"></span>
+                ) : (
+                  t("delete")
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </dialog>
+
+      <CreateNovelDialog
+        createNovelDialogOpen={createNovelDialogOpen}
+        setCreateNovelDialogOpen={setCreateNovelDialogOpen}
+        isCreatingNovel={isCreatingNovel}
+        createNovel={createNovel}
+      />
     </div>
   );
 };

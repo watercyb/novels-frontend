@@ -10,6 +10,8 @@ const useMyNovelStore = create((set, get) => ({
   isUpdatingTitle: false,
   isUpdateingTags: false,
   isUpdatingCover: false,
+  isCreatingNovel: false,
+  isDeletingNovel: false,
 
   getNovels: async () => {
     try {
@@ -95,7 +97,53 @@ const useMyNovelStore = create((set, get) => ({
     }
   },
 
-  //if (avatarImage) formData.append("avatarImage", avatarImage);
+  createNovel: async (coverImage, title, description, type, tags) => {
+    try {
+      set({ isCreatingNovel: true });
+      const formData = new FormData();
+      if (coverImage) formData.append("coverImage", coverImage);
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("type", type);
+      formData.append("tags", tags);
+      const res = await axiosInstance.post("/novels", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (res.data && res.data.success) {
+        set({ novels: [res.data.novel, ...get().novels] });
+        return true;
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error delete novel", true);
+      return false;
+    } finally {
+      set({ isCreatingNovel: false });
+    }
+  },
+
+  deleteNovel: async (novelId) => {
+    try {
+      set({ isDeletingNovel: true });
+      const res = await axiosInstance.delete(`/novels/${novelId}`);
+      if (res.data && res.data.success) {
+        set({
+          novels: [...get().novels.filter((novel) => novel.id != novelId)],
+        });
+        return true;
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error create novel", true);
+      return false;
+    } finally {
+      set({ isDeletingNovel: false });
+    }
+  },
 }));
 
 export default useMyNovelStore;
