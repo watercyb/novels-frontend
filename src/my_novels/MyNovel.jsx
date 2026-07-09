@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import useUserStore from "../auth/useUserStore";
 import useMyNovelStore from "./useMyNovelStore";
 import { t } from "i18next";
-import { SquarePen, Trash2 } from "lucide-react";
+import { SquarePen, Trash2, CircleCheck, ArrowRightLeft } from "lucide-react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import NotFoundPage from "../main/NotFoundPage";
 import cover from "../assets/cover.png";
 import i18n from "../locales/i18n";
-import useNovelStore from "../novels/UseNovelStore";
 import showToast from "../utils/Toast";
+import UpdateTagDialog from "./UpdateTagDialog";
 
 const MyNovel = () => {
   const { novelId } = useParams();
@@ -18,16 +18,23 @@ const MyNovel = () => {
     novel,
     isLoadingMyNovel,
     isUpdatingTitle,
-    isUpdateingTags,
+    isUpdatingTags,
     isUpdatingCover,
+    isUpdatingDescription,
+    isDeletingChapter,
+    isUpdatingChapter,
     getNovel,
     updateTitle,
     updateCoverImage,
+    updateDescription,
+    createOrUpdateChapter,
+    deleteChapter,
   } = useMyNovelStore();
-  const [deleteChapter, setDeleteChapter] = useState(null);
+  const [chapterToDelete, setChapterToDelete] = useState(null);
   const [newTitle, setNewTitle] = useState(null);
-  const { tags, isLoadingTags, getTags } = useNovelStore();
   const fileInputRef = useRef(null);
+  const [updateTagDialogOpen, setUpdateTagDialogOpen] = useState(false);
+  const [newDescription, setNewDescription] = useState(null);
 
   useEffect(() => {
     getNovel(novelId);
@@ -73,7 +80,7 @@ const MyNovel = () => {
                     }}
                     className="p-6 md:p-0 md:w-36 md:h-51 rounded-2xl object-cover shrink-0 shadow-md"
                   />
-                  <SquarePen className="absolute opacity-0 group-hover:opacity-60 top-1 right-1 bg-base-100 text-base-content" />
+                  <SquarePen className="absolute opacity-0 size-5 group-hover:opacity-60 top-1 right-1 bg-base-100 text-base-content" />
                   {isUpdatingCover && (
                     <span className="loading loading-spinner loading-lg size-8 opacity-70 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></span>
                   )}
@@ -95,10 +102,10 @@ const MyNovel = () => {
                     </h1>
 
                     {isUpdatingTitle ? (
-                      <span className="loading loading-spinner loading-lg size-5 opacity-60"></span>
+                      <span className="loading loading-spinner loading-lg size-5 opacity-60 mr-2"></span>
                     ) : (
                       <SquarePen
-                        className="size-5 cursor-pointer opacity-60"
+                        className="size-4 cursor-pointer opacity-60 mr-2"
                         onClick={() => {
                           setNewTitle(novel.title);
                         }}
@@ -133,13 +140,13 @@ const MyNovel = () => {
                       ))}
                     </div>
 
-                    {isUpdateingTags ? (
-                      <span className="loading loading-spinner loading-lg size-5 opacity-60"></span>
+                    {isUpdatingTags ? (
+                      <span className="loading loading-spinner loading-lg size-5 opacity-60 mr-2"></span>
                     ) : (
                       <SquarePen
-                        className="size-5 cursor-pointer opacity-60"
+                        className="size-4 cursor-pointer opacity-60 mr-2"
                         onClick={() => {
-                          if (tags === null) getTags();
+                          setUpdateTagDialogOpen(true);
                         }}
                       />
                     )}
@@ -185,6 +192,23 @@ const MyNovel = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Description */}
+              <div className="relative bg-base-200 mt-4 p-4 pr-6 text-lg">
+                <div className="">{novel.description}</div>
+                <div className="absolute top-2 right-2">
+                  {isUpdatingTags ? (
+                    <span className="loading loading-spinner loading-lg size-5 opacity-60"></span>
+                  ) : (
+                    <SquarePen
+                      className="size-4 cursor-pointer opacity-60"
+                      onClick={() => {
+                        setNewDescription(novel.description);
+                      }}
+                    />
+                  )}
+                </div>
+              </div>
             </div>
           </div>
 
@@ -192,9 +216,28 @@ const MyNovel = () => {
           <div className="card bg-base-100 shadow-md">
             <div className="card-body">
               <div className="flex justify-between">
-                <h2 className="card-title mb-2">{t("my_novels")}</h2>
-                <button className="btn btn-primary btn-md">
-                  {t("new_chapter")}
+                <h2 className="card-title mb-2">{t("novel_chapters")}</h2>
+                <button
+                  className="btn btn-primary btn-md w-33"
+                  onClick={async () => {
+                    if (
+                      await createOrUpdateChapter(
+                        Number(novelId),
+                        null,
+                        t("new_chapter_title"),
+                        "",
+                      )
+                    )
+                      showToast(t("chapter_created"), "success");
+                  }}
+                  disabled={isUpdatingChapter}
+                >
+                  {" "}
+                  {isUpdatingChapter ? (
+                    <span className="loading loading-spinner"></span>
+                  ) : (
+                    t("new_chapter")
+                  )}
                 </button>
               </div>
 
@@ -206,18 +249,44 @@ const MyNovel = () => {
                         key={chapter.id}
                         className="flex items-center justify-between py-4"
                       >
-                        <div className="flex font-medium text-lg gap-4 min-w-0 truncate">
+                        <div
+                          className="flex font-medium text-lg gap-4 min-w-0 cursor-pointer truncate"
+                          onClick={() =>
+                            navigate(`/my-novels/chapter/${chapter.id}`)
+                          }
+                        >
                           <div className="shrink-0">#{idx}</div>
                           <div className="">{chapter.title}</div>
                         </div>
 
-                        <button
-                          className="btn btn-circle btn-ghost btn-sm text-error mr-4"
-                          aria-label="Delete novel"
-                          onClick={() => setDeleteChapter(chapter)}
-                        >
-                          <Trash2 size={18} />
-                        </button>
+                        <div className="flex items-center justify-between gap-4">
+                          <button
+                            className="btn btn-circle btn-ghost btn-sm text-blue-600 hover:text-blue-700"
+                            aria-label="Move chapter"
+                            onClick={() => {}}
+                          >
+                            <ArrowRightLeft size={18} />
+                          </button>
+
+                          <div>
+                            {!chapter.published ? (
+                              <div className="font-medium">Unpublish</div>
+                            ) : (
+                              <CircleCheck
+                                size={19}
+                                className="text-green-500"
+                              />
+                            )}
+                          </div>
+
+                          <button
+                            className="btn btn-circle btn-ghost btn-sm text-error mr-4"
+                            aria-label="Delete novel"
+                            onClick={() => setChapterToDelete(chapter)}
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        </div>
                       </div>
                     ),
                 )}
@@ -234,24 +303,38 @@ const MyNovel = () => {
       )}
 
       {/* Chapter Delete Dialog */}
-      <dialog open={deleteChapter} className="modal">
+      <dialog open={chapterToDelete} className="modal">
         <div className="modal-box">
           <h3 className="font-bold text-lg">{t("confirm_delete")}</h3>
           <p className="py-4">
-            {t("to_delete_novel", { title: deleteChapter?.title })}
+            {t("to_delete_novel", { title: chapterToDelete?.title })}
           </p>
 
           <div className="modal-action">
-            <button className="btn" onClick={() => setDeleteChapter(null)}>
+            <button
+              className="btn"
+              onClick={() => setChapterToDelete(null)}
+              disabled={isDeletingChapter}
+            >
               {t("cancel")}
             </button>
             <button
               className="btn btn-error"
-              onClick={() => {
-                setDeleteChapter(null);
+              onClick={async () => {
+                if (await deleteChapter(chapterToDelete.id)) {
+                  showToast(t("chapter_deleted"), "success");
+                  setChapterToDelete(null);
+                }
               }}
+              disabled={isDeletingChapter}
             >
-              {t("delete")}
+              {isDeletingChapter ? (
+                <div className="min-w-10">
+                  <span className="loading loading-spinner"></span>
+                </div>
+              ) : (
+                t("delete")
+              )}
             </button>
           </div>
         </div>
@@ -276,6 +359,7 @@ const MyNovel = () => {
               onClick={() => {
                 setNewTitle(null);
               }}
+              disabled={isUpdatingTitle}
             >
               {t("cancel")}
             </button>
@@ -288,12 +372,68 @@ const MyNovel = () => {
                 if (await updateTitle(novel.id, title))
                   showToast(t("cover_updated"), "success");
               }}
+              disabled={isUpdatingTitle}
             >
-              {t("update")}
+              {isUpdatingTitle ? (
+                <div className="min-w-10">
+                  <span className="loading loading-spinner"></span>
+                </div>
+              ) : (
+                t("update")
+              )}
             </button>
           </div>
         </div>
       </dialog>
+
+      {/* Update Description Dialog */}
+      <dialog open={newDescription != null} className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg mb-4">{t("edit_title")}</h3>
+
+          <textarea
+            className="textarea textarea-bordered w-full h-32"
+            value={newDescription ?? ""}
+            onChange={(e) => setNewDescription(e.target.value)}
+          />
+
+          <div className="modal-action">
+            <button
+              className="btn"
+              onClick={() => {
+                setNewDescription(null);
+              }}
+              disabled={isUpdatingDescription}
+            >
+              {t("cancel")}
+            </button>
+
+            <button
+              className="btn btn-primary"
+              onClick={async () => {
+                const description = newDescription;
+                setNewDescription(null);
+                if (await updateDescription(novel.id, description))
+                  showToast(t("description_updated"), "success");
+              }}
+              disabled={isUpdatingDescription}
+            >
+              {isUpdatingDescription ? (
+                <div className="min-w-10">
+                  <span className="loading loading-spinner"></span>
+                </div>
+              ) : (
+                t("update")
+              )}
+            </button>
+          </div>
+        </div>
+      </dialog>
+
+      <UpdateTagDialog
+        updateTagDialogOpen={updateTagDialogOpen}
+        setUpdateTagDialogOpen={setUpdateTagDialogOpen}
+      />
     </div>
   );
 };

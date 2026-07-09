@@ -10,20 +10,20 @@ import { Navigate } from "react-router-dom";
 import Footer from "./main/Footer";
 import NotFoundPage from "./main/NotFoundPage";
 import { useTranslation } from "react-i18next";
-import MyNovels from "./my_novels/MyNovels";
-import MyNovel from "./my_novels/MyNovel";
 
 const HomePage = lazy(() => import("./main/HomePage"));
 const ProfilePage = lazy(() => import("./auth/ProfilePage"));
 const NovelsPage = lazy(() => import("./novels/NovelsPage"));
 const ChapterPage = lazy(() => import("./chapters/ChapterPage"));
-const EditorPage = lazy(() => import("./editor/EditorPage"));
 const SignUpPage = lazy(() => import("./auth/SignUpPage"));
 const UpdatePasswordPage = lazy(() => import("./auth/UpdatePasswordPage"));
 const ForgotPasswordPage = lazy(() => import("./auth/ForgotPasswordPage"));
 const ResetPasswordPage = lazy(() => import("./auth/ResetPasswordPage"));
 const NovelPage = lazy(() => import("./novels/NovelPage"));
 const AuthorPage = lazy(() => import("./auth/AuthorPage"));
+const MyNovels = lazy(() => import("./my_novels/MyNovels"));
+const MyNovel = lazy(() => import("./my_novels/MyNovel"));
+const MyChapter = lazy(() => import("./my_novels/MyChapter"));
 
 function App() {
   const { user } = useUserStore();
@@ -47,7 +47,6 @@ function App() {
             <Route path="/ori" element={<NovelsPage type="original" />} />
             <Route path="/tran" element={<NovelsPage type="translation" />} />
             <Route path="/chapter" element={<ChapterPage />} />
-            <Route path="/editor" element={<EditorPage />} />
             <Route
               path="/login"
               element={!user ? <LoginPage /> : <Navigate to="/" replace />}
@@ -78,6 +77,10 @@ function App() {
             <Route
               path="/my-novels/:novelId"
               element={user ? <MyNovel /> : <Navigate to="/" replace />}
+            />
+            <Route
+              path="/my-novels/chapter/:chapterId"
+              element={user ? <MyChapter /> : <Navigate to="/" replace />}
             />
             <Route path="/*" element={<NotFoundPage />} />
           </Routes>

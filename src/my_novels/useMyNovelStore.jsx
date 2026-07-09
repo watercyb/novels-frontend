@@ -5,13 +5,19 @@ import errorHandler from "../utils/ErrorHandler";
 const useMyNovelStore = create((set, get) => ({
   novels: [],
   novel: {},
+  chapter: null,
   isLoadingMyNovels: false,
   isLoadingMyNovel: false,
   isUpdatingTitle: false,
-  isUpdateingTags: false,
+  isUpdatingTags: false,
   isUpdatingCover: false,
   isCreatingNovel: false,
   isDeletingNovel: false,
+  isUpdatingDescription: false,
+  isLoadingChapter: false,
+  isValidInput: false,
+  isUpdatingChapter: false,
+  operation: null,
 
   getNovels: async () => {
     try {
@@ -142,6 +148,159 @@ const useMyNovelStore = create((set, get) => ({
       return false;
     } finally {
       set({ isDeletingNovel: false });
+    }
+  },
+
+  updateTags: async (novelId, tags) => {
+    try {
+      set({ isUpdatingTags: true });
+      const formData = new FormData();
+      formData.append("id", novelId);
+      formData.append("tags", tags);
+      const res = await axiosInstance.post("/novels", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (res.data && res.data.success) {
+        set({ novel: { ...get().novel, tags: res.data.novel.tags } });
+        return true;
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error update tags", true);
+      return false;
+    } finally {
+      set({ isUpdatingTags: false });
+    }
+  },
+
+  updateDescription: async (novelId, description) => {
+    try {
+      set({ isUpdatingDescription: true });
+      const formData = new FormData();
+      formData.append("id", novelId);
+      formData.append("description", description);
+      const res = await axiosInstance.post("/novels", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (res.data && res.data.success) {
+        set({
+          novel: { ...get().novel, description: res.data.novel.description },
+        });
+        return true;
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error update description", true);
+      return false;
+    } finally {
+      set({ isUpdatingDescription: false });
+    }
+  },
+
+  getChapter: async (chapterId) => {
+    try {
+      if (chapterId == -1) {
+        set({ chapter: { id: -1, title: "", content: "" } });
+        return true;
+      }
+      set({ isLoadingChapter: true });
+      const res = await axiosInstance.get(
+        `/chapters/my-novels/${chapterId}?adjacent=false`,
+      );
+      if (res.data && res.data.success) {
+        set({ chapter: res.data.chapter[0] });
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      set({ chapter: null });
+      errorHandler(set, error, "Error get chapter", false);
+    } finally {
+      set({ isLoadingChapter: false });
+    }
+  },
+
+  createOrUpdateChapter: async (novelId, chapterId, title, content) => {
+    try {
+      set({ isUpdatingChapter: true, operation: "save_chapter" });
+      const res = await axiosInstance.post("/chapters", {
+        novelId,
+        chapterId,
+        title,
+        content,
+      });
+      if (res.data && res.data.success) {
+        set({
+          novel: {
+            ...get().novel,
+            chapters: [...get().novel.chapters, res.data.chapter[0]],
+          },
+        });
+        return true;
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error create or update chapter", true);
+      return false;
+    } finally {
+      set({ isUpdatingChapter: false, operation: null });
+    }
+  },
+
+  deleteChapter: async (chapterId) => {
+    try {
+      set({ isDeletingChapter: true });
+      const res = await axiosInstance.delete(`/chapters/${chapterId}`);
+      if (res.data && res.data.success) {
+        set({
+          novel: {
+            ...get().novel,
+            chapters: get().novel.chapters.filter(
+              (chapter) => chapter.id != chapterId,
+            ),
+          },
+        });
+        return true;
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error delete chapter", true);
+      return false;
+    } finally {
+      set({ isDeletingChapter: false });
+    }
+  },
+
+  publishChapter: async (chapterId) => {
+    try {
+      set({ operation: "publish_chapter" });
+      const res = await axiosInstance.delete(`/chapters/${11111111111}`);
+      if (res.data && res.data.success) {
+        set({
+          novel: {
+            ...get().novel,
+            chapters: get().novel.chapters.filter(
+              (chapter) => chapter.id != chapterId,
+            ),
+          },
+        });
+        return true;
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error publish chapter", true);
+      return false;
+    } finally {
+      set({ operation: null });
     }
   },
 }));
