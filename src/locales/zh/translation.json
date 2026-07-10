@@ -190,5 +190,21 @@
   "reset_chapter": "重置章节",
   "confirm_reset": "确定要重置此章节吗？所有未保存的更改将会丢失。",
   "confirm_load": "确定要加载本地草稿吗？当前所有未保存的更改将会丢失。",
-  "load": "加载"
+  "load": "加载",
+  "draft_loaded": "草稿加载成功。",
+  "no_draft_found": "未找到草稿。",
+  "draft_saved": "草稿保存成功。",
+  "chapter_saved": "章节保存成功",
+  "draft_found":"发现本地草稿",
+  "confirm_auto_load": "检测到本地草稿，是否立即加载？您也可以稍后通过 “加载草稿” 按钮加载。",
+  "published_chapter": "已发布章节",
+  "confirm_save": "此章节已发布，保存后的更改将立即对读者可见。",
+  "published": "已发布",
+  "chapter_published":"章节已发布。",
+  "chapter_not_published":"章节未发布，点击发布。",
+  "create_chapter": "正在创建章节...",
+  "delete_chapter": "正在删除章节...",
+  "confirm_publish_title": "确认发布章节",
+  "confirm_publish": "确定要发布此章节吗？发布后将无法取消发布。",
+  "chapter_published_success":"章节发布成功。"
 }

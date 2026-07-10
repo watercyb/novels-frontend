@@ -228,7 +228,10 @@ const useMyNovelStore = create((set, get) => ({
 
   createOrUpdateChapter: async (novelId, chapterId, title, content) => {
     try {
-      set({ isUpdatingChapter: true, operation: "save_chapter" });
+      set({
+        isUpdatingChapter: true,
+        operation: chapterId ? "save_chapter" : "create_chapter",
+      });
       const res = await axiosInstance.post("/chapters", {
         novelId,
         chapterId,
@@ -236,12 +239,30 @@ const useMyNovelStore = create((set, get) => ({
         content,
       });
       if (res.data && res.data.success) {
-        set({
-          novel: {
-            ...get().novel,
-            chapters: [...get().novel.chapters, res.data.chapter[0]],
-          },
-        });
+        if (get().novel.chapters) {
+          if (
+            !get().novel.chapters.find((chapter) => chapter.id == chapterId)
+          ) {
+            set({
+              novel: {
+                ...get().novel,
+                chapters: [...get().novel.chapters, res.data.chapter[0]],
+              },
+            });
+          } else {
+            set({
+              novel: {
+                ...get().novel,
+                chapters: get().novel.chapters.map((chapter) =>
+                  chapter.id == chapterId
+                    ? chapter
+                    : { ...chapter, title, content },
+                ),
+              },
+            });
+          }
+        }
+        set({ chapter: { ...get().chapter, title, content } });
         return true;
       } else {
         throw new Error(res.data);
@@ -254,19 +275,22 @@ const useMyNovelStore = create((set, get) => ({
     }
   },
 
-  deleteChapter: async (chapterId) => {
+  deleteChapter: async (chapterToDelete) => {
     try {
-      set({ isDeletingChapter: true });
-      const res = await axiosInstance.delete(`/chapters/${chapterId}`);
+      set({ operation: "delete_chapter" });
+      const res = await axiosInstance.delete(`/chapters/${chapterToDelete.id}`);
       if (res.data && res.data.success) {
-        set({
-          novel: {
-            ...get().novel,
-            chapters: get().novel.chapters.filter(
-              (chapter) => chapter.id != chapterId,
-            ),
-          },
-        });
+        const newNovel = {
+          ...get().novel,
+          chapters: get().novel.chapters.filter(
+            (chapter) => chapter.id != chapterToDelete.id,
+          ),
+        };
+        if (chapterToDelete.published) {
+          newNovel.chapterCount--;
+          newNovel.wordCount -= chapterToDelete.wordCount;
+        }
+        set({ novel: newNovel });
         return true;
       } else {
         throw new Error(res.data);
@@ -275,23 +299,29 @@ const useMyNovelStore = create((set, get) => ({
       errorHandler(set, error, "Error delete chapter", true);
       return false;
     } finally {
-      set({ isDeletingChapter: false });
+      set({ operation: null });
     }
   },
 
-  publishChapter: async (chapterId) => {
+  publishChapter: async (chapterToPublish) => {
     try {
       set({ operation: "publish_chapter" });
-      const res = await axiosInstance.delete(`/chapters/${11111111111}`);
+      const res = await axiosInstance.post(
+        `/chapters/${chapterToPublish.id}/publish`,
+      );
       if (res.data && res.data.success) {
-        set({
-          novel: {
-            ...get().novel,
-            chapters: get().novel.chapters.filter(
-              (chapter) => chapter.id != chapterId,
-            ),
-          },
-        });
+        if (get().novel.chapters) {
+          const newNovel = { ...get().novel };
+          newNovel.chapters = get().novel.chapters.map((chapter) =>
+            chapter.id != chapterToPublish.id
+              ? chapter
+              : { ...chapter, published: true },
+          );
+          newNovel.wordCount += chapterToPublish.wordCount;
+          newNovel.chapterCount++;
+          set({ novel: newNovel });
+        }
+        set({ chapter: { ...get().chapter, published: true } });
         return true;
       } else {
         throw new Error(res.data);
@@ -302,6 +332,10 @@ const useMyNovelStore = create((set, get) => ({
     } finally {
       set({ operation: null });
     }
+  },
+
+  clearChapter: () => {
+    set({ chapter: null });
   },
 }));
 

@@ -2,13 +2,20 @@ import { useEffect, useRef, useState } from "react";
 import useUserStore from "../auth/useUserStore";
 import useMyNovelStore from "./useMyNovelStore";
 import { t } from "i18next";
-import { SquarePen, Trash2, CircleCheck, ArrowRightLeft } from "lucide-react";
+import {
+  SquarePen,
+  Trash2,
+  CircleCheck,
+  ArrowRightLeft,
+  FileText,
+} from "lucide-react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import NotFoundPage from "../main/NotFoundPage";
 import cover from "../assets/cover.png";
 import i18n from "../locales/i18n";
 import showToast from "../utils/Toast";
 import UpdateTagDialog from "./UpdateTagDialog";
+import PublishChapterDialog from "./PublishChapterDialog";
 
 const MyNovel = () => {
   const { novelId } = useParams();
@@ -21,20 +28,22 @@ const MyNovel = () => {
     isUpdatingTags,
     isUpdatingCover,
     isUpdatingDescription,
-    isDeletingChapter,
     isUpdatingChapter,
+    operation,
     getNovel,
     updateTitle,
     updateCoverImage,
     updateDescription,
     createOrUpdateChapter,
     deleteChapter,
+    publishChapter,
   } = useMyNovelStore();
   const [chapterToDelete, setChapterToDelete] = useState(null);
   const [newTitle, setNewTitle] = useState(null);
   const fileInputRef = useRef(null);
   const [updateTagDialogOpen, setUpdateTagDialogOpen] = useState(false);
   const [newDescription, setNewDescription] = useState(null);
+  const [chapterToPublish, setChapterToPublish] = useState(null);
 
   useEffect(() => {
     getNovel(novelId);
@@ -57,6 +66,15 @@ const MyNovel = () => {
       )}
       {/* No Novel */}
       {!isLoading && !isLoadingMyNovel && !novel.chapters && <NotFoundPage />}
+      {/* Operation */}
+      {operation && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-base-100 rounded-2xl shadow-xl p-8 flex flex-col items-center gap-4">
+            <span className="loading loading-spinner loading-lg text-primary"></span>
+            <span className="text-lg font-medium">{t(operation)}</span>
+          </div>
+        </div>
+      )}
       {!isLoadingMyNovel && !isLoading && novel.chapters && (
         <div className="max-w-4xl mx-auto p-4">
           {/* User Info */}
@@ -197,7 +215,7 @@ const MyNovel = () => {
               <div className="relative bg-base-200 mt-4 p-4 pr-6 text-lg">
                 <div className="">{novel.description}</div>
                 <div className="absolute top-2 right-2">
-                  {isUpdatingTags ? (
+                  {isUpdatingDescription ? (
                     <span className="loading loading-spinner loading-lg size-5 opacity-60"></span>
                   ) : (
                     <SquarePen
@@ -270,12 +288,23 @@ const MyNovel = () => {
 
                           <div>
                             {!chapter.published ? (
-                              <div className="font-medium">Unpublish</div>
+                              <div
+                                className="tooltip cursor-pointer mt-1"
+                                data-tip={t("chapter_not_published")}
+                                onClick={() => setChapterToPublish(chapter)}
+                              >
+                                <FileText size={19} className="text-gray-500" />
+                              </div>
                             ) : (
-                              <CircleCheck
-                                size={19}
-                                className="text-green-500"
-                              />
+                              <div
+                                className="tooltip mt-1"
+                                data-tip={t("chapter_published")}
+                              >
+                                <CircleCheck
+                                  size={19}
+                                  className="text-green-500"
+                                />
+                              </div>
                             )}
                           </div>
 
@@ -301,7 +330,6 @@ const MyNovel = () => {
           </div>
         </div>
       )}
-
       {/* Chapter Delete Dialog */}
       <dialog open={chapterToDelete} className="modal">
         <div className="modal-box">
@@ -311,35 +339,22 @@ const MyNovel = () => {
           </p>
 
           <div className="modal-action">
-            <button
-              className="btn"
-              onClick={() => setChapterToDelete(null)}
-              disabled={isDeletingChapter}
-            >
+            <button className="btn" onClick={() => setChapterToDelete(null)}>
               {t("cancel")}
             </button>
             <button
               className="btn btn-error"
               onClick={async () => {
-                if (await deleteChapter(chapterToDelete.id)) {
+                setChapterToDelete(null);
+                if (await deleteChapter(chapterToDelete))
                   showToast(t("chapter_deleted"), "success");
-                  setChapterToDelete(null);
-                }
               }}
-              disabled={isDeletingChapter}
             >
-              {isDeletingChapter ? (
-                <div className="min-w-10">
-                  <span className="loading loading-spinner"></span>
-                </div>
-              ) : (
-                t("delete")
-              )}
+              {t("delete")}
             </button>
           </div>
         </div>
       </dialog>
-
       {/* Update Title Dialog */}
       <dialog open={newTitle != null} className="modal">
         <div className="modal-box">
@@ -368,9 +383,10 @@ const MyNovel = () => {
               className="btn btn-primary"
               onClick={async () => {
                 const title = newTitle;
-                setNewTitle(null);
-                if (await updateTitle(novel.id, title))
+                if (await updateTitle(novel.id, title)) {
                   showToast(t("cover_updated"), "success");
+                  setNewTitle(null);
+                }
               }}
               disabled={isUpdatingTitle}
             >
@@ -385,7 +401,6 @@ const MyNovel = () => {
           </div>
         </div>
       </dialog>
-
       {/* Update Description Dialog */}
       <dialog open={newDescription != null} className="modal">
         <div className="modal-box">
@@ -412,9 +427,10 @@ const MyNovel = () => {
               className="btn btn-primary"
               onClick={async () => {
                 const description = newDescription;
-                setNewDescription(null);
-                if (await updateDescription(novel.id, description))
+                if (await updateDescription(novel.id, description)) {
                   showToast(t("description_updated"), "success");
+                  setNewDescription(null);
+                }
               }}
               disabled={isUpdatingDescription}
             >
@@ -433,6 +449,13 @@ const MyNovel = () => {
       <UpdateTagDialog
         updateTagDialogOpen={updateTagDialogOpen}
         setUpdateTagDialogOpen={setUpdateTagDialogOpen}
+      />
+
+      {/* Comfirm Publish Dialog */}
+      <PublishChapterDialog
+        chapterToPublish={chapterToPublish}
+        setChapterToPublish={setChapterToPublish}
+        publishChapter={publishChapter}
       />
     </div>
   );

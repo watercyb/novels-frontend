@@ -190,5 +190,21 @@
   "reset_chapter": "Reset Chapter",
   "confirm_reset": "Are you sure you want to reset this chapter? All unsaved changes will be lost.",
   "confirm_load": "Are you sure you want to load the local draft? All current unsaved changes will be lost.",
-  "load": "Load"
+  "load": "Load",
+  "draft_loaded": "Draft loaded successfully.",
+  "no_draft_found": "No draft found.",
+  "draft_saved": "Draft saved successfully.",
+  "chapter_saved": "Chapter updated successfully",
+  "draft_found": "Local Draft Found",
+  "confirm_auto_load": "A local draft was found. Would you like to load it now? You can still load it later using the Load Draft button.",
+  "published_chapter": "Published Chapter",
+  "confirm_save": "This chapter is already published. Any changes you save will be immediately visible to readers.",
+  "published": "Published",
+  "chapter_published":"Chapter is published.",
+  "chapter_not_published":"Chapter is not published. Click to publish.",
+  "create_chapter": "Creating chapter...",
+  "delete_chapter": "Deleting chapter...",
+  "confirm_publish_title": "Confirm Publish",
+  "confirm_publish": "Are you sure you want to publish this chapter? Once published, it cannot be unpublished.",
+  "chapter_published_success":"Chapter published successfully."
 }
