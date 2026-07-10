@@ -1,5 +1,5 @@
-import { useParams } from "react-router-dom";
-import ChapterEditor from "../editor/ChapterEditor";
+import { useNavigate, useParams } from "react-router-dom";
+import ChapterEditor from "./ChapterEditor";
 import useMyNovelStore from "./useMyNovelStore";
 import { useEffect, useState } from "react";
 import NotFoundPage from "../main/NotFoundPage";
@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { hasDraft, loadDraft, saveDraft } from "../utils/localStorage";
 import showToast from "../utils/Toast";
 import PublishChapterDialog from "./PublishChapterDialog";
+import { ArrowLeft } from "lucide-react";
 
 const MyChapter = () => {
   const { chapterId } = useParams();
@@ -28,6 +29,7 @@ const MyChapter = () => {
   const [isLoadedDraft, setIsLoadedDraft] = useState(false);
   const [comfirmSaveDialogOpen, setComfirmSaveDialogOpen] = useState(false);
   const [chapterToPublish, setChapterToPublish] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isLoadingChapter) getChapter(chapterId);
@@ -53,6 +55,18 @@ const MyChapter = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chapter]);
+
+  useEffect(() => {
+    if (!isLoadingChapter && chapter?.id == chapterId) {
+      document.title =
+        t("edit_chapter") +
+        " - " +
+        (chapter?.novelTitle ?? "") +
+        " - " +
+        (chapter?.title ?? "") +
+        " - Cat Novels";
+    }
+  }, [chapter, chapterId, isLoadingChapter, t]);
 
   const handleSaveChapter = async () => {
     saveDraft(chapter?.id, title, content);
@@ -89,6 +103,15 @@ const MyChapter = () => {
       {!isLoadingChapter && chapter && (
         <div className="max-w-5xl mx-auto w-full p-6 flex flex-col gap-6">
           <div className="flex justify-between">
+            <div className="mb-2">
+              <button
+                className="flex items-center gap-1 text-sm text-base-content/70 hover:text-primary transition-colors"
+                onClick={() => navigate(`/my-novels/${chapter.novelId}`)}
+              >
+                <ArrowLeft size={16} />
+                <span>{chapter.novelTitle}</span>
+              </button>
+            </div>
             <h1 className="text-3xl font-bold">{t("edit_chapter")}</h1>
             {!chapter?.published ? (
               <button

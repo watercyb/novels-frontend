@@ -6,6 +6,7 @@ const useMyNovelStore = create((set, get) => ({
   novels: [],
   novel: {},
   chapter: null,
+  error: null,
   isLoadingMyNovels: false,
   isLoadingMyNovel: false,
   isUpdatingTitle: false,

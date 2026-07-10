@@ -47,6 +47,13 @@ const MyNovel = () => {
     getNovel(novelId);
   }, [novelId, getNovel]);
 
+  useEffect(() => {
+    if (!isLoadingMyNovel && novel?.id == novelId) {
+      document.title =
+        t("my_novels") + " - " + (novel?.title ?? "") + " - Cat Novels";
+    }
+  }, [isLoadingMyNovel, novel?.id, novel?.title, novelId]);
+
   const handleCoverChange = async (e) => {
     const file = e.target.files[0];
     if (file && (await updateCoverImage(novelId, file)))

@@ -27,6 +27,12 @@ const MyNovels = () => {
     getNovels();
   }, [getNovels, user]);
 
+  useEffect(() => {
+    if (!isLoading) {
+      document.title = t("my_novels") + " - Cat Novels";
+    }
+  }, [isLoading, navigate]);
+
   return (
     <div>
       {/* Loading */}
