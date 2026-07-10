@@ -206,5 +206,7 @@
   "delete_chapter": "正在删除章节...",
   "confirm_publish_title": "确认发布章节",
   "confirm_publish": "确定要发布此章节吗？发布后将无法取消发布。",
-  "chapter_published_success":"章节发布成功。"
+  "chapter_published_success":"章节发布成功。",
+  "delete_novel": "正在删除小说...",
+  "update_cover": "正在更新小说封面..."
 }

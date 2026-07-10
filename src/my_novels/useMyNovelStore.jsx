@@ -10,13 +10,11 @@ const useMyNovelStore = create((set, get) => ({
   isLoadingMyNovel: false,
   isUpdatingTitle: false,
   isUpdatingTags: false,
-  isUpdatingCover: false,
   isCreatingNovel: false,
   isDeletingNovel: false,
   isUpdatingDescription: false,
   isLoadingChapter: false,
   isValidInput: false,
-  isUpdatingChapter: false,
   operation: null,
 
   getNovels: async () => {
@@ -80,7 +78,7 @@ const useMyNovelStore = create((set, get) => ({
 
   updateCoverImage: async (novelId, coverImage) => {
     try {
-      set({ isUpdatingCover: true });
+      set({ operation: "update_cover" });
       const formData = new FormData();
       formData.append("id", novelId);
       formData.append("coverImage", coverImage);
@@ -99,7 +97,7 @@ const useMyNovelStore = create((set, get) => ({
       errorHandler(set, error, "Error update cover", true);
       return false;
     } finally {
-      set({ isUpdatingCover: false });
+      set({ operation: null });
     }
   },
 
@@ -133,7 +131,7 @@ const useMyNovelStore = create((set, get) => ({
 
   deleteNovel: async (novelId) => {
     try {
-      set({ isDeletingNovel: true });
+      set({ operation: "delete_novel" });
       const res = await axiosInstance.delete(`/novels/${novelId}`);
       if (res.data && res.data.success) {
         set({
@@ -147,7 +145,7 @@ const useMyNovelStore = create((set, get) => ({
       errorHandler(set, error, "Error create novel", true);
       return false;
     } finally {
-      set({ isDeletingNovel: false });
+      set({ operation: null });
     }
   },
 
@@ -229,7 +227,6 @@ const useMyNovelStore = create((set, get) => ({
   createOrUpdateChapter: async (novelId, chapterId, title, content) => {
     try {
       set({
-        isUpdatingChapter: true,
         operation: chapterId ? "save_chapter" : "create_chapter",
       });
       const res = await axiosInstance.post("/chapters", {
@@ -271,7 +268,7 @@ const useMyNovelStore = create((set, get) => ({
       errorHandler(set, error, "Error create or update chapter", true);
       return false;
     } finally {
-      set({ isUpdatingChapter: false, operation: null });
+      set({ operation: null });
     }
   },
 

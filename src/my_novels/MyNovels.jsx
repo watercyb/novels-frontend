@@ -14,7 +14,7 @@ const MyNovels = () => {
     novels,
     isLoadingMyNovels,
     isCreatingNovel,
-    isDeletingNovel,
+    operation,
     getNovels,
     createNovel,
     deleteNovel,
@@ -27,14 +27,6 @@ const MyNovels = () => {
     getNovels();
   }, [getNovels, user]);
 
-  const handleDeleteNovel = async () => {
-    if (!novelToDelete?.id) return;
-    if (await deleteNovel(novelToDelete.id)) {
-      setNovelToDelete(null);
-      showToast(t("novel_deleted"), "success");
-    }
-  };
-
   return (
     <div>
       {/* Loading */}
@@ -42,6 +34,15 @@ const MyNovels = () => {
         <div className="flex justify-center py-20">
           <span className="loading loading-spinner loading-lg mr-4"></span>
           {t("loading")}
+        </div>
+      )}
+      {/* Operation */}
+      {operation && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-base-100 rounded-2xl shadow-xl p-8 flex flex-col items-center gap-4">
+            <span className="loading loading-spinner loading-lg text-primary"></span>
+            <span className="text-lg font-medium">{t(operation)}</span>
+          </div>
         </div>
       )}
       {!isLoadingMyNovels && !isLoading && novels && (
@@ -95,13 +96,8 @@ const MyNovels = () => {
                       className="btn btn-circle btn-ghost btn-sm text-error mr-4"
                       aria-label="Delete novel"
                       onClick={() => setNovelToDelete(novel)}
-                      disabled={isDeletingNovel}
                     >
-                      {isDeletingNovel ? (
-                        <span className="loading loading-spinner"></span>
-                      ) : (
-                        <Trash2 size={18} />
-                      )}
+                      {<Trash2 size={18} />}
                     </button>
                   </div>
                 ))}
@@ -126,26 +122,19 @@ const MyNovels = () => {
           </p>
 
           <div className="modal-action">
-            <button
-              className="btn"
-              onClick={() => setNovelToDelete(null)}
-              disabled={isDeletingNovel}
-            >
+            <button className="btn" onClick={() => setNovelToDelete(null)}>
               {t("cancel")}
             </button>
             <div className="min-w-20">
               <button
                 className="btn btn-error w-full"
-                onClick={() => {
-                  handleDeleteNovel();
+                onClick={async () => {
+                  setNovelToDelete(null);
+                  if (await deleteNovel(novelToDelete.id))
+                    showToast(t("novel_deleted"), "success");
                 }}
-                disabled={isDeletingNovel}
               >
-                {isDeletingNovel ? (
-                  <span className="loading loading-spinner"></span>
-                ) : (
-                  t("delete")
-                )}
+                {t("delete")}
               </button>
             </div>
           </div>

@@ -200,11 +200,13 @@
   "published_chapter": "Published Chapter",
   "confirm_save": "This chapter is already published. Any changes you save will be immediately visible to readers.",
   "published": "Published",
-  "chapter_published":"Chapter is published.",
-  "chapter_not_published":"Chapter is not published. Click to publish.",
+  "chapter_published": "Chapter is published.",
+  "chapter_not_published": "Chapter is not published. Click to publish.",
   "create_chapter": "Creating chapter...",
   "delete_chapter": "Deleting chapter...",
   "confirm_publish_title": "Confirm Publish",
   "confirm_publish": "Are you sure you want to publish this chapter? Once published, it cannot be unpublished.",
-  "chapter_published_success":"Chapter published successfully."
+  "chapter_published_success": "Chapter published successfully.",
+  "delete_novel": "Deleting novel...",
+  "update_cover": "Updating novel cover..."
 }

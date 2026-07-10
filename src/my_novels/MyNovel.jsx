@@ -26,9 +26,7 @@ const MyNovel = () => {
     isLoadingMyNovel,
     isUpdatingTitle,
     isUpdatingTags,
-    isUpdatingCover,
     isUpdatingDescription,
-    isUpdatingChapter,
     operation,
     getNovel,
     updateTitle,
@@ -99,9 +97,6 @@ const MyNovel = () => {
                     className="p-6 md:p-0 md:w-36 md:h-51 rounded-2xl object-cover shrink-0 shadow-md"
                   />
                   <SquarePen className="absolute opacity-0 size-5 group-hover:opacity-60 top-1 right-1 bg-base-100 text-base-content" />
-                  {isUpdatingCover && (
-                    <span className="loading loading-spinner loading-lg size-8 opacity-70 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></span>
-                  )}
 
                   <input
                     type="file"
@@ -248,14 +243,8 @@ const MyNovel = () => {
                     )
                       showToast(t("chapter_created"), "success");
                   }}
-                  disabled={isUpdatingChapter}
                 >
-                  {" "}
-                  {isUpdatingChapter ? (
-                    <span className="loading loading-spinner"></span>
-                  ) : (
-                    t("new_chapter")
-                  )}
+                  {t("new_chapter")}
                 </button>
               </div>
 

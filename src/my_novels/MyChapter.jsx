@@ -42,8 +42,14 @@ const MyChapter = () => {
     setHasLocalDraft(hasDraft(chapter?.id));
     if (chapter && !isLoadedDraft) {
       setIsLoadedDraft(true);
-      if (hasDraft(chapter?.id))
-        setTimeout(() => setLoadDraftDialogOpen(5), 1000);
+      const draft = loadDraft(chapter?.id);
+      if (
+        hasDraft(chapter?.id) &&
+        (chapter?.title != draft?.title || chapter?.content != draft?.content)
+      )
+        setTimeout(() => {
+          setLoadDraftDialogOpen(5);
+        }, 1000);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chapter]);
@@ -164,6 +170,9 @@ const MyChapter = () => {
                     setComfirmSaveDialogOpen(true);
                   }
                 }}
+                disabled={
+                  chapter?.title == title && chapter?.content == content
+                }
               >
                 {t("save")}
               </button>
