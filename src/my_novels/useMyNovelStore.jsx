@@ -345,6 +345,7 @@ const useMyNovelStore = create((set, get) => ({
       });
       if (res.data && res.data.success) {
         const newChapter = res.data.chapter[0];
+        console.log(newChapter);
         const newChapters = get().novel.chapters.filter(
           (chapter) => chapter.id != newChapter.id,
         );
