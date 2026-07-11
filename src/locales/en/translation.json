@@ -208,5 +208,12 @@
   "confirm_publish": "Are you sure you want to publish this chapter? Once published, it cannot be unpublished.",
   "chapter_published_success": "Chapter published successfully.",
   "delete_novel": "Deleting novel...",
-  "update_cover": "Updating novel cover..."
+  "update_cover": "Updating novel cover...",
+  "moving_chapter": "Moving chapter...",
+  "chapter_moved": "Chapter moved successfully.",
+  "choose_chapter_position": "Choose where {{title}} should be placed.",
+  "arrange_chapter": "Arrange Chapter",
+  "move_to_beginning": "Move to beginning",
+  "before_all_chapters": "Before all chapters",
+  "place_after_this_chapter": "Place after this chapter"
 }

@@ -335,6 +335,47 @@ const useMyNovelStore = create((set, get) => ({
   clearChapter: () => {
     set({ chapter: null });
   },
+
+  moveChapter: async (targetChapterId, movingChapterId) => {
+    try {
+      set({ operation: "moving_chapter" });
+      const res = await axiosInstance.post("/chapters/move", {
+        targetChapterId,
+        movingChapterId,
+      });
+      if (res.data && res.data.success) {
+        const newChapter = res.data.chapter[0];
+        const newChapters = get().novel.chapters.filter(
+          (chapter) => chapter.id != newChapter.id,
+        );
+        let idx = 0;
+        while (
+          idx < newChapters.length &&
+          newChapters[idx].orderIndex < newChapter.orderIndex
+        ) {
+          idx++;
+        }
+        if (
+          idx < newChapters.length &&
+          newChapters[idx].orderIndex == newChapter.orderIndex
+        ) {
+          for (let i = idx; i < newChapters.length; i++) {
+            newChapters[i].orderIndex++;
+          }
+        }
+        newChapters.splice(idx, 0, newChapter);
+        set({ novel: { ...get().novel, chapters: newChapters } });
+        return true;
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error move chapter", true);
+      return false;
+    } finally {
+      set({ operation: null });
+    }
+  },
 }));
 
 export default useMyNovelStore;

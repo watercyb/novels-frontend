@@ -16,6 +16,7 @@ import i18n from "../locales/i18n";
 import showToast from "../utils/Toast";
 import UpdateTagDialog from "./UpdateTagDialog";
 import PublishChapterDialog from "./PublishChapterDialog";
+import ArrangeChapterDialog from "./ArrangeChapterDialog";
 
 const MyNovel = () => {
   const { novelId } = useParams();
@@ -42,6 +43,7 @@ const MyNovel = () => {
   const [updateTagDialogOpen, setUpdateTagDialogOpen] = useState(false);
   const [newDescription, setNewDescription] = useState(null);
   const [chapterToPublish, setChapterToPublish] = useState(null);
+  const [chapterToMove, setChapterToMove] = useState(null);
 
   useEffect(() => {
     getNovel(novelId);
@@ -232,7 +234,7 @@ const MyNovel = () => {
             </div>
           </div>
 
-          {/* Novel List */}
+          {/* Chapter List */}
           <div className="card bg-base-100 shadow-md">
             <div className="card-body">
               <div className="flex justify-between">
@@ -277,7 +279,7 @@ const MyNovel = () => {
                           <button
                             className="btn btn-circle btn-ghost btn-sm text-blue-600 hover:text-blue-700"
                             aria-label="Move chapter"
-                            onClick={() => {}}
+                            onClick={() => setChapterToMove(chapter)}
                           >
                             <ArrowRightLeft size={18} />
                           </button>
@@ -451,6 +453,13 @@ const MyNovel = () => {
       <PublishChapterDialog
         chapterToPublish={chapterToPublish}
         setChapterToPublish={setChapterToPublish}
+        publishChapter={publishChapter}
+      />
+
+      {/* Arrange Chapter Dialog */}
+      <ArrangeChapterDialog
+        chapterToMove={chapterToMove}
+        setChapterToMove={setChapterToMove}
         publishChapter={publishChapter}
       />
     </div>
