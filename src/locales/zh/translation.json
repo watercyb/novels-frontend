@@ -215,5 +215,8 @@
   "arrange_chapter": "调整章节顺序",
   "move_to_beginning": "移动到开头",
   "before_all_chapters": "放在所有章节之前",
-  "place_after_this_chapter": "放在此章节之后"
+  "place_after_this_chapter": "放在此章节之后",
+  "top_views_week": "本周热门",
+  "recent_updated": "最近更新",
+  "view_more": "查看更多"
 }

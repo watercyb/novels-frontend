@@ -11,7 +11,7 @@ import Footer from "./main/Footer";
 import NotFoundPage from "./main/NotFoundPage";
 import { useTranslation } from "react-i18next";
 
-const HomePage = lazy(() => import("./main/HomePage"));
+const Homepage = lazy(() => import("./main/Homepage"));
 const ProfilePage = lazy(() => import("./auth/ProfilePage"));
 const NovelsPage = lazy(() => import("./novels/NovelsPage"));
 const ChapterPage = lazy(() => import("./chapters/ChapterPage"));
@@ -42,7 +42,7 @@ function App() {
           }
         >
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<Homepage />} />
             <Route path="/all" element={<NovelsPage type="all" />} />
             <Route path="/ori" element={<NovelsPage type="original" />} />
             <Route path="/tran" element={<NovelsPage type="translation" />} />

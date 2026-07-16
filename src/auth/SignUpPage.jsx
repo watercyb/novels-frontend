@@ -89,6 +89,7 @@ const SignUpPage = () => {
             <Link
               to="/login"
               className="font-medium text-primary hover:underline"
+              onClick={(e) => e.currentTarget.blur()}
             >
               {t("login")}
             </Link>

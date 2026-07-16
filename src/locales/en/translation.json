@@ -215,5 +215,8 @@
   "arrange_chapter": "Arrange Chapter",
   "move_to_beginning": "Move to beginning",
   "before_all_chapters": "Before all chapters",
-  "place_after_this_chapter": "Place after this chapter"
+  "place_after_this_chapter": "Place after this chapter",
+  "top_views_week": "Trending (7 Days)",
+  "recent_updated": "Recently Updated",
+  "view_more": "View More"
 }

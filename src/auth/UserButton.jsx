@@ -39,20 +39,34 @@ const UserButton = () => {
       >
         {!user ? (
           <li>
-            <Link to="/login" state={{ from: location }} replace>
+            <Link
+              to="/login"
+              state={{ from: location }}
+              onClick={(e) => e.currentTarget.blur()}
+              replace
+            >
               {t("menu_login_signup")}
             </Link>
           </li>
         ) : (
           <>
             <li>
-              <Link to="/profile">{t("menu_profile")}</Link>
+              <Link to="/profile" onClick={(e) => e.currentTarget.blur()}>
+                {t("menu_profile")}
+              </Link>
             </li>
             <li>
-              <Link to="/my-novels">{t("my_novels")}</Link>
+              <Link to="/my-novels" onClick={(e) => e.currentTarget.blur()}>
+                {t("my_novels")}
+              </Link>
             </li>
             <li>
-              <Link to="/update-password">{t("update_password")}</Link>
+              <Link
+                to="/update-password"
+                onClick={(e) => e.currentTarget.blur()}
+              >
+                {t("update_password")}
+              </Link>
             </li>
             <li>
               <div

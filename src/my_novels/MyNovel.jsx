@@ -137,7 +137,10 @@ const MyNovel = () => {
 
                   {/* Author */}
                   <div className="mt-3">
-                    <Link to={`/author/${novel.userId}`}>
+                    <Link
+                      to={`/author/${novel.userId}`}
+                      onClick={(e) => e.currentTarget.blur()}
+                    >
                       <div className="badge badge-primary badge-outline">
                         {novel.author}
                       </div>

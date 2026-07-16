@@ -201,7 +201,10 @@ const NovelPage = () => {
 
                   {/* Author */}
                   <div className="mt-3">
-                    <Link to={`/author/${novel.userId}`}>
+                    <Link
+                      to={`/author/${novel.userId}`}
+                      onClick={(e) => e.currentTarget.blur()}
+                    >
                       <div className="badge badge-primary badge-outline">
                         {novel.author}
                       </div>
@@ -310,7 +313,10 @@ const NovelPage = () => {
                         key={chapter.id}
                         className="bg-base-100 rounded-2xl shadow-sm hover:shadow-md transition-all border border-base-300"
                       >
-                        <Link to={`/chapter/${chapter.id}`}>
+                        <Link
+                          to={`/chapter/${chapter.id}`}
+                          onClick={(e) => e.currentTarget.blur()}
+                        >
                           <button className="w-full text-left px-5 py-2 cursor-pointer">
                             <div className="flex items-center justify-between gap-4">
                               <div className="min-w-0 flex-1">

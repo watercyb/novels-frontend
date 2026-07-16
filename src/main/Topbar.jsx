@@ -1,6 +1,6 @@
 import Language from "../locales/Language";
 import { useTranslation } from "react-i18next";
-import { Link,useNavigate  } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UserButton from "../auth/UserButton";
 
 export default function Topbar() {
@@ -19,7 +19,9 @@ export default function Topbar() {
           }}
         >
           <img src="/favicon.png" alt="Cat Novels" className="size-10" />
-          <a className="text-[26px] oswald font-bold text-[#673ab7] hidden md:flex">Cat Novels</a>
+          <a className="text-[26px] oswald font-bold text-[#673ab7] hidden md:flex">
+            Cat Novels
+          </a>
         </div>
 
         <div className="dropdown md:hidden">
@@ -32,16 +34,24 @@ export default function Topbar() {
             className="dropdown-content menu bg-base-100 rounded-box z-10 w-46 p-2 shadow"
           >
             <li>
-              <Link to="/">{t("menu_home")}</Link>
+              <Link to="/" onClick={(e) => e.currentTarget.blur()}>
+                {t("menu_home")}
+              </Link>
             </li>
             <li>
-              <Link to="/all">{t("menu_all_novels")}</Link>
+              <Link to="/all" onClick={(e) => e.currentTarget.blur()}>
+                {t("menu_all_novels")}
+              </Link>
             </li>
             <li>
-              <Link to="/ori">{t("menu_ori_novels")}</Link>
+              <Link to="/ori" onClick={(e) => e.currentTarget.blur()}>
+                {t("menu_ori_novels")}
+              </Link>
             </li>
             <li>
-              <Link to="/tran">{t("menu_tran_novels")}</Link>
+              <Link to="/tran" onClick={(e) => e.currentTarget.blur()}>
+                {t("menu_tran_novels")}
+              </Link>
             </li>
           </ul>
         </div>
@@ -49,16 +59,24 @@ export default function Topbar() {
         {/* Menu Items */}
         <ul className="hidden md:flex menu menu-horizontal px-1 gap-2">
           <li>
-            <Link to="/">{t("menu_home")}</Link>
+            <Link to="/" onClick={(e) => e.currentTarget.blur()}>
+              {t("menu_home")}
+            </Link>
           </li>
           <li>
-            <Link to="/all">{t("menu_all_novels")}</Link>
+            <Link to="/all" onClick={(e) => e.currentTarget.blur()}>
+              {t("menu_all_novels")}
+            </Link>
           </li>
           <li>
-            <Link to="/ori">{t("menu_ori_novels")}</Link>
+            <Link to="/ori" onClick={(e) => e.currentTarget.blur()}>
+              {t("menu_ori_novels")}
+            </Link>
           </li>
           <li>
-            <Link to="/tran">{t("menu_tran_novels")}</Link>
+            <Link to="/tran" onClick={(e) => e.currentTarget.blur()}>
+              {t("menu_tran_novels")}
+            </Link>
           </li>
         </ul>
       </div>

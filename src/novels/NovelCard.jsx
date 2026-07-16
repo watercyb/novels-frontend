@@ -18,7 +18,10 @@ const NovelCard = ({ novel }) => {
       <div className="card-body p-2 md:p-6">
         <div className="flex flex-col md:flex-row gap-5">
           {/* Cover */}
-          <Link to={`/novel/${novel.id}`}>
+          <Link
+            to={`/novel/${novel.id}`}
+            onClick={(e) => e.currentTarget.blur()}
+          >
             <div className="relative">
               <img
                 src={
@@ -34,14 +37,19 @@ const NovelCard = ({ novel }) => {
                 className="md:w-28 md:h-40 rounded-xl object-contain shrink-0 [image-rendering:-webkit-optimize-contrast]"
               />
 
-              {isFavorite && <Star className="absolute top-1 right-1 fill-red-500 text-red-500 size-5 sm:size-5 md:size-4" />}
+              {isFavorite && (
+                <Star className="absolute top-1 right-1 fill-red-500 text-red-500 size-5 sm:size-5 md:size-4" />
+              )}
             </div>
           </Link>
 
           {/* Info */}
           <div className="flex flex-col flex-1 min-w-0">
             {/* Title */}
-            <Link to={`/novel/${novel.id}`}>
+            <Link
+              to={`/novel/${novel.id}`}
+              onClick={(e) => e.currentTarget.blur()}
+            >
               <h2 className="text-xl md:text-2xl font-bold line-clamp-2">
                 {novel.title}
               </h2>
@@ -49,7 +57,10 @@ const NovelCard = ({ novel }) => {
 
             {/* Author */}
             <div className="mt-2 hidden md:flex">
-              <Link to={`/author/${novel.userId}`}>
+              <Link
+                to={`/author/${novel.userId}`}
+                onClick={(e) => e.currentTarget.blur()}
+              >
                 <div className="badge badge-primary badge-outline">
                   {novel.author}
                 </div>

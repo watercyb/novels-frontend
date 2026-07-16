@@ -8,9 +8,11 @@ const ChapterNavigation = ({ prv, next, novelId }) => {
     <div className="navbar bg-base-100 rounded-box shadow-sm px-4">
       <div className="navbar-start">
         {prv ? (
-          <Link to={`/chapter/${prv.id}`}
+          <Link
+            to={`/chapter/${prv.id}`}
             className="btn btn-outline border-base-300"
             title={prv.title}
+            onClick={(e) => e.currentTarget.blur()}
           >
             ← {t("previous")}
           </Link>
@@ -22,16 +24,22 @@ const ChapterNavigation = ({ prv, next, novelId }) => {
       </div>
 
       <div className="navbar-center">
-        <Link to={`/novel/${novelId}`} className="btn btn-ghost">
+        <Link
+          to={`/novel/${novelId}`}
+          className="btn btn-ghost"
+          onClick={(e) => e.currentTarget.blur()}
+        >
           {t("chapter_list")}
         </Link>
       </div>
 
       <div className="navbar-end">
         {next ? (
-          <Link to={`/chapter/${next.id}`}
+          <Link
+            to={`/chapter/${next.id}`}
             className="btn btn-outline border-base-300"
             title={next.title}
+            onClick={(e) => e.currentTarget.blur()}
           >
             {t("next")} →
           </Link>

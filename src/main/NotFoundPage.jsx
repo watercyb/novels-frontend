@@ -41,7 +41,11 @@ const NotFoundPage = () => {
         <div className="text-2xl opacity-70 mb-8">{t("page_not_found_b")}</div>
 
         {/* Back Button */}
-        <Link to="/" className="btn btn-primary rounded-xl px-8">
+        <Link
+          to="/"
+          className="btn btn-primary rounded-xl px-8"
+          onClick={(e) => e.currentTarget.blur()}
+        >
           {t("back_to_home")}
         </Link>
       </div>

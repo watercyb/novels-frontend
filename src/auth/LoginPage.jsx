@@ -59,6 +59,7 @@ const LoginPage = () => {
               <Link
                 to="/forgot-password"
                 className="text-sm text-base-content/70 hover:underline"
+                onClick={(e) => e.currentTarget.blur()}
               >
                 {t("forgot_password")}
               </Link>
@@ -89,6 +90,7 @@ const LoginPage = () => {
               to="/signup"
               state={{ from: location.state?.from }}
               className="text-primary hover:underline"
+              onClick={(e) => e.currentTarget.blur()}
             >
               {t("sign_up")}
             </Link>
