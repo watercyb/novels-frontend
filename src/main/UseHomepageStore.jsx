@@ -12,9 +12,11 @@ const useHomepageStore = create((set) => ({
       set({ isLoadingHomepage: false });
       const res = await axiosInstance.get("/homepage");
       if (res.data && res.data.success) {
+        const recentTen = res.data.recentTen ?? [];
+        recentTen.sort((a, b) => b.lastUpdatedAtTime - a.lastUpdatedAtTime);
         set({
-          topTen: [...(res.data.topTen ?? []), ...(res.data.topTen ?? [])],
-          recentTen: [...(res.data.topTen ?? []), ...(res.data.topTen ?? [])],
+          topTen: res.data.topTen ?? [],
+          recentTen,
         });
       } else {
         throw new Error(res.data);
