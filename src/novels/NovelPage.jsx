@@ -217,11 +217,12 @@ const NovelPage = () => {
                       <div
                         key={tag.id}
                         className="badge badge-outline badge-secondary cursor-pointer"
-                        onClick={() =>
+                        onClick={() => {
+                          document.activeElement?.blur();
                           navigate(
                             `/all?search=&sortBy=Latest+Updated&sortOrder=desc&page=1&tags=${tag.id}`,
-                          )
-                        }
+                          );
+                        }}
                       >
                         {i18n.language == "en" ? tag.name : tag.nameCN}
                       </div>

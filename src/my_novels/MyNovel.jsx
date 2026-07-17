@@ -154,11 +154,12 @@ const MyNovel = () => {
                         <div
                           key={tag.id}
                           className="badge badge-outline badge-secondary cursor-pointer"
-                          onClick={() =>
+                          onClick={() => {
+                            document.activeElement?.blur();
                             navigate(
                               `/all?search=&sortBy=Latest+Updated&sortOrder=desc&page=1&tags=${tag.id}`,
-                            )
-                          }
+                            );
+                          }}
                         >
                           {i18n.language == "en" ? tag.name : tag.nameCN}
                         </div>
@@ -270,9 +271,10 @@ const MyNovel = () => {
                       >
                         <div
                           className="flex font-medium text-lg gap-4 min-w-0 cursor-pointer truncate"
-                          onClick={() =>
-                            navigate(`/my-novels/chapter/${chapter.id}`)
-                          }
+                          onClick={() => {
+                            document.activeElement?.blur();
+                            navigate(`/my-novels/chapter/${chapter.id}`);
+                          }}
                         >
                           <div className="shrink-0">#{idx}</div>
                           <div className="">{chapter.title}</div>

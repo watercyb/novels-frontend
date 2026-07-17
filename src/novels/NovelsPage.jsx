@@ -7,8 +7,16 @@ import Tag from "./Tag";
 import NovelCard from "./NovelCard";
 
 const NovelsPage = ({ type }) => {
-  const { novels, tags, isLoading, page, totalPages, getNovels, getTags } =
-    useNovelStore();
+  const {
+    novels,
+    tags,
+    page,
+    totalPages,
+    isLoading,
+    isLoadingTags,
+    getNovels,
+    getTags,
+  } = useNovelStore();
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get("search") || "";
   const sortBy = searchParams.get("sortBy") || "Latest Updated";
@@ -74,9 +82,10 @@ const NovelsPage = ({ type }) => {
   }, [currentPage, getNovels, search, sortOrder, sortBy, type, tagListStr]);
 
   useEffect(() => {
-    if (tags == null) getTags();
+    if (tags == null && !isLoadingTags) getTags();
     document.title = title + " - Cat Novels";
-  }, [getTags, isLoading, navigate, tags, title]);
+    document.activeElement?.blur();
+  }, [getTags, isLoading, isLoadingTags, navigate, tags, title]);
 
   const visibleTags = tags ? (showAllTags ? tags : tags.slice(0, 8)) : [];
 
@@ -148,15 +157,12 @@ const NovelsPage = ({ type }) => {
           {/* Sort */}
           <div className="flex gap-3 justify-end mb-2 md:mb-0">
             <div className="dropdown dropdown-end">
-              <div tabIndex={0} role="button" className="btn">
+              <div role="button" className="btn">
                 {t("sort")}: {sortDetails[sortBy][3]}{" "}
                 {sortBy != "Relevance" && (sortOrder === "asc" ? "↑" : "↓")}
               </div>
 
-              <ul
-                tabIndex={0}
-                className="dropdown-content menu bg-base-100 rounded-box z-10 w-56 p-2 shadow"
-              >
+              <ul className="dropdown-content menu bg-base-100 rounded-box z-10 w-56 p-2 shadow">
                 {sortOptions.map((name) =>
                   name === "Relevance" && !search ? (
                     <div key="-1"></div>

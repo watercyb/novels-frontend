@@ -68,6 +68,7 @@ const useNovelStore = create((set) => ({
         throw new Error(res.data);
       }
     } catch (error) {
+      set({ tags: [] });
       errorHandler(set, error, "Error get tags", true);
     } finally {
       set({ isLoadingTags: false });

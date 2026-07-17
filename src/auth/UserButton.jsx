@@ -25,7 +25,7 @@ const UserButton = () => {
 
   return (
     <div className="dropdown dropdown-hover dropdown-end">
-      <button tabIndex={0} className="btn btn-ghost btn-circle ">
+      <button className="btn btn-ghost btn-circle ">
         <img
           src={user?.avatarUrl || avatar}
           alt="avatar"
@@ -34,7 +34,6 @@ const UserButton = () => {
       </button>
 
       <ul
-        tabIndex={0}
         className="dropdown-content menu bg-base-100 rounded-box w-52 p-2 shadow-lg border border-base-300"
       >
         {!user ? (

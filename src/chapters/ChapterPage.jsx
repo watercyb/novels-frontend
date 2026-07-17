@@ -21,7 +21,7 @@ const ChapterPage = () => {
     if (!isLoadingChapter) {
       getChapter(chapterId);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chapterId, getChapter]);
 
   useEffect(() => {
@@ -31,6 +31,7 @@ const ChapterPage = () => {
         " - " +
         (chapter?.novelTitle ?? "") +
         " - Cat Novels";
+      document.activeElement?.blur();
       navigate(`/chapter/${chapterId}`, { replace: true });
     }
   }, [chapter, chapterId, isLoadingChapter, navigate]);

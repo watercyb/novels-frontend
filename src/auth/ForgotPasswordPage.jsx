@@ -23,6 +23,7 @@ const ForgotPasswordPage = () => {
     e.preventDefault();
     if (await forgotPassword(email)) {
       showToast(t("reset_email_sent"), "success");
+      document.activeElement?.blur();
       navigate("/");
     }
   };

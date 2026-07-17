@@ -106,7 +106,10 @@ const MyChapter = () => {
             <div className="mb-2">
               <button
                 className="flex items-center gap-1 text-sm text-base-content/70 hover:text-primary transition-colors"
-                onClick={() => navigate(`/my-novels/${chapter.novelId}`)}
+                onClick={() => {
+                  document.activeElement?.blur();
+                  navigate(`/my-novels/${chapter.novelId}`);
+                }}
               >
                 <ArrowLeft size={16} />
                 <span>{chapter.novelTitle}</span>

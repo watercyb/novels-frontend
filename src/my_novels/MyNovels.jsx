@@ -93,7 +93,10 @@ const MyNovels = () => {
                   >
                     <div
                       className="font-medium text-lg cursor-pointer"
-                      onClick={() => navigate(`/my-novels/${novel.id}`)}
+                      onClick={() => {
+                        document.activeElement?.blur();
+                        navigate(`/my-novels/${novel.id}`);
+                      }}
                     >
                       {novel.title}
                     </div>

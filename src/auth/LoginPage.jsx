@@ -26,6 +26,7 @@ const LoginPage = () => {
     const username = await login(email, password);
     if (username) {
       showToast(t("login_successful", { username }), "success");
+      document.activeElement?.blur();
       navigate(from, { replace: true });
     }
   };

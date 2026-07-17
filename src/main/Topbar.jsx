@@ -15,6 +15,7 @@ export default function Topbar() {
         <div
           className="flex gap-2 cursor-pointer"
           onClick={() => {
+            document.activeElement?.blur();
             navigate("/", { replace: true });
           }}
         >
@@ -25,12 +26,11 @@ export default function Topbar() {
         </div>
 
         <div className="dropdown md:hidden">
-          <div tabIndex={0} role="button" className="btn m-1">
+          <div role="button" className="btn m-1">
             ☰
           </div>
 
           <ul
-            tabIndex={0}
             className="dropdown-content menu bg-base-100 rounded-box z-10 w-46 p-2 shadow"
           >
             <li>

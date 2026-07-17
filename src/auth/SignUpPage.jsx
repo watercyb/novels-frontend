@@ -28,6 +28,7 @@ const SignUpPage = () => {
     e.preventDefault();
     if (await signup(name, email, password)) {
       showToast(t("account_ready"), "success");
+      document.activeElement?.blur();
       navigate(from, { replace: true });
     }
   };

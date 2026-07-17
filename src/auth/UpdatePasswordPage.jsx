@@ -22,6 +22,7 @@ const UpdatePasswordPage = () => {
     e.preventDefault();
     if (await updatePassword(oldPassword, newPassword)) {
       showToast(t("password_updated"), "success");
+      document.activeElement?.blur();
       navigate("/profile");
     }
   };
