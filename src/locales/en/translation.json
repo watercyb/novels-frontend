@@ -139,6 +139,8 @@
   "UNABLE_ADD_TAG": "Unable to add tag right now.",
   "EMPTY_TITLE": "Title is empty",
   "INVALID_INPUT": "Invalid input. Please check your entries and try again.",
+  "UNABLE_DELETE_ACCOUNT": "Unable to delete account right now.",
+  "NEED_PERMISSION_DELETE_ACCOUNT": "You do not have permission to delete this account.",
   "joined_on": "Joined on",
   "novels": "Novels",
   "no_novel_published": "This author has not published any novels yet.",
@@ -218,5 +220,10 @@
   "place_after_this_chapter": "Place after this chapter",
   "top_views_week": "Trending (7 Days)",
   "recent_updated": "Recently Updated",
-  "view_more": "View More"
+  "view_more": "View More",
+  "USER": "Reader",
+  "AUTHOR": "Author",
+  "ADMIN": "Administrator",
+  "SUPERADMIN": "Super Administrator",
+  "update_role": "Want to become an author? Click here to apply."
 }

@@ -1,7 +1,7 @@
 import { Editor } from "@tinymce/tinymce-react";
 
 const ChapterEditor = ({ content, setContent }) => {
-  const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;;
+  const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
   return (
     <div>

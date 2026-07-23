@@ -139,6 +139,8 @@
   "UNABLE_ADD_TAG": "暂时无法添加标签。",
   "EMPTY_TITLE": "标题不能为空",
   "INVALID_INPUT": "输入无效，请检查您的输入后重试。",
+  "UNABLE_DELETE_ACCOUNT": "暂时无法删除账号。",
+  "NEED_PERMISSION_DELETE_ACCOUNT": "你没有权限删除这个账号。",
   "joined_on": "加入于",
   "novels": "小说",
   "no_novel_published": "该作者暂未发布任何小说。",
@@ -218,5 +220,10 @@
   "place_after_this_chapter": "放在此章节之后",
   "top_views_week": "本周热门",
   "recent_updated": "最近更新",
-  "view_more": "查看更多"
+  "view_more": "查看更多",
+  "USER": "读者",
+  "AUTHOR": "作者",
+  "ADMIN": "管理员",
+  "SUPERADMIN": "超级管理员",
+  "update_role": "想成为作者？点击这里申请。"
 }

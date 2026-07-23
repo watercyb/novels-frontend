@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { formatDateString } from "../utils/formatDate";
 import NotFoundPage from "../main/NotFoundPage";
+import UserRole from "../utils/UserRole";
 
 const AuthorPage = () => {
   const { authorId } = useParams();
@@ -44,8 +45,18 @@ const AuthorPage = () => {
                 </div>
 
                 {/* Basic Info */}
-                <div className="flex-1 text-center md:text-left">
-                  <h1 className="text-3xl font-bold">{author.username}</h1>
+                <div className="flex-1 text-center md:text-left w-fit">
+                  <h1 className="flex items-center text-3xl font-bold">
+                    {author.username}
+                    <div className="ml-2">
+                      <div
+                        className="tooltip block w-full"
+                        data-tip={t(author.role)}
+                      >
+                        <UserRole user={author} />
+                      </div>
+                    </div>
+                  </h1>
 
                   <p className="text-base-content/70 mt-2">
                     {t("joined_on")} {formatDateString(author.createdAt)}

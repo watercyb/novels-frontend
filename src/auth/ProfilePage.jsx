@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Loader } from "lucide-react";
 import showToast from "../utils/Toast";
 import { SquarePen } from "lucide-react";
+import UserRole from "../utils/UserRole";
 
 export default function ProfilePage() {
   const { user } = useUserStore();
@@ -49,8 +50,18 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-base-200 flex items-center justify-center p-6">
       <div className="card w-full max-w-md bg-base-100 shadow-2xl">
         <div className="card-body">
-          <h2 className="text-3xl font-bold text-center mb-6">
+          <h2 className="text-3xl font-bold text-center mb-6 relative">
             {t("user_profile")}
+            <div className="absolute top-1 right-1">
+              <div
+                className="tooltip block w-full"
+                data-tip={
+                  user.role === "AUTHOR" ? t("update_role") : t(user.role)
+                }
+              >
+                <UserRole user={user} />
+              </div>
+            </div>
           </h2>
 
           {/* Avatar */}
