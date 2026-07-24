@@ -1,8 +1,6 @@
 import { User, PenTool, Shield, ShieldCheck } from "lucide-react";
-import { useTranslation } from "react-i18next";
 
 const UserRole = ({ user }) => {
-  const { t } = useTranslation();
 
   if (!user) return <></>;
   return (

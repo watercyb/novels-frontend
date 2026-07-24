@@ -93,9 +93,7 @@ const useCommentStore = create((set, get) => ({
     } catch (error) {
       set({
         comments: get().comments.map((comment) =>
-          comment.id == commentId
-            ? { ...comment, replies: [] }
-            : comment,
+          comment.id == commentId ? { ...comment, replies: [] } : comment,
         ),
       });
       errorHandler(set, error, "Error get replies", true);
@@ -150,10 +148,15 @@ const useCommentStore = create((set, get) => ({
     }
   },
 
-  deleteComment: async (commentId) => {
+  deleteComment: async (commentId, isOwner) => {
     try {
       set({ isDeleting: true, error: null });
-      const res = await axiosInstance.delete(`/comments/${commentId}`);
+      let res;
+      if (isOwner) {
+        res = await axiosInstance.delete(`/comments/${commentId}`);
+      } else {
+        res = await axiosInstance.delete(`/admin/comments/${commentId}`);
+      }
       if (res.data && res.data.success) {
         set({
           comments: get().comments.filter((comment) => comment.id != commentId),

@@ -53,7 +53,9 @@ const CommentCard = ({
           </div>
 
           <div className="flex items-center gap-3">
-            {user?.id === comment.userId && (
+            {(user?.id === comment.userId ||
+              user?.role === "ADMIN" ||
+              user?.role === "SUPERADMIN") && (
               <button
                 className="btn btn-ghost btn-error btn-xs"
                 onClick={() => {
@@ -145,7 +147,9 @@ const CommentCard = ({
                 </div>
 
                 <div>
-                  {user?.id === reply.userId && (
+                  {(user?.id === reply.userId ||
+                    user?.role === "ADMIN" ||
+                    user?.role === "SUPERADMIN") && (
                     <button
                       className="btn btn-ghost btn-error btn-xs"
                       onClick={() => {

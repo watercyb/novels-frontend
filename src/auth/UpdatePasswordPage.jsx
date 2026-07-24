@@ -12,7 +12,11 @@ const UpdatePasswordPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const { isLoading, error, updatePassword } = useUserStore();
+  const { isLoading, error, updatePassword, clearError } = useUserStore();
+
+  useEffect(() => {
+    clearError();
+  }, [clearError]);
 
   useEffect(() => {
     document.title = t("update_password") + " - Cat Novels";

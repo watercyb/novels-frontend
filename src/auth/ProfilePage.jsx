@@ -56,7 +56,7 @@ export default function ProfilePage() {
               <div
                 className="tooltip block w-full"
                 data-tip={
-                  user.role === "AUTHOR" ? t("update_role") : t(user.role)
+                  user.role === "USER" ? t("update_role") : t(user.role)
                 }
               >
                 <UserRole user={user} />
