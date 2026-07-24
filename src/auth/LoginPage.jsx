@@ -7,7 +7,7 @@ import showToast from "../utils/Toast";
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, isLoading, error, clearError } = useUserStore();
+  const { user, login, isLoading, error, clearError } = useUserStore();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
@@ -20,6 +20,12 @@ const LoginPage = () => {
   useEffect(() => {
     document.title = t("login") + " - Cat Novels";
   }, [t]);
+
+  useEffect(() => {
+    if (user) {
+      navigate(from || "/", { replace: true });
+    }
+  }, [user, from, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();

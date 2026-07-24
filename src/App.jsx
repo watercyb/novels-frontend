@@ -47,10 +47,7 @@ function App() {
             <Route path="/ori" element={<NovelsPage type="original" />} />
             <Route path="/tran" element={<NovelsPage type="translation" />} />
             <Route path="/chapter" element={<ChapterPage />} />
-            <Route
-              path="/login"
-              element={!user ? <LoginPage /> : <Navigate to="/" replace />}
-            />
+            <Route path="/login" element={<LoginPage />} />
             <Route
               path="/signup"
               element={!user ? <SignUpPage /> : <Navigate to="/" replace />}
