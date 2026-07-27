@@ -253,5 +253,19 @@
   "user_id_email":"User ID or Email",
   "edit":"Edit",
   "view":"View",
-  "change_role":"Change Role"
+  "change_role":"Change Role",
+  "users":"Users",
+  "authors":"Authors",
+  "admins":"Admins",
+  "super_admins":"Super Admins",
+  "original_novels":"Original Novels",
+  "translated_novels":"Translated Novels",
+  "accounts":"Accounts",
+  "dashboard":"Dashboard",
+  "general": "General",
+  "user_management": "User Management",
+  "messages": "Messages",
+  "content_management": "Content Management",
+  "site": "Site",
+  "notices": "Notices"
 }

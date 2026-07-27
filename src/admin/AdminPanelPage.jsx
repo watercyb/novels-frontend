@@ -9,9 +9,11 @@ import {
 } from "lucide-react";
 import useUserStore from "../auth/UseUserStore";
 import NotFoundPage from "../main/NotFoundPage";
+import { useTranslation } from "react-i18next";
 
 const AdminPanelPage = () => {
   const { user } = useUserStore();
+  const { t } = useTranslation();
 
   const linkClass = ({ isActive }) =>
     `flex items-center gap-3 rounded-lg px-4 py-3 transition-colors ${
@@ -26,61 +28,61 @@ const AdminPanelPage = () => {
           {/* Sidebar */}
           <aside className="w-64 border-r bg-base-100">
             <div className="border-b p-6">
-              <h1 className="text-2xl font-bold">Admin Panel</h1>
+              <h1 className="text-2xl font-bold">{t("admin_panel")}</h1>
             </div>
 
             <nav className="p-4">
               <div className="mb-6">
                 <div className="mb-2 px-2 text-xs font-semibold uppercase opacity-60">
-                  General
+                  {t("general")}
                 </div>
 
                 <NavLink to="/admin" end className={linkClass}>
                   <LayoutDashboard size={18} />
-                  Dashboard
+                  {t("dashboard")}
                 </NavLink>
               </div>
 
               <div className="mb-6">
                 <div className="mb-2 px-2 text-xs font-semibold uppercase opacity-60">
-                  User Management
+                 {t("user_management")}
                 </div>
 
                 <NavLink to="/admin/users" className={linkClass}>
                   <Users size={18} />
-                  Users
+                  {t("users")}
                 </NavLink>
 
                 <NavLink to="/admin/messages" className={linkClass}>
                   <MessageSquare size={18} />
-                  Messages
+                  {t("messages")}
                 </NavLink>
               </div>
 
               <div className="mb-6">
                 <div className="mb-2 px-2 text-xs font-semibold uppercase opacity-60">
-                  Content Management
+                  {t("content_management")}
                 </div>
 
                 <NavLink to="/admin/novels" className={linkClass}>
                   <BookOpen size={18} />
-                  Novels
+                   {t("novels")}
                 </NavLink>
 
                 <NavLink to="/admin/chapters" className={linkClass}>
                   <FileText size={18} />
-                  Chapters
+                  {t("chapters")}
                 </NavLink>
               </div>
 
               <div>
                 <div className="mb-2 px-2 text-xs font-semibold uppercase opacity-60">
-                  Site
+                   {t("site")}
                 </div>
 
                 <NavLink to="/admin/notices" className={linkClass}>
                   <Bell size={18} />
-                  Notices
+                  {t("notices")}
                 </NavLink>
               </div>
             </nav>

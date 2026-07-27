@@ -26,7 +26,7 @@ const MyNovel = lazy(() => import("./my_novels/MyNovel"));
 const MyChapter = lazy(() => import("./my_novels/MyChapter"));
 const AdminPanelPage = lazy(() => import("./admin/AdminPanelPage"));
 const AdminUserPage = lazy(() => import("./admin/AdminUserPage"));
-const DashboardPage = lazy(() => import("./admin/DashboardPage"));
+const AdminDashboardPage = lazy(() => import("./admin/AdminDashboardPage"));
 const AdminMessagePage = lazy(() => import("./admin/AdminMessagePage"));
 const AdminNovelPage = lazy(() => import("./admin/AdminNovelPage"));
 const AdminChapterPage = lazy(() => import("./admin/AdminChapterPage"));
@@ -90,7 +90,7 @@ function App() {
               path="/admin"
               element={user ? <AdminPanelPage /> : <Navigate to="/" replace />}
             >
-              <Route index element={<DashboardPage />} />
+              <Route index element={<AdminDashboardPage />} />
               <Route path="users" element={<AdminUserPage />} />
               <Route path="messages" element={<AdminMessagePage />} />
               <Route path="novels" element={<AdminNovelPage />} />

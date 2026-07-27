@@ -4,7 +4,9 @@ import axiosInstance from "../utils/axios";
 
 const useAdminStore = create((set, get) => ({
   users: [],
+  counts: {},
   isLoading: false,
+  isLoadingCounts: false,
   currentPage: 0,
   size: 20,
   totalPages: 0,
@@ -61,6 +63,23 @@ const useAdminStore = create((set, get) => ({
 
   getUsersByPage: async (page) => {
     if (get().lastSearch) get().getUsers(...get().lastSearch, page);
+  },
+
+  getCounts: async () => {
+    try {
+      set({ isLoadingCounts: true });
+      const res = await axiosInstance.get("/admin/count");
+      if (res.data && res.data.success) {
+        set({ counts: res.data.counts });
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      set({ counts: {} });
+      errorHandler(set, error, "Error get counts", false);
+    } finally {
+      set({ isLoadingCounts: false });
+    }
   },
 }));
 

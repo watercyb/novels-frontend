@@ -5,11 +5,11 @@ const UserRole = ({ user }) => {
   if (!user) return <></>;
   return (
     <>
-      {user.role === "USER" && <User className="text-gray-500 size-5" />}
-      {user.role === "AUTHOR" && <PenTool className="text-blue-600 size-5" />}
-      {user.role === "ADMIN" && <Shield className="text-amber-600 size-5" />}
+      {user.role === "USER" && <User className="text-blue-500 size-5" />}
+      {user.role === "AUTHOR" && <PenTool className="text-green-500 size-5" />}
+      {user.role === "ADMIN" && <Shield className="text-purple-600 size-5" />}
       {user.role === "SUPERADMIN" && (
-        <ShieldCheck className="text-purple-600 size-5" />
+        <ShieldCheck className="text-amber-600 size-5" />
       )}
     </>
   );
