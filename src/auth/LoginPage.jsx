@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import useUserStore from "./useUserStore";
+import useUserStore from "./UseUserStore";
 import { useTranslation } from "react-i18next";
 import showToast from "../utils/Toast";
 
@@ -22,7 +22,7 @@ const LoginPage = () => {
   }, [t]);
 
   useEffect(() => {
-    if (user) {
+    if (user?.role) {
       navigate(from || "/", { replace: true });
     }
   }, [user, from, navigate]);

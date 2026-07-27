@@ -240,5 +240,18 @@
   "AUTHOR": "Author",
   "ADMIN": "Administrator",
   "SUPERADMIN": "Super Administrator",
-  "update_role": "Want to become an author? Click here to apply."
+  "update_role": "Want to become an author? Click here to apply.",
+  "admin_panel": "Admin Panel",
+  "id_email":"ID / Email",
+  "username_role":"Username / Role",
+  "all_roles":"All Roles",
+  "id":"ID",
+  "role":"Role",
+  "action":"Action",
+  "no_user_found":"No users found",
+  "no_user_found_text":"Try searching with a different ID, email, username, or role.",
+  "user_id_email":"User ID or Email",
+  "edit":"Edit",
+  "view":"View",
+  "change_role":"Change Role"
 }

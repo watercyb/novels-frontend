@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useUserStore from "../auth/useUserStore";
+import useUserStore from "../auth/UseUserStore";
 import useMyNovelStore from "./useMyNovelStore";
 import { t } from "i18next";
 import avatar from "../assets/avatar.png";

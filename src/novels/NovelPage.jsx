@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import CommentBox from "../comments/CommentBox";
 import i18n from "../locales/i18n";
 import { Heart, Star } from "lucide-react";
-import useUserStore from "../auth/useUserStore";
+import useUserStore from "../auth/UseUserStore";
 
 const NovelPage = () => {
   const { novelId } = useParams();

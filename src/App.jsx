@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import Topbar from "./main/Topbar";
 import { Toaster } from "react-hot-toast";
 import LoginPage from "./auth/LoginPage";
-import useUserStore from "./auth/useUserStore";
+import useUserStore from "./auth/UseUserStore";
 import { Navigate } from "react-router-dom";
 import Footer from "./main/Footer";
 import NotFoundPage from "./main/NotFoundPage";
@@ -24,6 +24,13 @@ const AuthorPage = lazy(() => import("./auth/AuthorPage"));
 const MyNovels = lazy(() => import("./my_novels/MyNovels"));
 const MyNovel = lazy(() => import("./my_novels/MyNovel"));
 const MyChapter = lazy(() => import("./my_novels/MyChapter"));
+const AdminPanelPage = lazy(() => import("./admin/AdminPanelPage"));
+const AdminUserPage = lazy(() => import("./admin/AdminUserPage"));
+const DashboardPage = lazy(() => import("./admin/DashboardPage"));
+const AdminMessagePage = lazy(() => import("./admin/AdminMessagePage"));
+const AdminNovelPage = lazy(() => import("./admin/AdminNovelPage"));
+const AdminChapterPage = lazy(() => import("./admin/AdminChapterPage"));
+const AdminNoticePage = lazy(() => import("./admin/AdminNoticePage"));
 
 function App() {
   const { user } = useUserStore();
@@ -79,6 +86,17 @@ function App() {
               path="/my-novels/chapter/:chapterId"
               element={user ? <MyChapter /> : <Navigate to="/" replace />}
             />
+            <Route
+              path="/admin"
+              element={user ? <AdminPanelPage /> : <Navigate to="/" replace />}
+            >
+              <Route index element={<DashboardPage />} />
+              <Route path="users" element={<AdminUserPage />} />
+              <Route path="messages" element={<AdminMessagePage />} />
+              <Route path="novels" element={<AdminNovelPage />} />
+              <Route path="chapters" element={<AdminChapterPage />} />
+              <Route path="notices" element={<AdminNoticePage />} />
+            </Route>
             <Route path="/*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>

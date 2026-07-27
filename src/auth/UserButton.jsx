@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import useUserStore from "./useUserStore";
+import useUserStore from "./UseUserStore";
 import avatar from "../assets/avatar.png";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
@@ -33,9 +33,7 @@ const UserButton = () => {
         />
       </button>
 
-      <ul
-        className="dropdown-content menu bg-base-100 rounded-box w-52 p-2 shadow-lg border border-base-300"
-      >
+      <ul className="dropdown-content menu bg-base-100 rounded-box w-52 p-2 shadow-lg border border-base-300">
         {!user ? (
           <li>
             <Link
@@ -59,6 +57,13 @@ const UserButton = () => {
                 {t("my_novels")}
               </Link>
             </li>
+            {(user?.role === "ADMIN" || user?.role === "SUPERADMIN") && (
+              <li>
+                <Link to="/admin" onClick={(e) => e.currentTarget.blur()}>
+                  {t("admin_panel")}
+                </Link>
+              </li>
+            )}
             <li>
               <Link
                 to="/update-password"

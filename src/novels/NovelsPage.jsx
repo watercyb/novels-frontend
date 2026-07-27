@@ -157,12 +157,15 @@ const NovelsPage = ({ type }) => {
           {/* Sort */}
           <div className="flex gap-3 justify-end mb-2 md:mb-0">
             <div className="dropdown dropdown-end">
-              <div role="button" className="btn">
+              <div tabIndex={0} role="button" className="btn">
                 {t("sort")}: {sortDetails[sortBy][3]}{" "}
                 {sortBy != "Relevance" && (sortOrder === "asc" ? "↑" : "↓")}
               </div>
 
-              <ul className="dropdown-content menu bg-base-100 rounded-box z-10 w-56 p-2 shadow">
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu bg-base-100 rounded-box z-10 w-56 p-2 shadow"
+              >
                 {sortOptions.map((name) =>
                   name === "Relevance" && !search ? (
                     <div key="-1"></div>

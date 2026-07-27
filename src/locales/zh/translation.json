@@ -240,5 +240,18 @@
   "AUTHOR": "作者",
   "ADMIN": "管理员",
   "SUPERADMIN": "超级管理员",
-  "update_role": "想成为作者？点击这里申请。"
+  "update_role": "想成为作者？点击这里申请。",
+  "admin_panel": "管理面板",
+  "id_email": "ID / 邮箱",
+  "username_role": "用户名 / 角色",
+  "all_roles": "所有角色",
+  "id": "ID",
+  "role": "角色",
+  "action": "操作",
+  "no_user_found": "未找到用户",
+  "no_user_found_text": "请尝试使用其他 ID、邮箱、用户名或角色进行搜索。",
+  "user_id_email":"用户ID或邮箱",
+  "edit":"编辑",
+  "view":"详情",
+  "change_role":"更改角色"
 }

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axiosInstance from "../utils/axios";
 import errorHandler from "../utils/ErrorHandler";
-import useUserStore from "../auth/useUserStore";
+import useUserStore from "../auth/UseUserStore";
 
 const useNovelStore = create((set) => ({
   novels: [],

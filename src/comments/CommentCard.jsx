@@ -2,7 +2,7 @@ import { useState } from "react";
 import avatar from "../assets/avatar.png";
 import useCommentStore from "./UseCommentStore";
 import { useTranslation } from "react-i18next";
-import useUserStore from "../auth/useUserStore";
+import useUserStore from "../auth/UseUserStore";
 import DeleteConfirmModel from "./DeleteConfirmModel";
 import { formatDateTimeString } from "../utils/formatDate";
 
