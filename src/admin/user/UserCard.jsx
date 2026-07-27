@@ -1,15 +1,17 @@
 import { useTranslation } from "react-i18next";
-import UserRole from "../utils/UserRole";
+import UserRole from "../../utils/UserRole";
 import { useEffect, useRef } from "react";
+import useUserStore from "../../auth/UseUserStore";
 
-const UserCard = ({ user, menuUserId, setMenuUserId }) => {
+const UserCard = ({ cardUser, menuUser, setMenuUser, setChangeRoleUser }) => {
   const { t } = useTranslation();
   const menuRef = useRef(null);
+  const { user } = useUserStore();
 
   useEffect(() => {
     function handleClickOutside(event) {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setMenuUserId(null);
+        setMenuUser(null);
       }
     }
 
@@ -18,19 +20,19 @@ const UserCard = ({ user, menuUserId, setMenuUserId }) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [setMenuUserId]);
+  }, [setMenuUser]);
 
   return (
     <tr className="hover">
-      <td>{user.id}</td>
+      <td>{cardUser.id}</td>
 
-      <td>{user.username}</td>
+      <td>{cardUser.username}</td>
 
-      <td>{user.email}</td>
+      <td>{cardUser.email}</td>
 
       <td>
-        <div className="tooltip block w-full" data-tip={t(user.role)}>
-          <UserRole user={user} />
+        <div className="tooltip block w-full" data-tip={t(cardUser.role)}>
+          <UserRole user={cardUser} />
         </div>
       </td>
 
@@ -42,25 +44,31 @@ const UserCard = ({ user, menuUserId, setMenuUserId }) => {
             <button
               className="btn btn-xs btn-warning"
               onClick={() => {
-                setMenuUserId(menuUserId === user.id ? null : user.id);
+                setMenuUser(menuUser?.id === cardUser.id ? null : cardUser);
               }}
             >
               {t("edit")}
             </button>
 
-            {menuUserId === user.id && (
+            {menuUser?.id === cardUser.id && (
               <div
                 ref={menuRef}
                 className="absolute right-0 top-8 z-50 w-44 rounded-lg bg-base-100 shadow-lg border border-base-300 p-2"
               >
-                <button
-                  className=" w-full text-left px-3 py-2 rounded-md hover:bg-base-200"
-                  onClick={() => {
-                    console.log("1");
-                  }}
-                >
-                  {t("change_role")}
-                </button>
+                {user.id != cardUser.id &&
+                  cardUser.role != "SUPERADMIN" &&
+                  (user.role === "SUPERADMIN" ||
+                    cardUser.role === "USER" ||
+                    cardUser.role === "AUTHOR") && (
+                    <button
+                      className=" w-full text-left px-3 py-2 rounded-md hover:bg-base-200"
+                      onClick={() => {
+                        setChangeRoleUser(menuUser);
+                      }}
+                    >
+                      {t("change_role")}
+                    </button>
+                  )}
 
                 <div className="divider my-1"></div>
 

@@ -25,12 +25,12 @@ const MyNovels = lazy(() => import("./my_novels/MyNovels"));
 const MyNovel = lazy(() => import("./my_novels/MyNovel"));
 const MyChapter = lazy(() => import("./my_novels/MyChapter"));
 const AdminPanelPage = lazy(() => import("./admin/AdminPanelPage"));
-const AdminUserPage = lazy(() => import("./admin/AdminUserPage"));
-const AdminDashboardPage = lazy(() => import("./admin/AdminDashboardPage"));
-const AdminMessagePage = lazy(() => import("./admin/AdminMessagePage"));
-const AdminNovelPage = lazy(() => import("./admin/AdminNovelPage"));
-const AdminChapterPage = lazy(() => import("./admin/AdminChapterPage"));
-const AdminNoticePage = lazy(() => import("./admin/AdminNoticePage"));
+const AdminUserPage = lazy(() => import("./admin/user/AdminUserPage"));
+const AdminDashboardPage = lazy(() => import("./admin/dashboard/AdminDashboardPage"));
+const AdminMessagePage = lazy(() => import("./admin/message/AdminMessagePage"));
+const AdminNovelPage = lazy(() => import("./admin/novel/AdminNovelPage"));
+const AdminChapterPage = lazy(() => import("./admin/chapter/AdminChapterPage"));
+const AdminNoticePage = lazy(() => import("./admin/notice/AdminNoticePage"));
 
 function App() {
   const { user } = useUserStore();

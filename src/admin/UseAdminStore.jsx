@@ -7,6 +7,7 @@ const useAdminStore = create((set, get) => ({
   counts: {},
   isLoading: false,
   isLoadingCounts: false,
+  isUpdatingRole: false,
   currentPage: 0,
   size: 20,
   totalPages: 0,
@@ -79,6 +80,29 @@ const useAdminStore = create((set, get) => ({
       errorHandler(set, error, "Error get counts", false);
     } finally {
       set({ isLoadingCounts: false });
+    }
+  },
+
+  updateRole: async (userId, role) => {
+    try {
+      set({ isUpdatingRole: true });
+      const res = await axiosInstance.post(`/admin/user/${userId}`, { role });
+      if (res.data && res.data.success) {
+        set({
+          users: get().users.map((user) =>
+            user.id === userId ? { ...user, role } : user,
+          ),
+        });
+        return true;
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      set({ counts: {} });
+      errorHandler(set, error, "Error update role", true);
+      return false;
+    } finally {
+      set({ isUpdatingRole: false });
     }
   },
 }));

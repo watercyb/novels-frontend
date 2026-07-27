@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import useAdminStore from "./UseAdminStore";
+import useAdminStore from "../UseAdminStore";
 
 const Pagination = () => {
   const { currentPage, totalPages, lastSearch, getUsersByPage } =

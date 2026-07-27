@@ -1,8 +1,9 @@
 import { useState } from "react";
 import UserCard from "./UserCard";
-import useAdminStore from "./UseAdminStore";
+import useAdminStore from "../UseAdminStore";
 import Pagination from "./Pagination";
 import { useTranslation } from "react-i18next";
+import ChangeRoleDialog from "./ChangeRoleDialog";
 
 const AdminUserPage = () => {
   const [searchMode, setSearchMode] = useState("id");
@@ -10,8 +11,9 @@ const AdminUserPage = () => {
   const [username, setUsername] = useState("");
   const [role, setRole] = useState(0);
   const { users, isLoading, getUsers } = useAdminStore();
-  const [menuUserId, setMenuUserId] = useState(null);
+  const [menuUser, setMenuUser] = useState(null);
   const { t } = useTranslation();
+  const [changeRoleUser, setChangeRoleUser] = useState(null);
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-6">
@@ -127,9 +129,10 @@ const AdminUserPage = () => {
             : users.map((user) => (
                 <UserCard
                   key={user.id}
-                  user={user}
-                  menuUserId={menuUserId}
-                  setMenuUserId={setMenuUserId}
+                  cardUser={user}
+                  menuUser={menuUser}
+                  setMenuUser={setMenuUser}
+                  setChangeRoleUser={setChangeRoleUser}
                 />
               ))}
         </tbody>
@@ -146,6 +149,7 @@ const AdminUserPage = () => {
       )}
 
       <Pagination />
+      <ChangeRoleDialog changeRoleUser={changeRoleUser} setChangeRoleUser={setChangeRoleUser} />
     </div>
   );
 };

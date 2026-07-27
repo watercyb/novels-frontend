@@ -267,5 +267,9 @@
   "messages": "消息",
   "content_management": "内容管理",
   "site": "站点",
-  "notices": "公告"
+  "notices": "公告",
+  "change_user_role": "更改用户角色",
+  "current_role": "当前角色",
+  "new_role": "新角色",
+  "selet_new_role": "选择角色"
 }

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import useAdminStore from "./UseAdminStore";
+import useAdminStore from "../UseAdminStore";
 import {
   Users,
   PenTool,
