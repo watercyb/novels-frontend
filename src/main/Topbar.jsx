@@ -26,11 +26,12 @@ export default function Topbar() {
         </div>
 
         <div className="dropdown md:hidden">
-          <div role="button" className="btn m-1">
+          <div tabIndex={0} role="button" className="btn m-1">
             ☰
           </div>
 
           <ul
+            tabIndex={0}
             className="dropdown-content menu bg-base-100 rounded-box z-10 w-46 p-2 shadow"
           >
             <li>
