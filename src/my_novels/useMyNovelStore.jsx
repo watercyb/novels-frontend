@@ -132,7 +132,7 @@ const useMyNovelStore = create((set, get) => ({
 
   deleteNovel: async (novelId) => {
     try {
-      set({ operation: "delete_novel" });
+      set({ operation: "deleting_novel" });
       const res = await axiosInstance.delete(`/novels/${novelId}`);
       if (res.data && res.data.success) {
         set({
@@ -275,7 +275,7 @@ const useMyNovelStore = create((set, get) => ({
 
   deleteChapter: async (chapterToDelete) => {
     try {
-      set({ operation: "delete_chapter" });
+      set({ operation: "deleting_chapter" });
       const res = await axiosInstance.delete(`/chapters/${chapterToDelete.id}`);
       if (res.data && res.data.success) {
         const newNovel = {

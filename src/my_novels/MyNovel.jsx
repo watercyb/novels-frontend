@@ -348,8 +348,9 @@ const MyNovel = () => {
             <button
               className="btn btn-error"
               onClick={async () => {
+                const chapter = chapterToDelete;
                 setChapterToDelete(null);
-                if (await deleteChapter(chapterToDelete))
+                if (await deleteChapter(chapter))
                   showToast(t("chapter_deleted"), "success");
               }}
             >

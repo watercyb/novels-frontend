@@ -2,11 +2,21 @@ import { useTranslation } from "react-i18next";
 import UserRole from "../../utils/UserRole";
 import { useEffect, useRef } from "react";
 import useUserStore from "../../auth/UseUserStore";
+import { useNavigate } from "react-router-dom";
+import useAdminStore from "../UseAdminStore";
 
-const UserCard = ({ cardUser, menuUser, setMenuUser, setChangeRoleUser }) => {
+const UserCard = ({
+  cardUser,
+  menuUser,
+  setMenuUser,
+  setChangeRoleUser,
+  setUserToDelete,
+}) => {
   const { t } = useTranslation();
   const menuRef = useRef(null);
   const { user } = useUserStore();
+  const navigate = useNavigate();
+  const { getUser } = useAdminStore();
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -38,7 +48,15 @@ const UserCard = ({ cardUser, menuUser, setMenuUser, setChangeRoleUser }) => {
 
       <td>
         <div className="flex gap-2">
-          <button className="btn btn-xs btn-primary">{t("view")}</button>
+          <button
+            className="btn btn-xs btn-primary"
+            onClick={() => {
+              getUser(cardUser.id);
+              navigate("/admin/novels");
+            }}
+          >
+            {t("view")}
+          </button>
 
           <div className="dropdown dropdown-end">
             <button
@@ -72,14 +90,20 @@ const UserCard = ({ cardUser, menuUser, setMenuUser, setChangeRoleUser }) => {
 
                 <div className="divider my-1"></div>
 
-                <button
-                  className="w-full text-left px-3 py-2 rounded-md text-error hover:bg-error/10"
-                  onClick={() => {
-                    console.log("3");
-                  }}
-                >
-                  {t("delete")}
-                </button>
+                {user.id != cardUser.id &&
+                  cardUser.role != "SUPERADMIN" &&
+                  (user.role === "SUPERADMIN" ||
+                    cardUser.role === "USER" ||
+                    cardUser.role === "AUTHOR") && (
+                    <button
+                      className="w-full text-left px-3 py-2 rounded-md text-error hover:bg-error/10"
+                      onClick={async () => {
+                        setUserToDelete(cardUser);
+                      }}
+                    >
+                      {t("delete")}
+                    </button>
+                  )}
               </div>
             )}
           </div>

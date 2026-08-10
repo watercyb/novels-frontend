@@ -10,10 +10,15 @@ import {
 import useUserStore from "../auth/UseUserStore";
 import NotFoundPage from "../main/NotFoundPage";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 const AdminPanelPage = () => {
   const { user } = useUserStore();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    document.title = t("admin_panel")+ " - Cat Novels";
+  }, [t]);
 
   const linkClass = ({ isActive }) =>
     `flex items-center gap-3 rounded-lg px-4 py-3 transition-colors ${
@@ -45,12 +50,12 @@ const AdminPanelPage = () => {
 
               <div className="mb-6">
                 <div className="mb-2 px-2 text-xs font-semibold uppercase opacity-60">
-                 {t("user_management")}
+                  {t("user_management")}
                 </div>
 
                 <NavLink to="/admin/users" className={linkClass}>
                   <Users size={18} />
-                  {t("users")}
+                  {t("users_tab")}
                 </NavLink>
 
                 <NavLink to="/admin/messages" className={linkClass}>
@@ -66,7 +71,7 @@ const AdminPanelPage = () => {
 
                 <NavLink to="/admin/novels" className={linkClass}>
                   <BookOpen size={18} />
-                   {t("novels")}
+                  {t("novels")}
                 </NavLink>
 
                 <NavLink to="/admin/chapters" className={linkClass}>
@@ -77,7 +82,7 @@ const AdminPanelPage = () => {
 
               <div>
                 <div className="mb-2 px-2 text-xs font-semibold uppercase opacity-60">
-                   {t("site")}
+                  {t("site")}
                 </div>
 
                 <NavLink to="/admin/notices" className={linkClass}>

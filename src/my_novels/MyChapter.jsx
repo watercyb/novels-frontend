@@ -8,6 +8,7 @@ import { hasDraft, loadDraft, saveDraft } from "../utils/localStorage";
 import showToast from "../utils/Toast";
 import PublishChapterDialog from "./PublishChapterDialog";
 import { ArrowLeft } from "lucide-react";
+import useUserStore from "../auth/UseUserStore";
 
 const MyChapter = () => {
   const { chapterId } = useParams();
@@ -30,6 +31,7 @@ const MyChapter = () => {
   const [comfirmSaveDialogOpen, setComfirmSaveDialogOpen] = useState(false);
   const [chapterToPublish, setChapterToPublish] = useState(null);
   const navigate = useNavigate();
+  const { user } = useUserStore();
 
   useEffect(() => {
     if (!isLoadingChapter) getChapter(chapterId);
@@ -79,7 +81,7 @@ const MyChapter = () => {
   return (
     <>
       {/* Loading */}
-      {(isLoadingChapter || !chapter) && (
+      {isLoadingChapter && (
         <div className="flex justify-center py-20">
           <span className="loading loading-spinner loading-lg mr-4"></span>
           {t("loading")}
@@ -87,7 +89,9 @@ const MyChapter = () => {
       )}
 
       {/* No Chapter */}
-      {!isLoadingChapter && !chapter && <NotFoundPage />}
+      {(!isLoadingChapter && (!chapter || chapter?.authorId != user?.id)) && (
+        <NotFoundPage />
+      )}
 
       {/* Operation */}
       {operation && (
@@ -100,7 +104,7 @@ const MyChapter = () => {
       )}
 
       {/* Editor */}
-      {!isLoadingChapter && chapter && (
+      {!isLoadingChapter && chapter && chapter?.authorId === user?.id && (
         <div className="max-w-5xl mx-auto w-full p-6 flex flex-col gap-6">
           <div className="flex justify-between">
             <div className="mb-2">

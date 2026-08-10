@@ -4,6 +4,7 @@ import useAdminStore from "../UseAdminStore";
 import Pagination from "./Pagination";
 import { useTranslation } from "react-i18next";
 import ChangeRoleDialog from "./ChangeRoleDialog";
+import DeleteUserDialog from "./DeleteUserDialog";
 
 const AdminUserPage = () => {
   const [searchMode, setSearchMode] = useState("id");
@@ -14,6 +15,7 @@ const AdminUserPage = () => {
   const [menuUser, setMenuUser] = useState(null);
   const { t } = useTranslation();
   const [changeRoleUser, setChangeRoleUser] = useState(null);
+  const [userToDelete, setUserToDelete] = useState(null);
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-6">
@@ -133,6 +135,7 @@ const AdminUserPage = () => {
                   menuUser={menuUser}
                   setMenuUser={setMenuUser}
                   setChangeRoleUser={setChangeRoleUser}
+                  setUserToDelete={setUserToDelete}
                 />
               ))}
         </tbody>
@@ -149,7 +152,15 @@ const AdminUserPage = () => {
       )}
 
       <Pagination />
-      <ChangeRoleDialog changeRoleUser={changeRoleUser} setChangeRoleUser={setChangeRoleUser} />
+      <ChangeRoleDialog
+        changeRoleUser={changeRoleUser}
+        setChangeRoleUser={setChangeRoleUser}
+      />
+
+      <DeleteUserDialog
+        userToDelete={userToDelete}
+        setUserToDelete={setUserToDelete}
+      />
     </div>
   );
 };

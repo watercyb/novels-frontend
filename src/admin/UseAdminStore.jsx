@@ -5,6 +5,8 @@ import axiosInstance from "../utils/axios";
 const useAdminStore = create((set, get) => ({
   users: [],
   counts: {},
+  user: null,
+  novel: null,
   isLoading: false,
   isLoadingCounts: false,
   isUpdatingRole: false,
@@ -12,6 +14,10 @@ const useAdminStore = create((set, get) => ({
   size: 20,
   totalPages: 0,
   lastSearch: null,
+  isLoadingUser: false,
+  isDeletingUser: false,
+  operation: null,
+  isLoadingNovel: null,
 
   getUsers: async (idOrEmail, username, role, page) => {
     if (get().isLoading) return true;
@@ -103,6 +109,108 @@ const useAdminStore = create((set, get) => ({
       return false;
     } finally {
       set({ isUpdatingRole: false });
+    }
+  },
+
+  getUser: async (userId) => {
+    try {
+      set({ isLoadingUser: true, error: null });
+      const res = await axiosInstance.get(`/auth/${userId}`);
+      if (res.data && res.data.success) {
+        set({ user: res.data.user });
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      set({ user: null });
+      errorHandler(set, error, "Error get user", false);
+    } finally {
+      set({ isLoadingUser: false });
+    }
+  },
+
+  deleteUser: async (userId) => {
+    try {
+      set({ isDeletingUser: true, error: null });
+      const res = await axiosInstance.delete(`/admin/user/${userId}`);
+      if (res.data && res.data.success) {
+        if (get().user?.id == userId) set({ user: null });
+        return true;
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error delete user", true);
+      return false;
+    } finally {
+      set({ isDeletingUser: false });
+    }
+  },
+
+  deleteNovel: async (novelId) => {
+    try {
+      if (!get().user) return;
+      set({ operation: "deleting_novel", error: null });
+      const res = await axiosInstance.delete(`/admin/novels/${novelId}`);
+      if (res.data && res.data.success) {
+        set({
+          user: {
+            ...get().user,
+            novels: get().user.novels.filter((novel) => novel.id != novelId),
+          },
+        });
+        return true;
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error delete novel", true);
+      return false;
+    } finally {
+      set({ operation: null });
+    }
+  },
+
+  getNovel: async (novelId) => {
+    try {
+      set({ isLoadingNovel: true });
+      const res = await axiosInstance.get(`/admin/novels/${novelId}`);
+      if (res.data && res.data.success) {
+        set({ novel: res.data.novel });
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      set({ novel: {} });
+      errorHandler(set, error, "Error get novel", true);
+    } finally {
+      set({ isLoadingNovel: false });
+    }
+  },
+
+  deleteChapter: async (chapterId) => {
+    try {
+      if (!get().novel) return;
+      set({ operation: "deleting_chapter", error: null });
+      const res = await axiosInstance.delete(`/admin/chapters/${chapterId}`);
+      if (res.data && res.data.success) {
+        set({
+          novel: {
+            ...get().novel,
+            chapters: get().novel.chapters.filter(
+              (chapter) => chapter.id != chapterId,
+            ),
+          },
+        });
+        return true;
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error delete chapter", true);
+      return false;
+    } finally {
+      set({ operation: null });
     }
   },
 }));

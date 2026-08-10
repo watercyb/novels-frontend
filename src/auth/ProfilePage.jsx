@@ -24,7 +24,7 @@ export default function ProfilePage() {
   if (user.username && isLoadingUser) {
     setIsLoadingUser(false);
     setUsername(user.username);
-    setAvatarUrl(user.avatarUrl);
+    setAvatarUrl(user?.avatarUrl || avatar);
   }
 
   const handleAvatarChange = (e) => {
