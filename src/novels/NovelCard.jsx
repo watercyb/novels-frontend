@@ -13,7 +13,7 @@ const NovelCard = ({ novel }) => {
   return (
     <div
       className="card bg-base-100 shadow-xl hover:shadow-2xl transition"
-      title={novel.title}
+      title={novel.title.trim().length == 0 ? t("untitled") : novel.title}
     >
       <div className="card-body p-2 md:p-6">
         <div className="flex flex-col md:flex-row gap-5">
@@ -51,7 +51,7 @@ const NovelCard = ({ novel }) => {
               onClick={(e) => e.currentTarget.blur()}
             >
               <h2 className="text-xl md:text-2xl font-bold line-clamp-2">
-                {novel.title}
+                {novel.title.trim().length == 0 ? t("untitled") : novel.title}
               </h2>
             </Link>
 

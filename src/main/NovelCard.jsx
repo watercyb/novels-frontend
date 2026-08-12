@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import cover from "../assets/cover.png";
 import { Heart, BookOpen, FileText, Star } from "lucide-react";
 import useUserStore from "../auth/UseUserStore";
+import { t } from "i18next";
 
 const NovelCard = ({ novel }) => {
   const { favorites } = useUserStore();
@@ -10,7 +11,7 @@ const NovelCard = ({ novel }) => {
   return (
     <div
       className="card bg-base-100 shadow-xl hover:shadow-2xl transition overflow-hidden"
-      title={novel.title}
+      title={novel.title.trim().length == 0 ? t("untitled") : novel.title}
     >
       {/* Cover */}
       <Link to={`/novel/${novel.id}`} onClick={(e) => e.currentTarget.blur()}>
@@ -40,7 +41,7 @@ const NovelCard = ({ novel }) => {
         {/* Title */}
         <Link to={`/novel/${novel.id}`} onClick={(e) => e.currentTarget.blur()}>
           <h2 className="text-lg font-bold line-clamp-2 min-h-14 hover:text-primary">
-            {novel.title}
+            {novel.title.trim().length == 0 ? t("untitled") : novel.title}
           </h2>
         </Link>
 

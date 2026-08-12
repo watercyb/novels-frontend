@@ -2,16 +2,19 @@ import useAdminStore from "../UseAdminStore";
 import showToast from "../../utils/Toast";
 import { t } from "i18next";
 import { Trans } from "react-i18next";
+import { useState } from "react";
 
 const DeleteNovelDialog = ({ novelToDelete, setNovelToDelete }) => {
   const { deleteNovel } = useAdminStore();
+  const [reason, setReason] = useState("");
 
   if (!novelToDelete) return null;
 
   const handleDelete = async () => {
     onClose();
-    if (await deleteNovel(novelToDelete.id))
+    if (await deleteNovel(novelToDelete.id, reason))
       showToast(t("novel_deleted"), "success");
+    setReason("");
   };
 
   const onClose = () => {
@@ -32,6 +35,23 @@ const DeleteNovelDialog = ({ novelToDelete, setNovelToDelete }) => {
             }}
           />
         </p>
+
+        {/* Deletion reason */}
+        <div className="mt-4">
+          <label className="label">
+            <span className="label-text font-medium pb-1">
+              {t("deletion_reason")}
+            </span>
+          </label>
+
+          <textarea
+            className="textarea textarea-bordered w-full"
+            placeholder={t("deletion_reason_placeholder")}
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            rows={3}
+          />
+        </div>
 
         {/* Actions */}
         <div className="modal-action">

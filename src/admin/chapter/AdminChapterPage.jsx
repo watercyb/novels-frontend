@@ -6,11 +6,13 @@ import cover from "../../assets/cover.png";
 import i18n from "../../locales/i18n";
 import showToast from "../../utils/Toast";
 import useAdminStore from "../UseAdminStore";
+import { Trans } from "react-i18next";
 
 const AdminChapterPage = () => {
   const navigate = useNavigate();
   const { novel, isLoadingNovel, operation, deleteChapter } = useAdminStore();
   const [chapterToDelete, setChapterToDelete] = useState(null);
+  const [deletionReason, setDeletionReason] = useState("");
 
   return (
     <div>
@@ -178,7 +180,10 @@ const AdminChapterPage = () => {
                               document.activeElement?.blur();
                               navigate(`/chapter/${chapter.id}`);
                             } else {
-                              showToast(t("cannot_view_unpublished_chapter"), "error");
+                              showToast(
+                                t("cannot_view_unpublished_chapter"),
+                                "error",
+                              );
                             }
                           }}
                         >
@@ -234,20 +239,53 @@ const AdminChapterPage = () => {
       <dialog open={chapterToDelete} className="modal">
         <div className="modal-box">
           <h3 className="font-bold text-lg">{t("confirm_delete")}</h3>
+
           <p className="py-4">
-            {t("to_delete_novel", { title: chapterToDelete?.title })}
+            <Trans
+              i18nKey="delete_chapter_text"
+              values={{ title: chapterToDelete?.title }}
+              components={{
+                strong: <strong />,
+              }}
+            />
           </p>
 
+          <label className="form-control w-full">
+            <div className="label">
+              <span className="label-text">{t("deletion_reason")}</span>
+            </div>
+
+            <textarea
+              className="textarea textarea-bordered w-full"
+              placeholder={t("deletion_reason_placeholder")}
+              value={deletionReason}
+              onChange={(e) => setDeletionReason(e.target.value)}
+              rows={3}
+            />
+          </label>
+
           <div className="modal-action">
-            <button className="btn" onClick={() => setChapterToDelete(null)}>
+            <button
+              className="btn"
+              onClick={() => {
+                setChapterToDelete(null);
+                setDeletionReason("");
+              }}
+            >
               {t("cancel")}
             </button>
+
             <button
               className="btn btn-error"
+              disabled={!deletionReason.trim()}
               onClick={async () => {
-                const chapterid = chapterToDelete.id;
+                const chapterId = chapterToDelete.id;
+                const reason = deletionReason.trim();
+
                 setChapterToDelete(null);
-                if (await deleteChapter(chapterid))
+                setDeletionReason("");
+
+                if (await deleteChapter(chapterId, reason))
                   showToast(t("chapter_deleted"), "success");
               }}
             >

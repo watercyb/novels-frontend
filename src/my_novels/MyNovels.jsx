@@ -98,7 +98,9 @@ const MyNovels = () => {
                         navigate(`/my-novels/${novel.id}`);
                       }}
                     >
-                      {novel.title}
+                      {novel.title.trim().length == 0
+                        ? t("untitled")
+                        : novel.title}
                     </div>
 
                     <button

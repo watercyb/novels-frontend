@@ -120,7 +120,9 @@ const MyNovel = () => {
                   {/* Title */}
                   <div className="flex justify-between">
                     <h1 className="text-4xl font-bold wrap-break-word">
-                      {novel.title}
+                      {novel.title.trim().length == 0
+                        ? t("untitled")
+                        : novel.title}
                     </h1>
 
                     {isUpdatingTitle ? (

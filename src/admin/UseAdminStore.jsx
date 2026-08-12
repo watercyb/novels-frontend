@@ -147,11 +147,15 @@ const useAdminStore = create((set, get) => ({
     }
   },
 
-  deleteNovel: async (novelId) => {
+  deleteNovel: async (novelId, reason) => {
     try {
       if (!get().user) return;
       set({ operation: "deleting_novel", error: null });
-      const res = await axiosInstance.delete(`/admin/novels/${novelId}`);
+      const params = new URLSearchParams();
+      params.append("reason", reason);
+      const res = await axiosInstance.delete(
+        `/admin/novels/${novelId}?` + params.toString(),
+      );
       if (res.data && res.data.success) {
         set({
           user: {
@@ -188,11 +192,15 @@ const useAdminStore = create((set, get) => ({
     }
   },
 
-  deleteChapter: async (chapterId) => {
+  deleteChapter: async (chapterId, reason) => {
     try {
       if (!get().novel) return;
       set({ operation: "deleting_chapter", error: null });
-      const res = await axiosInstance.delete(`/admin/chapters/${chapterId}`);
+      const params = new URLSearchParams();
+      params.append("reason", reason);
+      const res = await axiosInstance.delete(
+        `/admin/chapters/${chapterId}?` + params.toString(),
+      );
       if (res.data && res.data.success) {
         set({
           novel: {
