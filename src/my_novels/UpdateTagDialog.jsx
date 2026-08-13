@@ -3,7 +3,7 @@ import { t } from "i18next";
 import useNovelStore from "../novels/UseNovelStore";
 import i18n from "../locales/i18n";
 import showToast from "../utils/Toast";
-import useMyNovelStore from "./useMyNovelStore";
+import useMyNovelStore from "./UseMyNovelStore";
 
 const UpdateTagDialog = ({ updateTagDialogOpen, setUpdateTagDialogOpen }) => {
   const { tags, isLoadingTags, getTags } = useNovelStore();

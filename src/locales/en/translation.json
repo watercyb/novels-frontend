@@ -66,7 +66,7 @@
   "password_updated": "Password updated successfully",
   "profile_updated": "User profile updated successfully",
   "need_login": "Please login",
-  "reply": "Reply",
+  "Reply": "Reply",
   "show_replies": "Show Replies",
   "post_comment": "Post Comment",
   "comments": "Comments",
@@ -285,8 +285,15 @@
   "select_novel_from_novels_tab": "Select a novel from the Novels tab to manage their chapters.",
   "users_tab": "Users",
   "cannot_view_unpublished_chapter": "This chapter has not been published yet.",
-  "deletion_reason": "Deletion Reason:",
+  "deletion_reason": "Deletion Reason: ",
   "untitled": "Untitled",
   "deletion_reason_placeholder": "Enter the reason for deletion",
-  "delete_chapter_text": "Are you sure you want to delete the chapter <strong>{{title}}</strong>? This action cannot be undone."
+  "delete_chapter_text": "Are you sure you want to delete the chapter <strong>{{title}}</strong>? This action cannot be undone.",
+  "system_message": "System Message",
+  "content_deleted_by_admin": "Your {{type}} {{name}} has been deleted by an administrator.",
+  "NOVEL": "novel",
+  "CHAPTER": "chapter",
+  "COMMENT": "comment",
+  "REPLY": "reply",
+  "no_message":"No messages"
 }

@@ -66,7 +66,7 @@
   "password_updated": "修改密码成功",
   "profile_updated": "用户信息已更新",
   "need_login": "请先登入",
-  "reply": "回复",
+  "Reply": "回复",
   "show_replies": "查看回复",
   "post_comment": "发表评论",
   "comments": "评论",
@@ -288,5 +288,12 @@
   "deletion_reason": "删除原因：",
   "untitled": "无标题",
   "deletion_reason_placeholder": "请输入删除原因",
-  "delete_chapter_text": "确定要删除章节 <strong>{{title}}</strong> 吗？此操作无法撤销。"
+  "delete_chapter_text": "确定要删除章节 <strong>{{title}}</strong> 吗？此操作无法撤销。",
+  "system_message": "系统消息",
+  "content_deleted_by_admin": "您的{{type}} {{name}} 已被管理员删除。",
+  "NOVEL": "小说",
+  "CHAPTER": "章节",
+  "COMMENT": "评论",
+  "REPLY": "回复",
+  "no_message": "暂无消息"
 }

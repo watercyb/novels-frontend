@@ -26,11 +26,14 @@ const MyNovel = lazy(() => import("./my_novels/MyNovel"));
 const MyChapter = lazy(() => import("./my_novels/MyChapter"));
 const AdminPanelPage = lazy(() => import("./admin/AdminPanelPage"));
 const AdminUserPage = lazy(() => import("./admin/user/AdminUserPage"));
-const AdminDashboardPage = lazy(() => import("./admin/dashboard/AdminDashboardPage"));
+const AdminDashboardPage = lazy(
+  () => import("./admin/dashboard/AdminDashboardPage"),
+);
 const AdminMessagePage = lazy(() => import("./admin/message/AdminMessagePage"));
 const AdminNovelPage = lazy(() => import("./admin/novel/AdminNovelPage"));
 const AdminChapterPage = lazy(() => import("./admin/chapter/AdminChapterPage"));
 const AdminNoticePage = lazy(() => import("./admin/notice/AdminNoticePage"));
+const MessagePage = lazy(() => import("./messages/MessagePage"));
 
 function App() {
   const { user } = useUserStore();
@@ -97,6 +100,10 @@ function App() {
               <Route path="chapters" element={<AdminChapterPage />} />
               <Route path="notices" element={<AdminNoticePage />} />
             </Route>
+            <Route
+              path="/messages"
+              element={user ? <MessagePage /> : <Navigate to="/" replace />}
+            />
             <Route path="/*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>

@@ -79,7 +79,7 @@ const CommentCard = ({
                 }
               }}
             >
-              {t("reply")}
+              {t("Reply")}
             </button>
           </div>
         </div>

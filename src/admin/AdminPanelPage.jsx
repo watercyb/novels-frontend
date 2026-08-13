@@ -11,14 +11,21 @@ import useUserStore from "../auth/UseUserStore";
 import NotFoundPage from "../main/NotFoundPage";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
+import useAdminStore from "./UseAdminStore";
 
 const AdminPanelPage = () => {
   const { user } = useUserStore();
   const { t } = useTranslation();
+  const { unreadCount, isLoadingUnreadCount, getUnreadCount } = useAdminStore();
 
   useEffect(() => {
-    document.title = t("admin_panel")+ " - Cat Novels";
+    document.title = t("admin_panel") + " - Cat Novels";
   }, [t]);
+
+  useEffect(() => {
+    if (!isLoadingUnreadCount) getUnreadCount();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getUnreadCount]);
 
   const linkClass = ({ isActive }) =>
     `flex items-center gap-3 rounded-lg px-4 py-3 transition-colors ${
@@ -58,9 +65,18 @@ const AdminPanelPage = () => {
                   {t("users_tab")}
                 </NavLink>
 
-                <NavLink to="/admin/messages" className={linkClass}>
+                <NavLink
+                  to="/admin/messages"
+                  className={`${linkClass} flex items-center gap-2`}
+                >
                   <MessageSquare size={18} />
-                  {t("messages")}
+                  <span>{t("messages")}</span>
+
+                  {unreadCount > 0 && (
+                    <span className="ml-auto w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                      {unreadCount > 9 ? "9+" : unreadCount}
+                    </span>
+                  )}
                 </NavLink>
               </div>
 

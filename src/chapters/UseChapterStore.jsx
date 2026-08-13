@@ -7,7 +7,7 @@ const useChapterStore = create((set, get) => ({
   chapter: null,
   prv: null,
   next: null,
-  size: 5,
+  size: 20,
   totalItems: -1,
   error: false,
   isLoadingChpaters: false,
@@ -22,8 +22,7 @@ const useChapterStore = create((set, get) => ({
       const length = get().chapters.length;
 
       if (totalItems == -1 || reload) {
-        set({ totalItems: 0 });
-        set({ chapters: [] });
+        set({ totalItems: 0, chapters: [] });
         page = 0;
       } else {
         if (length == totalItems) return;
@@ -45,7 +44,7 @@ const useChapterStore = create((set, get) => ({
         throw new Error(res.data);
       }
     } catch (error) {
-      errorHandler(set, error, "Error get novchaptersel", true);
+      errorHandler(set, error, "Error get chapters", true);
     } finally {
       set({ isLoadingChpaters: false });
     }

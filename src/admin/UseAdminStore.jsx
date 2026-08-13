@@ -7,17 +7,23 @@ const useAdminStore = create((set, get) => ({
   counts: {},
   user: null,
   novel: null,
+  messages: [],
+  unreadCount: null,
   isLoading: false,
   isLoadingCounts: false,
   isUpdatingRole: false,
-  currentPage: 0,
-  size: 20,
-  totalPages: 0,
+  userCurrentPage: 0,
+  userSize: 20,
+  userTotalPages: 0,
+  messageSize: 20,
+  messageTotalItems: -1,
   lastSearch: null,
   isLoadingUser: false,
   isDeletingUser: false,
   operation: null,
-  isLoadingNovel: null,
+  isLoadingNovel: false,
+  isLoadingUnreadCount: false,
+  isLoadingMessages: false,
 
   getUsers: async (idOrEmail, username, role, page) => {
     if (get().isLoading) return true;
@@ -32,7 +38,11 @@ const useAdminStore = create((set, get) => ({
         }
         const res = await axiosInstance.get("/admin/user?" + params.toString());
         if (res.data && res.data.success) {
-          set({ users: [res.data.user], currentPage: 1, totalPages: 1 });
+          set({
+            users: [res.data.user],
+            userCurrentPage: 1,
+            userTotalPages: 1,
+          });
         } else {
           throw new Error(res.data);
         }
@@ -41,13 +51,13 @@ const useAdminStore = create((set, get) => ({
         if (role && role.trim()) params.append("role", role);
         if (!page) page = 0;
         params.append("page", page);
-        params.append("size", get().size);
+        params.append("size", get().userSize);
         const res = await axiosInstance.get("/admin/user?" + params.toString());
         if (res.data && res.data.success) {
           set({
             users: res.data.users.items,
-            currentPage: res.data.users.page,
-            totalPages: res.data.users.totalPages,
+            userCurrentPage: res.data.users.page,
+            userTotalPages: res.data.users.totalPages,
           });
         } else {
           throw new Error(res.data);
@@ -58,8 +68,8 @@ const useAdminStore = create((set, get) => ({
     } catch (error) {
       set({
         users: [],
-        currentPage: 0,
-        totalPages: 0,
+        userCurrentPage: 0,
+        userTotalPages: 0,
       });
       errorHandler(set, error, "Error get users", false);
       return false;
@@ -219,6 +229,59 @@ const useAdminStore = create((set, get) => ({
       return false;
     } finally {
       set({ operation: null });
+    }
+  },
+
+  getUnreadCount: async () => {
+    try {
+      set({ isLoadingUnreadCount: true });
+      const res = await axiosInstance.get("/admin/messages/count");
+      if (res.data && res.data.success) {
+        set({ unreadCount: res.data.unreadCount });
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      set({ unreadCount: 0 });
+      errorHandler(set, error, "Error get unread count", false);
+    } finally {
+      set({ isLoadingUnreadCount: false });
+    }
+  },
+
+  getMessages: async (reload) => {
+    try {
+      set({ isLoadingMessages: true, error: false });
+      let page;
+      const totalItems = get().messageTotalItems;
+      const size = get().messageSize;
+      const length = get().messages.length;
+
+      if (totalItems == -1 || reload) {
+        set({ totalItems: 0, chapters: [] });
+        page = 0;
+      } else {
+        if (length == totalItems) return;
+        page = Math.floor((length + size - 1) / size);
+      }
+      const params = new URLSearchParams();
+      params.append("page", page);
+      params.append("size", size);
+      const res = await axiosInstance.get("/admin/messages?" + params.toString());
+      if (res.data && res.data.success) {
+        if (res.data.messages.page * res.data.messages.size === get().messages.length) {
+          set({
+            messages: [...get().messages, ...res.data.messages.items],
+            totalItems: res.data.messages.totalItems,
+          });
+        }
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error get messages", true);
+    } finally {
+      set({ isLoadingMessages: false });
     }
   },
 }));
