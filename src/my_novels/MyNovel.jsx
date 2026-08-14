@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import useUserStore from "../auth/UseUserStore";
-import useMyNovelStore from "./UseMyNovelStore";
+import useMyNovelStore from "./AseMyNovelStore";
 import { t } from "i18next";
 import {
   SquarePen,
