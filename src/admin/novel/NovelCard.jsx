@@ -3,7 +3,7 @@ import cover from "../../assets/cover.png";
 import { useTranslation } from "react-i18next";
 import { formatDateTimeString } from "../../utils/formatDate";
 import { Heart, BookOpen, FileText, Clock3, Star, Trash2 } from "lucide-react";
-import useUserStore from "../../auth/UseUserStore";
+import useUserStore from "../../auth/AseUserStore";
 import useAdminStore from "../UseAdminStore";
 
 const NovelCard = ({ novel, setNovelToDelete }) => {

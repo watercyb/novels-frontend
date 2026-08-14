@@ -1,5 +1,5 @@
 import axios from "axios";
-import useUserStore from "../auth/UseUserStore";
+import useUserStore from "../auth/AseUserStore";
 import { checkUserCookie } from "./cookie";
 
 const axiosInstance = axios.create({

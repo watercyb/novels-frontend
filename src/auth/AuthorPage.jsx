@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import NovelCard from "../novels/NovelCard";
-import useUserStore from "./UseUserStore";
+import useUserStore from "./AseUserStore";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { formatDateString } from "../utils/formatDate";

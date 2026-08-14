@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import useUserStore from "./UseUserStore";
+import useUserStore from "./AseUserStore";
 import avatar from "../assets/avatar.png";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";

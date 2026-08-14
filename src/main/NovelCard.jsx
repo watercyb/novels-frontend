@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import cover from "../assets/cover.png";
 import { Heart, BookOpen, FileText, Star } from "lucide-react";
-import useUserStore from "../auth/UseUserStore";
+import useUserStore from "../auth/AseUserStore";
 import { t } from "i18next";
 
 const NovelCard = ({ novel }) => {

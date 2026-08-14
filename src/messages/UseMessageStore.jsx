@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axiosInstance from "../utils/axios";
 import errorHandler from "../utils/ErrorHandler";
-import useUserStore from "../auth/UseUserStore";
+import useUserStore from "../auth/AseUserStore";
 
 const useMessageStore = create((set, get) => ({
   messages: null,

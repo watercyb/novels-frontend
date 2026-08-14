@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useAdminStore from "../UseAdminStore";
-import useUserStore from "../../auth/UseUserStore";
+import useUserStore from "../../auth/AseUserStore";
 import { useTranslation } from "react-i18next";
 
 const ChangeRoleDialog = ({ changeRoleUser, setChangeRoleUser }) => {
