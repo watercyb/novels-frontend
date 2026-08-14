@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import Topbar from "./main/Topbar";
 import { Toaster } from "react-hot-toast";
 import LoginPage from "./auth/LoginPage";
-import useUserStore from "./auth/AseUserStore";
+import useUserStore from "./auth/UseUserStore";
 import { Navigate } from "react-router-dom";
 import Footer from "./main/Footer";
 import NotFoundPage from "./main/NotFoundPage";

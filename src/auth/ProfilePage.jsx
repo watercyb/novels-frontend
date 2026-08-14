@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import useUserStore from "./AseUserStore";
+import useUserStore from "./UseUserStore";
 import avatar from "../assets/avatar.png";
 import { useTranslation } from "react-i18next";
 import { Loader } from "lucide-react";

@@ -3,7 +3,7 @@ import cover from "../assets/cover.png";
 import { useTranslation } from "react-i18next";
 import { formatDateTimeString } from "../utils/formatDate";
 import { Heart, BookOpen, FileText, Clock3, Star } from "lucide-react";
-import useUserStore from "../auth/AseUserStore";
+import useUserStore from "../auth/UseUserStore";
 
 const NovelCard = ({ novel }) => {
   const { t } = useTranslation();

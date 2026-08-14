@@ -7,7 +7,7 @@ import {
   Bell,
   LayoutDashboard,
 } from "lucide-react";
-import useUserStore from "../auth/AseUserStore";
+import useUserStore from "../auth/UseUserStore";
 import NotFoundPage from "../main/NotFoundPage";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";

@@ -8,7 +8,7 @@ import { hasDraft, loadDraft, saveDraft } from "../utils/localStorage";
 import showToast from "../utils/Toast";
 import PublishChapterDialog from "./PublishChapterDialog";
 import { ArrowLeft } from "lucide-react";
-import useUserStore from "../auth/AseUserStore";
+import useUserStore from "../auth/UseUserStore";
 
 const MyChapter = () => {
   const { chapterId } = useParams();

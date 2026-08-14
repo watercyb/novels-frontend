@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Loader } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import PasswordStrengthMeter from "../utils/PasswordStrengthMeter";
-import useUserStore from "./AseUserStore";
+import useUserStore from "./UseUserStore";
 import { useTranslation } from "react-i18next";
 
 const ResetPasswordPage = () => {
