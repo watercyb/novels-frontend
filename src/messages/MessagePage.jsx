@@ -8,7 +8,8 @@ const MessagePage = () => {
     useMessageStore();
 
   useEffect(() => {
-    getMessages(true);
+    if (!messages) getMessages(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getMessages]);
 
   return (
@@ -25,18 +26,18 @@ const MessagePage = () => {
           <h1 className="text-2xl font-bold mb-6">{t("messages")}</h1>
 
           <div className="space-y-3">
-            {messages.map((message) => (
+            {messages?.map((message) => (
               <MessageCard key={message.id} message={message} />
             ))}
           </div>
 
-          {messages.length === 0 && !isLoadingMessages && (
+          {messages?.length === 0 && !isLoadingMessages && (
             <div className="text-center text-base-content/60 py-10">
               {t("no_message")}
             </div>
           )}
 
-          {messages.length < totalItems && (
+          {messages?.length < totalItems && (
             <div className="flex justify-center mt-6">
               <button
                 className="btn btn-outline"

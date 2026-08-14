@@ -78,7 +78,7 @@ const ChangeRoleDialog = ({ changeRoleUser, setChangeRoleUser }) => {
           </button>
 
           <button
-            className="btn btn-primary"
+            className="btn btn-primary min-w-20"
             onClick={async () => {
               if (await updateRole(changeRoleUser.id, newRole)) closeHandler();
             }}

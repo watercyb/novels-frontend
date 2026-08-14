@@ -7,7 +7,7 @@ const useAdminStore = create((set, get) => ({
   counts: {},
   user: null,
   novel: null,
-  messages: [],
+  messages: null,
   unreadCount: null,
   isLoading: false,
   isLoadingCounts: false,
@@ -255,7 +255,7 @@ const useAdminStore = create((set, get) => ({
       let page;
       const totalItems = get().messageTotalItems;
       const size = get().messageSize;
-      const length = get().messages.length;
+      const length = get().messages?.length ?? 0;
 
       if (totalItems == -1 || reload) {
         set({ totalItems: 0, chapters: [] });
@@ -273,10 +273,10 @@ const useAdminStore = create((set, get) => ({
       if (res.data && res.data.success) {
         if (
           res.data.messages.page * res.data.messages.size ===
-          get().messages.length
+          (get().messages?.length ?? 0)
         ) {
           set({
-            messages: [...get().messages, ...res.data.messages.items],
+            messages: [...(get().messages ?? []), ...res.data.messages.items],
             totalItems: res.data.messages.totalItems,
           });
         }

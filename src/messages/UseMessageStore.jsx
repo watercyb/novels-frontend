@@ -4,7 +4,7 @@ import errorHandler from "../utils/ErrorHandler";
 import useUserStore from "../auth/UseUserStore";
 
 const useMessageStore = create((set, get) => ({
-  messages: [],
+  messages: null,
   size: 20,
   totalItems: -1,
   isLoadingMessages: false,
@@ -15,7 +15,7 @@ const useMessageStore = create((set, get) => ({
       let page;
       const totalItems = get().totalItems;
       const size = get().size;
-      const length = get().messages.length;
+      const length = get().messages?.length ?? 0;
 
       if (totalItems == -1 || reload) {
         set({ totalItems: 0, chapters: [] });
@@ -29,9 +29,12 @@ const useMessageStore = create((set, get) => ({
       params.append("size", size);
       const res = await axiosInstance.get("/messages?" + params.toString());
       if (res.data && res.data.success) {
-        if (res.data.page.page * res.data.page.size === get().messages.length) {
+        if (
+          res.data.page.page * res.data.page.size ===
+          (get().messages?.length ?? 0)
+        ) {
           set({
-            messages: [...get().messages, ...res.data.page.items],
+            messages: [...(get().messages ?? []), ...res.data.page.items],
             totalItems: res.data.page.totalItems,
           });
         }

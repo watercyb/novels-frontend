@@ -1,12 +1,15 @@
+import ChapterCommentMessage from "./renders/ChapterCommentMessage";
+import CommentRepliedMessage from "./renders/CommentRepliedMessage";
 import DeletionMessage from "./renders/DeletionMessage";
+import SystemMessage from "./renders/SystemMessage";
 import UpdateRoleRequestMessage from "./renders/UpdateRoleRequestMessage";
+import UserMessage from "./renders/UserMessge";
 
 const messageRenderers = {
-  SYSTEM: null,
-  USER: null,
-  NOTIFICATION: null,
-  CHAPTER_COMMENT: null,
-  COMMENT_REPLIED: null,
+  SYSTEM: SystemMessage,
+  USER: UserMessage,
+  CHAPTER_COMMENT: ChapterCommentMessage,
+  COMMENT_REPLIED: CommentRepliedMessage,
   UPDATE_ROLE_REQUEST: UpdateRoleRequestMessage,
   DELETION: DeletionMessage,
 };

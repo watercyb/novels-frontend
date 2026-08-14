@@ -2,7 +2,6 @@ import { t } from "i18next";
 
 const DeletionMessage = ({ message }) => {
   let content;
-
   try {
     content = JSON.parse(message.messageContent);
   } catch {
