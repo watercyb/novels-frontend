@@ -11,6 +11,7 @@ const useUserStore = create((set, get) => ({
   isLoading: false,
   isCheckingAuth: false,
   isLoadingAuthor: false,
+  isRequestingUpdate: false,
 
   login: async (email, password) => {
     try {
@@ -265,6 +266,27 @@ const useUserStore = create((set, get) => ({
     const favorites = new Set(get().favorites);
     favorites.delete(Number(novelId));
     set({ favorites });
+  },
+
+  updateRole: async () => {
+    try {
+      set({ isRequestingUpdate: true, error: null });
+      const res = await axiosInstance.post("/auth/update_role");
+      if (res.data && res.data.success) {
+        return true;
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      set({ author: null });
+      errorHandler(set, error, "Error send update request", true);
+    } finally {
+      set({ isRequestingUpdate: false });
+    }
+  },
+
+  updateUnread: (n) => {
+    set({ user: { ...get().user, unreadCount: get().user.unreadCount + n } });
   },
 }));
 

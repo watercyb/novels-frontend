@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import axiosInstance from "../utils/axios";
 import errorHandler from "../utils/ErrorHandler";
+import useUserStore from "../auth/UseUserStore";
 
 const useMessageStore = create((set, get) => ({
   messages: [],
@@ -41,6 +42,25 @@ const useMessageStore = create((set, get) => ({
       errorHandler(set, error, "Error get messages", true);
     } finally {
       set({ isLoadingMessages: false });
+    }
+  },
+
+  readMessage: async (messageId) => {
+    try {
+      set({ error: false });
+      const res = await axiosInstance.post(`/messages/${messageId}`);
+      if (res.data && res.data.success) {
+        set({
+          messages: get().messages.map((message) =>
+            message?.id == messageId ? { ...message, read: true } : message,
+          ),
+        });
+        useUserStore.getState().updateUnread(-1);
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error read message", true);
     }
   },
 }));

@@ -295,5 +295,10 @@
   "CHAPTER": "chapter",
   "COMMENT": "comment",
   "REPLY": "reply",
-  "no_message":"No messages"
+  "no_message": "No messages",
+  "role_request_sent": "Your role change request has been sent. Please wait for an admin to review it.",
+  "request_update_role": " requested to update their role to author.",
+  "unread": "Unread",
+  "unable_display_message": "Unable to display this message.",
+  "unknown_user": "Unknown User"
 }

@@ -1,6 +1,14 @@
 import { t } from "i18next";
 
-const DeletionMessage = ({ content }) => {
+const DeletionMessage = ({ message }) => {
+  let content;
+
+  try {
+    content = JSON.parse(message.messageContent);
+  } catch {
+    return <p className="text-error">{t("unable_display_message")}</p>;
+  }
+
   switch (content.type) {
     case "CHAPTER":
       return (
@@ -11,7 +19,15 @@ const DeletionMessage = ({ content }) => {
               name: content.name,
             })}
           </p>
-          <p>{content.reason && <> {t("deletion_reason")}{content.reason}</>}</p>
+          <p>
+            {content.reason && (
+              <>
+                {" "}
+                {t("deletion_reason")}
+                {content.reason}
+              </>
+            )}
+          </p>
         </>
       );
     case "NOVEL":
@@ -23,7 +39,15 @@ const DeletionMessage = ({ content }) => {
               name: content.name,
             })}
           </p>
-          <p>{content.reason && <> {t("deletion_reason")}{content.reason}</>}</p>
+          <p>
+            {content.reason && (
+              <>
+                {" "}
+                {t("deletion_reason")}
+                {content.reason}
+              </>
+            )}
+          </p>
         </>
       );
     case "COMMENT":
@@ -35,7 +59,15 @@ const DeletionMessage = ({ content }) => {
               name: content.name,
             })}
           </p>
-          <p>{content.reason && <> {t("deletion_reason")}{content.reason}</>}</p>
+          <p>
+            {content.reason && (
+              <>
+                {" "}
+                {t("deletion_reason")}
+                {content.reason}
+              </>
+            )}
+          </p>
         </>
       );
     case "REPLY":
@@ -47,7 +79,15 @@ const DeletionMessage = ({ content }) => {
               name: content.name,
             })}
           </p>
-          <p>{content.reason && <> {t("deletion_reason")}{content.reason}</>}</p>
+          <p>
+            {content.reason && (
+              <>
+                {" "}
+                {t("deletion_reason")}
+                {content.reason}
+              </>
+            )}
+          </p>
         </>
       );
     default:

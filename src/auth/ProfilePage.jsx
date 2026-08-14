@@ -14,7 +14,8 @@ export default function ProfilePage() {
   const fileInputRef = useRef(null);
   const [isLoadingUser, setIsLoadingUser] = useState(user?.username == null);
   const [avatarFile, setAvatarFile] = useState(null);
-  const { isLoading, updateProfile } = useUserStore();
+  const { isLoading, isRequestingUpdate, updateProfile, updateRole } =
+    useUserStore();
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -52,14 +53,28 @@ export default function ProfilePage() {
         <div className="card-body">
           <h2 className="text-3xl font-bold text-center mb-6 relative">
             {t("user_profile")}
-            <div className="absolute top-1 right-1">
+            <div
+              className="absolute top-1 right-1 cursor-pointer"
+              onClick={async () => {
+                if (
+                  user.role === "USER" &&
+                  !isRequestingUpdate &&
+                  (await updateRole())
+                )
+                  showToast(t("role_request_sent"), "success");
+              }}
+            >
               <div
                 className="tooltip block w-full"
                 data-tip={
                   user.role === "USER" ? t("update_role") : t(user.role)
                 }
               >
-                <UserRole user={user} />
+                {isRequestingUpdate ? (
+                  <Loader className="animate-spin mx-auto" size={20} />
+                ) : (
+                  <UserRole user={user} />
+                )}
               </div>
             </div>
           </h2>

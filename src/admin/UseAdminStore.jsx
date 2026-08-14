@@ -31,7 +31,7 @@ const useAdminStore = create((set, get) => ({
       set({ isLoading: true });
       const params = new URLSearchParams();
       if (idOrEmail) {
-        if (!idOrEmail.includes("@")) {
+        if (typeof idOrEmail === "number" || !idOrEmail.includes("@")) {
           params.append("id", idOrEmail);
         } else {
           params.append("email", idOrEmail);
@@ -267,9 +267,14 @@ const useAdminStore = create((set, get) => ({
       const params = new URLSearchParams();
       params.append("page", page);
       params.append("size", size);
-      const res = await axiosInstance.get("/admin/messages?" + params.toString());
+      const res = await axiosInstance.get(
+        "/admin/messages?" + params.toString(),
+      );
       if (res.data && res.data.success) {
-        if (res.data.messages.page * res.data.messages.size === get().messages.length) {
+        if (
+          res.data.messages.page * res.data.messages.size ===
+          get().messages.length
+        ) {
           set({
             messages: [...get().messages, ...res.data.messages.items],
             totalItems: res.data.messages.totalItems,
@@ -282,6 +287,25 @@ const useAdminStore = create((set, get) => ({
       errorHandler(set, error, "Error get messages", true);
     } finally {
       set({ isLoadingMessages: false });
+    }
+  },
+
+  readMessage: async (messageId) => {
+    try {
+      set({ error: false });
+      const res = await axiosInstance.post(`/admin/messages/${messageId}`);
+      if (res.data && res.data.success) {
+        set({
+          messages: get().messages.map((message) =>
+            message?.id == messageId ? { ...message, read: true } : message,
+          ),
+        });
+        set({ unreadCount: get().unreadCount - 1 });
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error read message", true);
     }
   },
 }));

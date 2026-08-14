@@ -1,11 +1,17 @@
 import { User, Bell } from "lucide-react";
 import { formatDateTimeString } from "../utils/formatDate";
-import MessageContent from "./MessageContent";
 import { t } from "i18next";
+import useMessageStore from "./UseMessageStore";
+import { useState } from "react";
+import MessageContent from "./MessageContent";
+import { useNavigate } from "react-router-dom";
 
 const MessageCard = ({ message }) => {
   const isSystemMessage = message.senderId === -1;
   const isUnread = !message.read;
+  const { readMessage } = useMessageStore();
+  const [isReading, setIsReading] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div
@@ -23,7 +29,10 @@ const MessageCard = ({ message }) => {
               </div>
             ) : message.sender?.avatarUrl ? (
               <div className="avatar">
-                <div className="w-10 rounded-full">
+                <div
+                  className="w-10 rounded-full cursor-pointer"
+                  onClick={() => navigate(`/author/${message.sender?.id}`)}
+                >
                   <img
                     src={message.sender.avatarUrl}
                     alt={message.sender.username}
@@ -41,13 +50,29 @@ const MessageCard = ({ message }) => {
           {/* Content */}
           <div className="min-w-0 flex-1">
             <div className="flex items-center justify-between gap-2 mb-1">
-              <div className="font-semibold">
-                {isSystemMessage
-                  ? t("system_message")
-                  : (message.sender?.username ?? "Unknown User")}
-              </div>
-              {isUnread && (
-                <span className="badge badge-primary badge-sm"> Unread </span>
+              {isSystemMessage ? (
+                <div className="font-semibold">{t("system_message")}</div>
+              ) : (
+                <div
+                  className="font-semibold cursor-pointer"
+                  onClick={() => navigate(`/author/${message.sender?.id}`)}
+                >
+                  {message.sender?.username ?? t("unknown_user")}
+                </div>
+              )}
+              {isUnread && !isReading && (
+                <span
+                  className="badge badge-primary badge-sm cursor-pointer"
+                  onClick={async () => {
+                    if (!isReading) {
+                      setIsReading(true);
+                      await readMessage(message.id);
+                      setIsReading(false);
+                    }
+                  }}
+                >
+                  {t("unread")}
+                </span>
               )}
             </div>
             <MessageContent message={message} />
