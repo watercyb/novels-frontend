@@ -1,5 +1,5 @@
 import { ArrowDownUp, X } from "lucide-react";
-import useMyNovelStore from "./AseMyNovelStore";
+import useMyNovelStore from "./UseMyNovelStore";
 import showToast from "../utils/Toast";
 import { t } from "i18next";
 

@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import ChapterEditor from "./ChapterEditor";
-import useMyNovelStore from "./AseMyNovelStore";
+import useMyNovelStore from "./UseMyNovelStore";
 import { useEffect, useState } from "react";
 import NotFoundPage from "../main/NotFoundPage";
 import { useTranslation } from "react-i18next";
