@@ -8,6 +8,7 @@ const useMessageStore = create((set, get) => ({
   size: 20,
   totalItems: -1,
   isLoadingMessages: false,
+  isSendingMessage: false,
 
   getMessages: async (reload) => {
     try {
@@ -28,6 +29,7 @@ const useMessageStore = create((set, get) => ({
       params.append("page", page);
       params.append("size", size);
       const res = await axiosInstance.get("/messages?" + params.toString());
+
       if (res.data && res.data.success) {
         if (
           res.data.page.page * res.data.page.size ===
@@ -35,9 +37,11 @@ const useMessageStore = create((set, get) => ({
         ) {
           set({
             messages: [...(get().messages ?? []), ...res.data.page.items],
-            totalItems: res.data.page.totalItems,
           });
         }
+        set({
+          totalItems: res.data.page.totalItems,
+        });
       } else {
         throw new Error(res.data);
       }
@@ -64,6 +68,43 @@ const useMessageStore = create((set, get) => ({
       }
     } catch (error) {
       errorHandler(set, error, "Error read message", true);
+    }
+  },
+
+  deleteMessage: async (message) => {
+    try {
+      set({ error: false });
+      const res = await axiosInstance.delete(`/messages/${message.id}`);
+      if (res.data && res.data.success) {
+        set({
+          messages: get().messages.filter((msg) => msg?.id != message.id),
+        });
+        if (!message.read) useUserStore.getState().updateUnread(-1);
+        set({totalItems: get().totalItems - 1});
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error delete message", true);
+    }
+  },
+
+  sendMessage: async (recipientId, content) => {
+    try {
+      set({ isSendingMessage: true, error: false });
+      const res = await axiosInstance.post("/messages", {
+        recipientId,
+        content,
+      });
+      if (res.data && res.data.success) {
+        return true;
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error delete message", true);
+    } finally {
+      set({ isSendingMessage: false });
     }
   },
 }));

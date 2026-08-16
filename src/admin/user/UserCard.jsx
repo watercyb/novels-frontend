@@ -11,6 +11,7 @@ const UserCard = ({
   setMenuUser,
   setChangeRoleUser,
   setUserToDelete,
+  setRecipient,
 }) => {
   const { t } = useTranslation();
   const menuRef = useRef(null);
@@ -64,6 +65,7 @@ const UserCard = ({
               onClick={() => {
                 setMenuUser(menuUser?.id === cardUser.id ? null : cardUser);
               }}
+              disabled={user.id === cardUser.id}
             >
               {t("edit")}
             </button>
@@ -73,13 +75,24 @@ const UserCard = ({
                 ref={menuRef}
                 className="absolute right-0 top-8 z-50 w-44 rounded-lg bg-base-100 shadow-lg border border-base-300 p-2"
               >
+                {user.id != cardUser.id && (
+                  <button
+                    className=" w-full text-left px-3 py-2 rounded-md hover:bg-base-200"
+                    onClick={() => {
+                      setRecipient(cardUser);
+                    }}
+                  >
+                    {t("send_message")}
+                  </button>
+                )}
+
                 {user.id != cardUser.id &&
                   cardUser.role != "SUPERADMIN" &&
                   (user.role === "SUPERADMIN" ||
                     cardUser.role === "USER" ||
                     cardUser.role === "AUTHOR") && (
                     <button
-                      className=" w-full text-left px-3 py-2 rounded-md hover:bg-base-200"
+                      className=" w-full text-left px-3 py-1 rounded-md hover:bg-base-200"
                       onClick={() => {
                         setChangeRoleUser(menuUser);
                       }}
@@ -88,7 +101,7 @@ const UserCard = ({
                     </button>
                   )}
 
-                <div className="divider my-1"></div>
+                <div className="divider my-0"></div>
 
                 {user.id != cardUser.id &&
                   cardUser.role != "SUPERADMIN" &&
@@ -96,7 +109,7 @@ const UserCard = ({
                     cardUser.role === "USER" ||
                     cardUser.role === "AUTHOR") && (
                     <button
-                      className="w-full text-left px-3 py-2 rounded-md text-error hover:bg-error/10"
+                      className="w-full text-left px-3 py-1 rounded-md text-error hover:bg-error/10"
                       onClick={async () => {
                         setUserToDelete(cardUser);
                       }}

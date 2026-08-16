@@ -251,7 +251,7 @@ const AdminChapterPage = () => {
           </p>
 
           <label className="form-control w-full">
-            <div className="label">
+            <div className="label mb-1">
               <span className="label-text">{t("deletion_reason")}</span>
             </div>
 

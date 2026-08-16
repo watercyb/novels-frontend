@@ -5,6 +5,7 @@ import Pagination from "./Pagination";
 import { useTranslation } from "react-i18next";
 import ChangeRoleDialog from "./ChangeRoleDialog";
 import DeleteUserDialog from "./DeleteUserDialog";
+import SendMessageDialog from "../message/SendMessageDialog";
 
 const AdminUserPage = () => {
   const [searchMode, setSearchMode] = useState("id");
@@ -16,6 +17,7 @@ const AdminUserPage = () => {
   const { t } = useTranslation();
   const [changeRoleUser, setChangeRoleUser] = useState(null);
   const [userToDelete, setUserToDelete] = useState(null);
+  const [recipient, setRecipient] = useState(null);
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-6">
@@ -136,6 +138,7 @@ const AdminUserPage = () => {
                   setMenuUser={setMenuUser}
                   setChangeRoleUser={setChangeRoleUser}
                   setUserToDelete={setUserToDelete}
+                  setRecipient={setRecipient}
                 />
               ))}
         </tbody>
@@ -161,6 +164,8 @@ const AdminUserPage = () => {
         userToDelete={userToDelete}
         setUserToDelete={setUserToDelete}
       />
+
+      <SendMessageDialog recipient={recipient} setRecipient={setRecipient} />
     </div>
   );
 };

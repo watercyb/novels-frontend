@@ -11,7 +11,7 @@ const MessagePage = () => {
     if (!messages) getMessages(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getMessages]);
-
+  
   return (
     <>
       {/* Loading */}
@@ -24,13 +24,11 @@ const MessagePage = () => {
       {!isLoadingMessages && (
         <div className="container mx-auto max-w-3xl px-4 py-6">
           <h1 className="text-2xl font-bold mb-6">{t("messages")}</h1>
-
           <div className="space-y-3">
             {messages?.map((message) => (
               <MessageCard key={message.id} message={message} />
             ))}
           </div>
-
           {messages?.length === 0 && !isLoadingMessages && (
             <div className="text-center text-base-content/60 py-10">
               {t("no_message")}

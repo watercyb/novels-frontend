@@ -9,9 +9,10 @@ import { useNavigate } from "react-router-dom";
 const MessageCard = ({ message }) => {
   const isSystemMessage = message.senderId === -1;
   const isUnread = !message.read;
-  const { readMessage } = useMessageStore();
+  const { readMessage, deleteMessage } = useMessageStore();
   const [isReading, setIsReading] = useState(false);
   const navigate = useNavigate();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   return (
     <div
@@ -34,8 +35,8 @@ const MessageCard = ({ message }) => {
                   onClick={() => navigate(`/author/${message.sender?.id}`)}
                 >
                   <img
-                    src={message.sender.avatarUrl}
-                    alt={message.sender.username}
+                    src={message.sender?.avatarUrl}
+                    alt={message.sender?.username}
                   />
                 </div>
               </div>
@@ -72,6 +73,20 @@ const MessageCard = ({ message }) => {
                   }}
                 >
                   {t("unread")}
+                </span>
+              )}
+              {!isUnread && !isDeleting && (
+                <span
+                  className="badge badge-error badge-sm cursor-pointer"
+                  onClick={async () => {
+                    if (!isDeleting) {
+                      setIsDeleting(true);
+                      await deleteMessage(message);
+                      setIsDeleting(false);
+                    }
+                  }}
+                >
+                  {t("delete")}
                 </span>
               )}
             </div>

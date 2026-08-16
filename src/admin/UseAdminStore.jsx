@@ -139,10 +139,14 @@ const useAdminStore = create((set, get) => ({
     }
   },
 
-  deleteUser: async (userId) => {
+  deleteUser: async (userId, reason) => {
     try {
       set({ isDeletingUser: true, error: null });
-      const res = await axiosInstance.delete(`/admin/user/${userId}`);
+      const params = new URLSearchParams();
+      params.append("reason", reason);
+      const res = await axiosInstance.delete(
+        `/admin/user/${userId}?` + params.toString(),
+      );
       if (res.data && res.data.success) {
         if (get().user?.id == userId) set({ user: null });
         return true;
@@ -277,9 +281,11 @@ const useAdminStore = create((set, get) => ({
         ) {
           set({
             messages: [...(get().messages ?? []), ...res.data.messages.items],
-            totalItems: res.data.messages.totalItems,
           });
         }
+        set({
+          totalItems: res.data.messages.totalItems,
+        });
       } else {
         throw new Error(res.data);
       }
@@ -306,6 +312,42 @@ const useAdminStore = create((set, get) => ({
       }
     } catch (error) {
       errorHandler(set, error, "Error read message", true);
+    }
+  },
+
+  deleteMessage: async (message) => {
+    try {
+      set({ error: false });
+      const res = await axiosInstance.delete(`/admin/messages/${message.id}`);
+      if (res.data && res.data.success) {
+        set({
+          messages: get().messages.filter((msg) => msg?.id != message.id),
+        });
+        set({ totalItems: get().totalItems - 1 });
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error delete message", true);
+    }
+  },
+
+  sendMessage: async (recipientId, content) => {
+    try {
+      set({ isSendingMessage: true, error: false });
+      const res = await axiosInstance.post("/admin/messages", {
+        recipientId,
+        content,
+      });
+      if (res.data && res.data.success) {
+        return true;
+      } else {
+        throw new Error(res.data);
+      }
+    } catch (error) {
+      errorHandler(set, error, "Error send message", true);
+    } finally {
+      set({ isSendingMessage: false });
     }
   },
 }));

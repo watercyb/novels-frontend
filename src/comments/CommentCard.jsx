@@ -26,7 +26,7 @@ const CommentCard = ({
   const { t } = useTranslation();
   const { user } = useUserStore();
   const [open, setOpen] = useState(false);
-  const [deleteId, setDeleteId] = useState(false);
+  const [commentToDelete, setCommentToDelete] = useState(null);
 
   return (
     <div className="card bg-base-200 shadow-sm">
@@ -59,7 +59,7 @@ const CommentCard = ({
               <button
                 className="btn btn-ghost btn-error btn-xs"
                 onClick={() => {
-                  setDeleteId(comment.id);
+                  setCommentToDelete(comment);
                   setOpen(true);
                 }}
                 disabled={isDeleting}
@@ -151,9 +151,9 @@ const CommentCard = ({
                     user?.role === "ADMIN" ||
                     user?.role === "SUPERADMIN") && (
                     <button
-                      className="btn btn-ghost btn-error btn-xs"
+                      className="btn btn-ghost btn-error btn-xs min-w-10"
                       onClick={() => {
-                        setDeleteId(reply.id);
+                        setCommentToDelete(reply);
                         setOpen(true);
                       }}
                       disabled={isDeleting}
@@ -208,12 +208,12 @@ const CommentCard = ({
         open={open}
         setOpen={setOpen}
         onConfirm={() => {
-          if (deleteId === comment.id) {
-            deleteComment(deleteId);
+          if (commentToDelete.id === comment.id) {
+            deleteComment(commentToDelete.id, user?.id === commentToDelete.userId);
           } else {
-            deleteReply(comment.id, deleteId);
+            deleteReply(comment.id, commentToDelete.id, user?.id === commentToDelete.userId);
           }
-          setDeleteId(null);
+          setCommentToDelete(null);
           setOpen(false);
         }}
       />

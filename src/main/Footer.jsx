@@ -1,7 +1,11 @@
-import { useTranslation } from "react-i18next";
+import { t } from "i18next";
+import SendMessageDialog from "../messages/SendMessageDialog";
+import { useState } from "react";
+import useUserStore from "../auth/UseUserStore";
 
 const Footer = () => {
-  const { t } = useTranslation();
+  const [recipient, setRecipient] = useState(null);
+  const { user } = useUserStore();
 
   return (
     <footer className="border-t border-base-300 ">
@@ -25,6 +29,15 @@ const Footer = () => {
               {t("contact")}
             </a>
 
+            {user && (
+              <div
+                className="hover:underline cursor-pointer"
+                onClick={() => setRecipient({ id: -1, username: t("admin") })}
+              >
+                {t("send_message_to_admin")}
+              </div>
+            )}
+
             <button
               onClick={() =>
                 window.scrollTo({
@@ -39,6 +52,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
+      <SendMessageDialog recipient={recipient} setRecipient={setRecipient} />
     </footer>
   );
 };

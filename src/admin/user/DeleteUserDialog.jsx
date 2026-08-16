@@ -8,6 +8,7 @@ import { Loader } from "lucide-react";
 const DeleteUserDialog = ({ userToDelete, setUserToDelete }) => {
   const [confirmation, setConfirmation] = useState("");
   const { isDeletingUser, deleteUser } = useAdminStore();
+  const [deletionReason, setDeletionReason] = useState("");
 
   if (!userToDelete) return null;
 
@@ -16,13 +17,14 @@ const DeleteUserDialog = ({ userToDelete, setUserToDelete }) => {
   const handleDelete = async () => {
     if (!canDelete) return;
 
-    if (await deleteUser(userToDelete.id))
+    if (await deleteUser(userToDelete.id, deletionReason))
       showToast(t("account_deleted"), "success");
 
     onClose();
   };
 
   const onClose = () => {
+    setDeletionReason("");
     setConfirmation("");
     setUserToDelete(null);
   };
@@ -56,9 +58,26 @@ const DeleteUserDialog = ({ userToDelete, setUserToDelete }) => {
           </div>
         </div>
 
-        {/* Confirmation */}
+        {/* Reason */}
         <div className="mt-5">
-          <label className="label">
+          <label className="form-control w-full">
+            <div className="label mb-1">
+              <span className="label-text">{t("deletion_reason")}</span>
+            </div>
+
+            <textarea
+              className="textarea textarea-bordered w-full"
+              placeholder={t("deletion_reason_placeholder")}
+              value={deletionReason}
+              onChange={(e) => setDeletionReason(e.target.value)}
+              rows={3}
+            />
+          </label>
+        </div>
+
+        {/* Confirmation */}
+        <div className="mt-3">
+          <label className="label mb-1">
             <span className="label-text">
               <Trans
                 i18nKey="type_username_to_confirm"

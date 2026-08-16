@@ -1,16 +1,19 @@
 import { useParams } from "react-router-dom";
 import NovelCard from "../novels/NovelCard";
 import useUserStore from "./UseUserStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { formatDateString } from "../utils/formatDate";
 import NotFoundPage from "../main/NotFoundPage";
 import UserRole from "../utils/UserRole";
+import { MessageSquare } from "lucide-react";
+import SendMessageDialog from "../messages/SendMessageDialog";
 
 const AuthorPage = () => {
   const { authorId } = useParams();
   const { author, isLoadingAuthor, getAuthor } = useUserStore();
   const { t } = useTranslation();
+  const [recipient, setRecipient] = useState(null);
 
   useEffect(() => {
     getAuthor(authorId);
@@ -46,21 +49,35 @@ const AuthorPage = () => {
 
                 {/* Basic Info */}
                 <div className="flex-1 text-center md:text-left w-fit">
-                  <h1 className="flex items-center text-3xl font-bold">
-                    {author.username}
-                    <div className="ml-2">
-                      <div
-                        className="tooltip block w-full"
-                        data-tip={t(author.role)}
-                      >
-                        <UserRole user={author} />
-                      </div>
-                    </div>
-                  </h1>
+                  <div className="flex justify-between gap-2">
+                    <div>
+                      <h1 className="flex items-center text-3xl font-bold">
+                        {author.username}
 
-                  <p className="text-base-content/70 mt-2">
-                    {t("joined_on")} {formatDateString(author.createdAt)}
-                  </p>
+                        <div className="ml-2">
+                          <div
+                            className="tooltip block w-full"
+                            data-tip={t(author.role)}
+                          >
+                            <UserRole user={author} />
+                          </div>
+                        </div>
+                      </h1>
+
+                      <p className="text-base-content/70 mt-2">
+                        {t("joined_on")} {formatDateString(author.createdAt)}
+                      </p>
+                    </div>
+
+                    {/* Send Message */}
+                    <button
+                      className="btn btn-primary btn-sm mt-4"
+                      onClick={() => setRecipient(author)}
+                    >
+                      <MessageSquare size={16} />
+                      {t("send_message")}
+                    </button>
+                  </div>
 
                   {/* Stats */}
                   <div className="stats stats-horizontal shadow mt-4">
@@ -116,6 +133,11 @@ const AuthorPage = () => {
               </div>
             )}
           </div>
+
+          <SendMessageDialog
+            recipient={recipient}
+            setRecipient={setRecipient}
+          />
         </div>
       )}
     </>

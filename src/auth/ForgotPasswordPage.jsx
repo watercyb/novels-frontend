@@ -55,7 +55,7 @@ const ForgotPasswordPage = () => {
               {isLoading ? (
                 <Loader className="animate-spin mx-auto" size={20} />
               ) : (
-                t("send")
+                t("send_verification_email")
               )}
             </button>
           </form>
